@@ -1,3 +1,4 @@
+#TODO: ignore fast folder unless we have cli-tool .fast
 .quasar
 .DS_Store
 .thumbs.db

@@ -1,5 +1,5 @@
 // Configuration for your app
-
+/* eslint-disable */
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
@@ -54,7 +54,7 @@ module.exports = function(ctx) {
       ],
       directives: ['Ripple'],
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify', 'vue-i18n']
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
     },
