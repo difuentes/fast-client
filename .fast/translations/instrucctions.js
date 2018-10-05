@@ -68,5 +68,25 @@ export default [
     text: 'You have connection now! Login and sync you data',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Go to Login',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Wait until the App is Updated. This can take a couple minutes...',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'The participant name can´t be empty',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'No results. Please refine your search terms.',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
   }
 ];

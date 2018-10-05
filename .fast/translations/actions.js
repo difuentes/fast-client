@@ -194,5 +194,95 @@ export default [
     text: 'New Survey',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Review for multiple rows',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Edit',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'New Submission',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Snooze',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'All',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Updated at',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'NAME FILTER',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Created at',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Current Participant Name',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Next participant Name',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'All Data',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Data reviewers',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Online Submission',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Review Data',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Scope',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Review',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'complete',
+    template: 'Submission Completed',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'SUBMISSION',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
   }
 ];

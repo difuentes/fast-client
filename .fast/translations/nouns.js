@@ -1,220 +1,21 @@
 export default [
   {
-    text: 'Filter results...',
+    text: 'Collected data',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
   },
   {
-    text: 'Import Error!',
+    text: 'Columns',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
   },
   {
-    text: 'No row selected',
+    text: 'All Columns',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
   },
   {
-    text: 'Deleted!',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Your submission has been deleted.',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: "You won't be able to revert this!",
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Are you sure?',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'No data available to show.',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Your submission has been sent!',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'New language created: ',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'NO TRANSLATIONS TO CREATE',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'TRANSLATIONS FAILED',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'TRANSLATIONS CREATED',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Updating...',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Creating',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'translations...',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'TRANSLATION FILTER',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Search...',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'not translated',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'search...',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'The language was changed.',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Language Changed',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Localizations Synced',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Please select the version that you want to use',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'The group name is already taken',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Loading...',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: "Can't change group",
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'There is no group assign to this submission',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'You have errors in the submission',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Error',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Updating...',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Updated',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Draft Saved!',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Your submission has been saved! You can continue editing later',
-    template: ''
-  },
-  {
-    text: "You can't edit more than one row",
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Report for multiple rows',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: "You can't see the report more than one row",
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: "You can't review more than one row",
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Save error',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: "You don't have access to modify this submission",
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Conexion error',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: "We couldn't get the submission from the server",
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'Exported!',
-    template: '',
-    location: [{ type: 'appTranslation', picture: '' }]
-  },
-  {
-    text: 'The file has been exported. File name:',
+    text: 'Rows',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
   },
@@ -224,17 +25,162 @@ export default [
     location: [{ type: 'appTranslation', picture: '' }]
   },
   {
-    text: 'The language was changed',
+    text: 'items selected.',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
   },
   {
-    text: 'Getting the submission. This can take a couple seconds...',
+    text: 'Language',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
   },
   {
-    text: 'Forgot your password?',
+    text: 'Translations',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Languages',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Forms',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Actions',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'New Submission',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Application Settings',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Collected Data',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'About',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'User Login',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Email',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Password',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Login',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'New user',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Version',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Admin Login',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Unsynced Actions',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Sync Actions',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Unsynced',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Logout',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Home',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Score',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Owner Email',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Account',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Profile',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Reviewer name',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Reviewer country',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Reviewer email',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Data Reviewers',
+    template: '',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'stripe',
+    template: '{{stripe}}',
+    location: [{ type: 'appTranslation', picture: '' }]
+  },
+  {
+    text: 'Read Only',
     template: '',
     location: [{ type: 'appTranslation', picture: '' }]
   }
