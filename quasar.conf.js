@@ -3,7 +3,7 @@
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: [],
+    plugins: ['VueI18n', 'VueAsyncProperties', 'FAST'],
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
@@ -54,7 +54,7 @@ module.exports = function(ctx) {
       ],
       directives: ['Ripple'],
       // Quasar plugins
-      plugins: ['Notify', 'vue-i18n']
+      plugins: ['Notify']
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
     },
