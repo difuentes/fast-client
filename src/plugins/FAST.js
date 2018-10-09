@@ -1,5 +1,4 @@
 // // import something here
-import 'babel-polyfill';
 import { Moment, FAST } from 'fast-fastjs';
 import setConf from '../helpers/setConf';
 

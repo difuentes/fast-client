@@ -1,6 +1,8 @@
+import 'babel-polyfill';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
+import { Auth } from 'fast-fastjs';
 
 Vue.use(VueRouter);
 
@@ -17,6 +19,22 @@ export default function(/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  });
+
+  Router.beforeEach((to, from, next) => {
+    // If user is logged in and route dont require auth
+    if (Auth.user() && !to.meta.requiresAuth) {
+      Router.push({ name: 'dashboard' });
+    }
+    // If user is NOT logged in and route require auth
+    if (!Auth.user() && to.meta.requiresAuth) {
+      // eslint-disable-next-line
+      console.log('not auth');
+      next(false);
+      Router.push({ name: 'login' });
+    }
+    window.scrollTo(0, 0);
+    next();
   });
 
   return Router;
