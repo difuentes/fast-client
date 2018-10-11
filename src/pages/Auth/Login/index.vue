@@ -9,10 +9,9 @@
       <div class="form-login">
         <Formio
           :form="form"
-          :options="options"
           :language="language"
           v-on:submit="handleLogin"
-          v-if="form && options"
+          v-if="form "
           :key="error" />
       </div>        
       </div>
@@ -22,7 +21,7 @@
 
 <script>
 import { Form as Formio } from 'vue-formio';
-import { Form, OfflinePlugin, Auth } from 'fast-fastjs';
+import { Form, Translations, Auth } from 'fast-fastjs';
 
 export default {
   name: 'Login',
@@ -44,9 +43,9 @@ export default {
   asyncData: {
     form: {
       get() {
-        return Form.remote().findOne({
-          'data.path': 'user/login'
-        });
+        return Form.local()
+          .where('data.path', '=', 'user/login')
+          .first();
       },
       transform({ data }) {
         return data;
@@ -54,7 +53,7 @@ export default {
     },
     options: {
       async get() {
-        const i18n = await OfflinePlugin.getLocalTranslations();
+        const i18n = await Translations.local().first();
         return { i18n };
       },
       transform(result) {
@@ -65,14 +64,16 @@ export default {
   methods: {
     async handleLogin(event) {
       this.credentials.password = event.data.password.trim();
-      this.credentials.email = event.data.username.trim();
+      this.credentials.username = event.data.username.trim();
       try {
-        console.log(this.credentials);
         await Auth.attempt(
           this.credentials,
           this.$FAST_CONFIG.APP_URL,
           this.isAdminLogin ? 'admin' : undefined
         );
+        this.$router.push({
+          name: 'dashboard'
+        });
       } catch (error) {
         this.error = Math.random();
         // eslint-disable-next-line

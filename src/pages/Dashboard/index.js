@@ -1,5 +1,6 @@
 export default [
   {
+    name: 'dashboard',
     path: '/dashboard',
     component: () => import('./Main'),
     meta: { requiresAuth: true }

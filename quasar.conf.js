@@ -1,9 +1,10 @@
 // Configuration for your app
 /* eslint-disable */
+const Dotenv = require('dotenv-webpack');
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: ['VueI18n', 'VueAsyncProperties', 'FAST'],
+    plugins: ['boot', 'VueI18n', 'VueAsyncProperties'],
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
@@ -21,6 +22,7 @@ module.exports = function(ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack(cfg) {
+        cfg.plugins.push(new Dotenv());
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
