@@ -14,7 +14,7 @@
           v-on:submit="handleLogin"
           v-if="form && options"
           :key="error" />
-      </div>        
+      </div>
       </div>
     </div>
   </div>
@@ -22,7 +22,7 @@
 
 <script>
 import { Form as Formio } from 'vue-formio';
-import { Form, OfflinePlugin, Auth } from 'fast-fastjs';
+import { Form, Translation, Auth } from 'fast-fastjs';
 
 export default {
   name: 'Login',
@@ -44,9 +44,9 @@ export default {
   asyncData: {
     form: {
       get() {
-        return Form.remote().findOne({
-          'data.path': 'user/login'
-        });
+        return Form.local()
+          .where('data.path', '=', 'user/login')
+          .first();
       },
       transform({ data }) {
         return data;
@@ -54,7 +54,7 @@ export default {
     },
     options: {
       async get() {
-        const i18n = await OfflinePlugin.getLocalTranslations();
+        const i18n = await Translation.local().first();
         return { i18n };
       },
       transform(result) {
@@ -65,12 +65,12 @@ export default {
   methods: {
     async handleLogin(event) {
       this.credentials.password = event.data.password.trim();
-      this.credentials.email = event.data.username.trim();
+      this.credentials.username = event.data.username.trim();
       try {
+        /* eslint-disable */
         console.log(this.credentials);
         await Auth.attempt(
           this.credentials,
-          this.$FAST_CONFIG.APP_URL,
           this.isAdminLogin ? 'admin' : undefined
         );
       } catch (error) {

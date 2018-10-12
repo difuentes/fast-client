@@ -1,16 +1,23 @@
 // Configuration for your app
+const Dotenv = require('dotenv-webpack');
 /* eslint-disable */
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: ['VueI18n', 'VueAsyncProperties', 'FAST'],
+    plugins: ['VueAsyncProperties', 'boot'],
+    config: {
+      // optional (v0.17+)
+      loading: {
+        // Loading defaults
+      }
+    },
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'material-icons' // optional, you are not bound to it
-      // 'ionicons',
+      'material-icons', // optional, you are not bound to it
+      'ionicons',
       // 'mdi',
-      // 'fontawesome'
+      'fontawesome'
     ],
     supportIE: false,
     build: {
@@ -21,6 +28,7 @@ module.exports = function(ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack(cfg) {
+        cfg.plugins.push(new Dotenv());
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -37,6 +45,13 @@ module.exports = function(ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QCard',
+        'QCardMain',
+        'QCardTitle',
+        'QPopover',
+        'QField',
+        'QOptionGroup',
+        'QBtn',
         'QLayout',
         'QLayoutHeader',
         'QLayoutDrawer',
@@ -44,17 +59,20 @@ module.exports = function(ctx) {
         'QPage',
         'QToolbar',
         'QToolbarTitle',
-        'QBtn',
         'QIcon',
         'QList',
         'QListHeader',
         'QItem',
         'QItemMain',
-        'QItemSide'
+        'QItemSide',
+        'QTooltip',
+        'QItemSeparator',
+        'QItemTile',
+        'QSpinnerPuff'
       ],
       directives: ['Ripple'],
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify', 'Loading']
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
     },

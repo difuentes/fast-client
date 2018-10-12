@@ -32,27 +32,27 @@
         link
         inset-delimiter
       >
-        <q-list-header>Essential Links</q-list-header>
-        <q-item @click.native="openURL('http://quasar-framework.org')">
-          <q-item-side icon="school" />
-          <q-item-main label="Docs" sublabel="quasar-framework.org" />
+        <q-list-header></q-list-header>
+        <q-item :to="{name: 'dashboard', exact: true}">
+          <q-item-side icon="pin_drop" />
+          <q-item-main :label="$t('Home')" />
         </q-item>
-        <q-item @click.native="openURL('https://github.com/quasarframework/')">
-          <q-item-side icon="code" />
-          <q-item-main label="GitHub" sublabel="github.com/quasarframework" />
-        </q-item>
-        <q-item @click.native="openURL('https://discord.gg/5TDhbDg')">
-          <q-item-side icon="chat" />
-          <q-item-main label="Discord Chat Channel" sublabel="https://discord.gg/5TDhbDg" />
-        </q-item>
-        <q-item @click.native="openURL('http://forum.quasar-framework.org')">
-          <q-item-side icon="record_voice_over" />
-          <q-item-main label="Forum" sublabel="forum.quasar-framework.org" />
-        </q-item>
-        <q-item @click.native="openURL('https://twitter.com/quasarframework')">
-          <q-item-side icon="rss feed" />
-          <q-item-main label="Twitter" sublabel="@quasarframework" />
-        </q-item>
+
+        <q-item-separator />
+
+
+        <q-item  style="cursor:pointer" @click.native="syncApp()" >
+        <q-tooltip anchor="center right" self="center left">
+          <strong>{{ $t("Sync app") }}</strong>
+        </q-tooltip>
+        <q-item-side icon="cloud_download" left/>
+        <q-item-main :label="$t('Sync Application')" />
+      </q-item>
+
+      <q-item-separator  />
+
+      <pagelinks :pages="PAGES"></pagelinks>
+
       </q-list>
     </q-layout-drawer>
     <q-page-container>
@@ -62,17 +62,53 @@
 </template>
 
 <script>
-import { openURL } from 'quasar';
+import { Pages, Auth, Utilities, FAST } from 'fast-fastjs';
+import pagelinks from '../components/pageLinks';
+import fullLoading from '../components/fullLoading';
 
 export default {
+  components: {
+    pagelinks
+  },
   name: 'Layout',
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop
     };
   },
+  asyncData: {
+    PAGES: {
+      async get() {
+        const result = await Pages.local().first();
+        const pages = await result.pages.map(async page => {
+          page.cards.map(async card => {
+            card.shouldDisplay = await Auth.hasRoleIdIn(card.access);
+            card.actions.map(async action => {
+              action.shouldDisplay = await Auth.hasRoleIdIn(action.access);
+            });
+          });
+          page.shouldDisplay = await Auth.hasRoleIdIn(page.access);
+          return page;
+        });
+        return Promise.all(pages);
+      },
+      transform(result) {
+        return result.sort((a, b) => {
+          const A = Utilities.getFromPath(a, 'index', undefined).value;
+          const B = Utilities.getFromPath(b, 'index', undefined).value;
+          return A > B ? 1 : -1;
+        });
+      }
+    }
+  },
   methods: {
-    openURL
+    async syncApp() {
+      fullLoading.show(this.$t('Wait until the App is Updated. This can take a couple minutes...'));
+      await FAST.sync({ appConf: this.$appConf });
+      this.leftDrawerOpen = false;
+      window.location.reload(true);
+      fullLoading.hide();
+    }
   }
 };
 </script>
