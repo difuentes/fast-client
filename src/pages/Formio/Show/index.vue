@@ -13,11 +13,18 @@
         >
           <q-icon name="menu" />
         </q-btn>
-          <breadcrum
+
+        <q-toolbar-title>
+            <breadcrum
                 v-bind:class="'pull-left'"
                 :parent="$route.query.parent"
                 :currentPageTitle="formTitle"
               />
+          <span slot="subtitle">
+            
+          </span>
+        </q-toolbar-title>
+
       </q-toolbar>
     </q-layout-header>
         <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 responsiveTableContainer">

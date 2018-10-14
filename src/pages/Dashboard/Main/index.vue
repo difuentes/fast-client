@@ -107,10 +107,15 @@
      <q-layout-footer>
       <q-toolbar
         color="white"
-        style="height:7vh"
       >
+      <q-toggle
+          unchecked-icon="far fa-calendar-alt"
+          checked-icon="pin_drop"
+          v-model="today"
+        />
 
       <q-btn
+            v-if="!today"
             dense
             flat
             aria-label="Menu"
@@ -121,22 +126,40 @@
           <q-icon name="far fa-calendar-alt" />
         </q-btn>
 
-        <q-range
-          v-model="rangeValues"
-          :min="5"
-          :max="100"
-          :step="5"
-          label
-          markers
-          snap
-          style="margin-right:30px"
-        />
 
-        <q-toggle
-          unchecked-icon="far fa-calendar-alt"
-          checked-icon="far fa-list-alt"
-          v-model="today"
-        />
+         <q-toolbar-title position="center">
+            <q-range
+              v-if="!today"
+              v-model="rangeValues"
+              :min="5"
+              :max="100"
+              :step="5"
+              label
+              markers
+              snap
+              style="margin-right:30px"
+            />
+            <span style="color:black" v-if="!today">
+              Filter
+            </span>
+
+          <span slot="subtitle" style="color:black" v-if="!today">
+
+          Filter by date or range
+          </span>
+
+          <span style="color:black" v-if="today">
+              Today
+            </span>
+
+          <span slot="subtitle" style="color:black" v-if="today">
+
+          {{currentDate}}
+          </span>
+        </q-toolbar-title>
+
+
+
 
         <q-toggle
           v-model="checked"
@@ -144,6 +167,7 @@
           checked-icon="fas fa-globe-africa"
           size="30px"
           color="secondary"
+          class="pull-right"
         />
 
       </q-toolbar>
@@ -186,6 +210,7 @@ import 'leaflet/dist/leaflet.css';
 import format from 'date-fns/format';
 import { Form, Submission, Auth } from 'fast-fastjs';
 import fullLoading from '../../../components/fullLoading';
+import moment from 'moment';
 
 export default {
   name: 'Main',
@@ -198,10 +223,10 @@ export default {
   },
   data() {
     return {
-      zoom: 13,
+      zoom: 18,
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      currentZoom: 13,
+      currentZoom: 18,
       showParagraph: false,
       map: null,
       mapOptions: { zoomControl: false, attributionControl: false },
@@ -215,10 +240,15 @@ export default {
       dateTwo: '',
       today: false,
       me: null,
-      myRadius: null
+      myRadius: null,
+      currentDate: moment().format('LLLL')
     };
   },
   methods: {
+    time() {
+      this.currentDate = moment().format('LLLL');
+      setTimeout(this.time, 1000);
+    },
     zoomUpdate(zoom) {
       this.currentZoom = zoom;
     },
@@ -249,21 +279,21 @@ export default {
       const marks = [];
       const data = await Form.getModel({ path: 'scoutingtraps' })
         .remote()
-        .limit(50)
+        .limit(600)
         .select('data.latitude as lat', 'data.longitude as lng', '_id')
         .get();
-
-      data.forEach(e => {
-        marks.push({ latlng: new L.LatLng(e.lat, e.lng), _id: e._id });
-        L.marker([e.lat, e.lng], {
-          icon: L.AwesomeMarkers.icon({
-            icon: 'fas fa-male',
-            markerColor: 'red',
-            prefix: 'fa',
-            spin: false
-          })
-        }).addTo(this.map);
+      const cluster = L.markerClusterGroup({
+        chunkedLoading: true
       });
+      data.forEach(e => {
+        const latlng = new L.LatLng(e.lat, e.lng);
+        marks.push({ latlng, _id: e._id });
+        const mark = L.marker(latlng);
+        mark.bindPopup(e._id);
+        cluster.addLayer(mark);
+      });
+
+      this.map.addLayer(cluster);
       return marks;
     },
     async getLocalMarkers() {
@@ -271,7 +301,7 @@ export default {
       const data = await Submission.local()
         .where(['path', '=', 'scoutingtraps'])
         .andWhere('user_email', '=', Auth.email())
-        .limit(50)
+        .limit(4000)
         .select('data.latitude as lat', 'data.longitude as lng', '_id')
         .get();
       console.log(data);
@@ -340,10 +370,11 @@ export default {
     }
   },
   async mounted() {
+    this.time();
     this.$nextTick(() => {
       this.$refs.map.mapObject._onResize();
       this.map = this.$refs.map.mapObject;
-      this.map.locate({ setView: true, maxZoom: 16 });
+      this.map.locate({ setView: true, maxZoom: 18 });
       fullLoading.show(this.$t('Getting GPS position'));
       this.map.on('locationfound', this.onLocationFound);
       this.map.on('locationerror', this.onLocationError);

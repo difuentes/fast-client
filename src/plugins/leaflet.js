@@ -4,6 +4,12 @@ import 'leaflet.icon.glyph';
 // leave the export, even if you don't use it
 export default () => {
   // eslint-disable-next-line global-require
+  require('leaflet.markercluster/dist/MarkerCluster.css');
+  // eslint-disable-next-line global-require
+  require('leaflet.markercluster/dist/MarkerCluster.Default.css');
+  // eslint-disable-next-line global-require
+  require('leaflet.markercluster/dist/leaflet.markercluster-src.js');
+  // eslint-disable-next-line global-require
   require('leaflet.awesome-markers/dist/leaflet.awesome-markers.css');
   // eslint-disable-next-line global-require
   require('leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js');
