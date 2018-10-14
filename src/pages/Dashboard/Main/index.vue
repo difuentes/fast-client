@@ -1,6 +1,23 @@
 <template>
   <div class="container">
 
+     <q-page-sticky
+          position="top-left"
+          :offset="[18, 18]"
+        >
+
+        <q-btn
+          dense
+          flat
+          @click="$toggleLeftDrawer"
+          aria-label="Menu"
+          color="black"
+          size="lg"
+        >
+          <q-icon name="menu" />
+        </q-btn>
+    </q-page-sticky>
+
     <div class="datepicker-trigger" style="z-index:3">
         <button
           style="display:none"
@@ -30,8 +47,18 @@
           direction="up"
           color="primary"
         >
-          <q-fab-action color="blue" class="white" icon="fab fa-wpforms" />
-          <q-fab-action color="blue" class="white" icon="fa fa-binoculars" />
+          <q-fab-action
+            color="blue"
+            class="white"
+            icon="fab fa-wpforms"
+            @click.native="startCollection('scouting')"
+          />
+          <q-fab-action
+            color="blue"
+            class="white"
+            icon="fa fa-binoculars"
+            @click.native="startCollection('scoutingAndTraps')"
+          />
         </q-fab>
     </q-page-sticky>
 
@@ -157,7 +184,7 @@ body,
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import format from 'date-fns/format';
-import { Form } from 'fast-fastjs';
+import { Form, Submission, Auth } from 'fast-fastjs';
 import fullLoading from '../../../components/fullLoading';
 
 export default {
@@ -218,7 +245,7 @@ export default {
     triggerCalendar() {
       this.$refs.calendar.click();
     },
-    async getMarkers() {
+    async getRemoteMarkers() {
       const marks = [];
       const data = await Form.getModel({ path: 'scoutingtraps' })
         .remote()
@@ -239,7 +266,30 @@ export default {
       });
       return marks;
     },
+    async getLocalMarkers() {
+      const marks = [];
+      const data = await Submission.local()
+        .where(['path', '=', 'scoutingtraps'])
+        .andWhere('user_email', '=', Auth.email())
+        .limit(50)
+        .select('data.latitude as lat', 'data.longitude as lng', '_id')
+        .get();
+      console.log(data);
+      data.forEach(e => {
+        marks.push({ latlng: new L.LatLng(e.lat, e.lng), _id: e._id });
+        L.marker([e.lat, e.lng], {
+          icon: L.AwesomeMarkers.icon({
+            icon: 'fas fa-male',
+            markerColor: 'red',
+            prefix: 'fa',
+            spin: false
+          })
+        }).addTo(this.map);
+      });
+      return marks;
+    },
     setToCurrentLocation() {
+      fullLoading.show(this.$t('Getting GPS position'));
       if (this.me) {
         this.map.removeLayer(this.me);
         this.map.removeLayer(this.myRadius);
@@ -271,13 +321,22 @@ export default {
         this.myRadius.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
         this.map.panTo(new L.LatLng(position.lat, position.lng));
       });
-      this.markers = await this.getMarkers();
-
       this.map.addLayer(this.me);
+      this.markers = await this.getRemoteMarkers();
+      await this.getLocalMarkers();
     },
     onLocationError(e) {
       fullLoading.hide();
       console.log(e);
+    },
+    startCollection(type) {
+      if (type === 'scouting') {
+        console.log('starting scouting');
+      } else if (type === 'scoutingAndTraps') {
+        console.log('starting both');
+      } else if (type === 'traps') {
+        console.log('starting traps');
+      }
     }
   },
   async mounted() {

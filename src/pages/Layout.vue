@@ -1,23 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
 
-     <q-page-sticky
-          position="top-left"
-          :offset="[18, 18]"
-        >
-
-        <q-btn
-          dense
-          flat
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-          color="black"
-          size="lg"
-        >
-          <q-icon name="menu" />
-        </q-btn>
-    </q-page-sticky>
-
     <q-layout-drawer
       v-model="leftDrawerOpen"
       :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
@@ -59,7 +42,7 @@
 </template>
 
 <script>
-import { Pages, Auth, Utilities, FAST } from 'fast-fastjs';
+import { Pages, Auth, Utilities, FAST, Event } from 'fast-fastjs';
 import pagelinks from '../components/pageLinks';
 import fullLoading from '../components/fullLoading';
 
@@ -68,9 +51,15 @@ export default {
     pagelinks
   },
   name: 'Layout',
+  created() {
+    Event.listen({ name: 'FAST:LEFTDRAWER:TOGGLE', callback: this.toggleLeftDrawer });
+  },
+  beforeDestroy() {
+    Event.remove({ name: 'FAST:LEFTDRAWER:TOGGLE', callback: this.toggleLeftDrawer });
+  },
   data() {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: false
     };
   },
   asyncData: {
@@ -105,6 +94,9 @@ export default {
       this.leftDrawerOpen = false;
       window.location.reload(true);
       fullLoading.hide();
+    },
+    toggleLeftDrawer() {
+      this.leftDrawerOpen = !this.leftDrawerOpen;
     }
   }
 };

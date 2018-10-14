@@ -3,6 +3,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
 import { Auth } from 'fast-fastjs';
+import fullLoading from '../components/fullLoading';
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,7 @@ export default function(/* { store, ssrContext } */) {
   });
 
   Router.beforeEach((to, from, next) => {
+    fullLoading.show('Loading...');
     // If user is logged in and route dont require auth
     if (Auth.user() && !to.meta.requiresAuth) {
       Router.push({ name: 'dashboard' });
@@ -35,6 +37,10 @@ export default function(/* { store, ssrContext } */) {
     }
     window.scrollTo(0, 0);
     next();
+  });
+
+  Router.afterEach(() => {
+    fullLoading.hide();
   });
 
   return Router;

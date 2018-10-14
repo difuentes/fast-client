@@ -1,15 +1,30 @@
 <template>
   <div class="row">
+    <q-layout-header>
+      <q-toolbar>
+         <q-btn
+          dense
+          flat
+          @click="$toggleLeftDrawer"
+          aria-label="Menu"
+          color="white"
+          size="lg"
+          style="margin-right:30px"
+        >
+          <q-icon name="menu" />
+        </q-btn>
+          <breadcrum
+                v-bind:class="'pull-left'"
+                :parent="$route.query.parent"
+                :currentPageTitle="formTitle"
+              />
+      </q-toolbar>
+    </q-layout-header>
         <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 responsiveTableContainer">
           <q-card>
 
             <q-card-title>
 
-              <breadcrum
-                v-bind:class="$getDirection()"
-                :parent="$route.query.parent"
-                :currentPageTitle="formTitle"
-              />
            <q-icon slot="right" name="fa-plus-circle" @click="goToCreateView()" color="primary" style="cursor:pointer; padding-right: 20px">
 
             </q-icon>
@@ -43,7 +58,6 @@
                   v-on:refresh="refreshData"
                   v-if="!noSubmissions"
                 />
-                <loading :visible="noSubmissions"></loading>
             </q-card-main>
           </q-card>
 
@@ -53,16 +67,15 @@
 </template>
 
 <script>
-import loading from 'components/loading';
 import datatable from 'components/dataTable/dataTable';
 import breadcrum from 'components/breadcrum';
 import { Form, Event, Submission, Auth, Utilities } from 'fast-fastjs';
-import Columns from 'components/dataTable/tableFormatter/Columns';
+import Columns from 'components/dataTable/formatters/Columns';
 
 export default {
   async created() {
     this.currentForm = await Form.local()
-      .where('data.path', '=', this.$route.params.idForm)
+      .where('data.path', '=', this.$route.params.path)
       .first();
 
     await this.refreshData();
@@ -76,9 +89,7 @@ export default {
       callback: this.handleDataImported
     });
 
-    this.$eventHub.on('FAST:LANGUAGE:CHANGED', async (data) => {
-      await this.refreshData();
-    });
+    // this.$eventHub.on('FAST:LANGUAGE:CHANGED', async () => this.refreshData());
   },
   beforeDestroy() {
     Event.remove({
@@ -103,8 +114,7 @@ export default {
   },
   components: {
     breadcrum,
-    datatable,
-    loading
+    datatable
   },
   data() {
     return {
@@ -121,18 +131,16 @@ export default {
         sync: false,
         trigger: 'createLocalDraft',
         user_email: Auth.email(),
-        path: this.$route.params.idForm,
+        path: this.$route.params.path,
         baseUrl: this.$FAST_CONFIG.APP_URL,
         created: date,
         modified: date
       };
-
       const submission = await Submission.local().insert(formSubmission);
-      console.log('fewfwe');
       const route = {
         name: 'formio_submission_update',
         params: {
-          idForm: this.$route.params.idForm,
+          idForm: this.$route.params.path,
           idSubmission: submission._id
         },
         query: {
@@ -161,19 +169,19 @@ export default {
     },
     async handleDataImported() {
       await this.refreshData();
-      Loading.hide();
+      // Loading.hide();
       this.$swal('Imported!', 'Your submission were imported', 'success');
     },
     async handleDataSynced() {
       await this.refreshData();
-      Toast.create.positive({ html: 'Your data was uploaded!' });
+      // Toast.create.positive({ html: 'Your data was uploaded!' });
     },
     async refreshData() {
-      let cols = Columns.getTableView(this.currentForm.data).map(
-        (o) => `data.${o.path} as ${o.path}`
+      const cols = Columns.getTableView(this.currentForm.data).map(
+        o => `data.${o.path} as ${o.path}`
       );
-      let submissions = await Submission.showView({
-        path: this.$route.params.idForm,
+      const submissions = await Submission.showView({
+        path: this.$route.params.path,
         columns: cols,
         vm: this
       });
