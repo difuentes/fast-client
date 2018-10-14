@@ -1,27 +1,22 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-layout-header>
-      <q-toolbar
-        color="primary"
-        :glossy="$q.theme === 'mat'"
-        :inverted="$q.theme === 'ios'"
-      >
+
+     <q-page-sticky
+          position="top-left"
+          :offset="[18, 18]"
+        >
+
         <q-btn
-          flat
           dense
-          round
+          flat
           @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
+          color="black"
+          size="lg"
         >
           <q-icon name="menu" />
         </q-btn>
-
-        <q-toolbar-title>
-          Quasar App
-          <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-layout-header>
+    </q-page-sticky>
 
     <q-layout-drawer
       v-model="leftDrawerOpen"
@@ -32,7 +27,9 @@
         link
         inset-delimiter
       >
-        <q-list-header></q-list-header>
+        <q-list-header>
+          FAMEWS
+        </q-list-header>
         <q-item :to="{name: 'dashboard', exact: true}">
           <q-item-side icon="pin_drop" />
           <q-item-main :label="$t('Home')" />
@@ -114,4 +111,7 @@ export default {
 </script>
 
 <style>
+.q-page-sticky.q-layout-transition.row.flex-center.fixed-top-left.q-page-sticky-shrink {
+  z-index: 2;
+}
 </style>

@@ -65,7 +65,10 @@ export default {
   methods: {
     async handleLogin(event) {
       this.credentials.password = event.data.password.trim();
-      this.credentials.username = event.data.username.trim();
+      this.credentials.username = event.data.username
+        ? event.data.username.trim()
+        : event.data.email.trim();
+      this.credentials.email = this.credentials.username;
       try {
         /* eslint-disable */
         console.log(this.credentials);

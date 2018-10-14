@@ -8,8 +8,8 @@ import Forms from './offline/Forms.json';
 
 export default {
   type: 'remote',
-  appConfigId: '5bb3bc95dd43110ab3e4cc72',
-  appConfigUrl: 'https://ydvahgxgqliaeuf.form.io/configuration/submission/',
+  appConfigId: process.env.FAST_CONFIG_ID || undefined,
+  appConfigUrl: `${process.env.FAST_CONFIG_URL}configuration/submission/}` || undefined,
   i18n: translations,
   offlineStart: true,
   offlineFiles: {

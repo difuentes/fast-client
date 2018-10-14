@@ -4,7 +4,7 @@ const Dotenv = require('dotenv-webpack');
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: ['VueAsyncProperties', 'boot'],
+    plugins: ['boot', 'VueAsyncProperties', 'leaflet', 'airbnb'],
     config: {
       // optional (v0.17+)
       loading: {
@@ -45,6 +45,11 @@ module.exports = function(ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QPageSticky',
+        'QFab',
+        'QFabAction',
+        'QToggle',
+        'QRange',
         'QCard',
         'QCardMain',
         'QCardTitle',
@@ -53,6 +58,7 @@ module.exports = function(ctx) {
         'QOptionGroup',
         'QBtn',
         'QLayout',
+        'QLayoutFooter',
         'QLayoutHeader',
         'QLayoutDrawer',
         'QPageContainer',

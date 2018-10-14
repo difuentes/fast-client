@@ -1,1 +1,167 @@
-[]
+[
+  {
+    "owner": "5a3981489768470001cce4ef",
+    "roles": [],
+    "_vid": 0,
+    "_fvid": 0,
+    "state": "submitted",
+    "_id": "5b9d63defd233a613af061dd",
+    "data": {
+      "pages": [
+        {
+          "SHOW_LD": true,
+          "internal": true,
+          "customIcon": false,
+          "cards": [],
+          "url": null,
+          "access": [],
+          "index": 2,
+          "internalUrl": "CollectedData",
+          "title": "Collected Data",
+          "icon": "fa-database"
+        },
+        {
+          "SHOW_LD": true,
+          "internal": true,
+          "url": null,
+          "customIcon": false,
+          "cards": [],
+          "access": [],
+          "index": 1,
+          "internalUrl": "newSurvey",
+          "title": "Start survey",
+          "icon": "fa-file-text-o"
+        },
+        {
+          "SHOW_LD": true,
+          "internal": true,
+          "url": null,
+          "customIcon": false,
+          "cards": [],
+          "access": [
+            "5a65a0b902b5450001fbc4ce"
+          ],
+          "index": 3,
+          "internalUrl": "alldata",
+          "title": "All data",
+          "icon": "fa-table"
+        },
+        {
+          "SHOW_LD": true,
+          "internal": true,
+          "url": null,
+          "customIcon": false,
+          "cards": [],
+          "access": [
+            "5a65a0b902b5450001fbc4ce"
+          ],
+          "index": 5,
+          "internalUrl": "translations",
+          "icon": "translate",
+          "title": "Translations"
+        },
+        {
+          "SHOW_LD": false,
+          "internal": false,
+          "url": "user-profile",
+          "customIcon": false,
+          "cards": [
+            {
+              "customIcon": false,
+              "actions": [
+                {
+                  "internal": true,
+                  "text": "Manage",
+                  "target": "form",
+                  "view": "list",
+                  "access": [],
+                  "internalUrl": "userProfile",
+                  "parent": {
+                    "title": "User Profile",
+                    "url": "user-profile"
+                  }
+                }
+              ],
+              "subtitle": "Manage user Information",
+              "icon": "fa-database",
+              "access": [],
+              "index": null,
+              "title": "Manage Profile"
+            },
+            {
+              "subtitle": "Manage user password",
+              "customIcon": false,
+              "icon": "fa-database",
+              "actions": [
+                {
+                  "internal": true,
+                  "text": "Manage",
+                  "target": "form",
+                  "view": "list",
+                  "access": [],
+                  "internalUrl": "changePassword",
+                  "parent": {
+                    "title": "User Profile",
+                    "url": "user-profile"
+                  }
+                }
+              ],
+              "access": [],
+              "title": "Manage Password"
+            }
+          ],
+          "access": [],
+          "name": "User Profile",
+          "title": "User Profile"
+        },
+        {
+          "SHOW_LD": true,
+          "internal": true,
+          "url": null,
+          "customIcon": false,
+          "cards": [],
+          "access": [
+            "5a65a0b902b5450001fbc4ce"
+          ],
+          "index": 4,
+          "internalUrl": "reviewers",
+          "title": "Data reviewers",
+          "icon": "assignment_ind"
+        },
+        {
+          "SHOW_LD": true,
+          "internal": true,
+          "url": null,
+          "customIcon": false,
+          "cards": [],
+          "access": [],
+          "index": 6,
+          "internalUrl": "About",
+          "title": "About",
+          "icon": "tablet_mac"
+        },
+        {
+          "SHOW_LD": true,
+          "internal": true,
+          "url": null,
+          "customIcon": false,
+          "cards": [],
+          "access": [
+            "5aa9359e50daadeb9b88ec42"
+          ],
+          "index": 3,
+          "name": "Review Data",
+          "internalUrl": "alldata",
+          "title": "Review Data",
+          "icon": "fa-table"
+        }
+      ],
+      "submit": true
+    },
+    "access": [],
+    "form": "5b9d622ef676c60273f7d314",
+    "externalIds": [],
+    "created": "2018-09-15T19:56:14.073Z",
+    "modified": "2018-09-22T04:29:45.269Z"
+  }
+]
