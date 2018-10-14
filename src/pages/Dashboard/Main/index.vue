@@ -128,25 +128,27 @@
 
 
          <q-toolbar-title position="center">
-            <q-range
-              v-if="!today"
-              v-model="rangeValues"
-              :min="5"
-              :max="100"
-              :step="5"
-              label
-              markers
-              snap
-              style="margin-right:30px"
-            />
-            <span style="color:black" v-if="!today">
-              Filter
-            </span>
+           <div class="row">
+           <div class="col-10">
+             <q-field
+                  helper="Refine price range filter (in USD)"
+                >
+                 <q-range
+                  v-if="!today"
+                  v-model="rangeValues"
+                  :min="1"
+                  :max="12"
+                  :step="2"
+                  label
+                  markers
+                  snap
+                  style="margin-right:30px"
+                />
+                </q-field>
+        </div>
 
-          <span slot="subtitle" style="color:black" v-if="!today">
 
-          Filter by date or range
-          </span>
+           </div>
 
           <span style="color:black" v-if="today">
               Today
@@ -232,6 +234,10 @@ export default {
       mapOptions: { zoomControl: false, attributionControl: false },
       markers: [],
       rangeValues: {
+        min: 1,
+        max: 12
+      },
+      zoomValues: {
         min: 5,
         max: 50
       },
@@ -279,7 +285,7 @@ export default {
       const marks = [];
       const data = await Form.getModel({ path: 'scoutingtraps' })
         .remote()
-        .limit(600)
+        .limit(6000)
         .select('data.latitude as lat', 'data.longitude as lng', '_id')
         .get();
       const cluster = L.markerClusterGroup({
