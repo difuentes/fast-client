@@ -1,18 +1,20 @@
 <template>
 <div class="container">
-    <slot></slot>
+  <slot></slot>
 </div>  
 </template>
+
 <script>
 export default {
   name: 'Container'
 };
 </script>
+
 <style>
 .container {
-  padding: 20px;
-  padding-top: 0px;
-  padding-bottom: 0;
-  margin: 0 auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 </style>
