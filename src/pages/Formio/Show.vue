@@ -1,7 +1,7 @@
 <template>
-  <div class="row">
-    <q-layout-header>
-      <q-toolbar>
+<q-page>
+    <q-layout-header >
+      <q-toolbar color="black">
          <q-btn
           dense
           flat
@@ -9,7 +9,7 @@
           aria-label="Menu"
           color="white"
           size="lg"
-          style="margin-right:30px"
+          style="margin-right:15px"
         >
           <q-icon name="menu" />
         </q-btn>
@@ -21,39 +21,39 @@
                 :currentPageTitle="formTitle"
               />
           <span slot="subtitle">
-            
+
           </span>
         </q-toolbar-title>
 
+        <q-btn
+          dense
+          flat
+          aria-label="Options"
+          color="white"
+          size="lg"
+        >
+          <q-icon name="more_vert" />
+          <q-popover ref="popover">
+                  <q-list link class="no-border" dense separator no-border>
+
+                    <q-item @click="$refs.popover.close(), createDialog()">
+                      <q-item-side icon="fas fa-download"  />
+                      <q-item-main :label="$t('Export')" />
+                    </q-item>
+
+                    <q-item @click="$refs.popover.close()">
+                      <q-item-side icon="fas fa-upload"  />
+                      <q-item-main :label="$t('Import')" />
+                    </q-item>
+
+                  </q-list>
+                </q-popover>
+        </q-btn>
+
       </q-toolbar>
     </q-layout-header>
-        <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 responsiveTableContainer">
+
           <q-card>
-
-            <q-card-title>
-
-           <q-icon slot="right" name="fa-plus-circle" @click="goToCreateView()" color="primary" style="cursor:pointer; padding-right: 20px">
-
-            </q-icon>
-
-              <q-icon slot="right" name="more_vert" color="grey" style="cursor:pointer">
-              <q-popover ref="popover">
-                <q-list link class="no-border" dense separator no-border>
-
-                  <q-item @click="$refs.popover.close(), createDialog()">
-                    <q-item-side icon="fa-download"  />
-                    <q-item-main :label="$t('Export')" />
-                  </q-item>
-
-                  <q-item @click="$refs.popover.close()">
-                    <q-item-side icon="fa-upload"  />
-                    <q-item-main :label="$t('Import')" />
-                  </q-item>
-
-                </q-list>
-              </q-popover>
-            </q-icon>
-            </q-card-title>
               <q-card-main style="padding: 0px; min-height: 150px" class="relative-position"  >
 
                 <datatable
@@ -68,9 +68,46 @@
             </q-card-main>
           </q-card>
 
-         </div>
 
-  </div>
+
+
+
+      <q-page-sticky
+          position="bottom-right"
+          :offset="[18, 60]"
+          style="margin-right: 18px !important;"
+        >
+        <q-fab
+          icon="add"
+          direction="up"
+          color="black"
+        >
+          <q-fab-action
+            color="white"
+            textColor="faded"
+            class="white"
+            icon="fab fa-wpforms"
+            @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"
+          />
+          <q-fab-action
+            color="white"
+            textColor="faded"
+            class="white"
+            icon="fa fa-binoculars"
+            @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"
+          />
+
+          <q-fab-action
+            color="white"
+            textColor="faded"
+            class="white"
+            icon="fas fa-drum-steelpan"
+            @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
+          />
+
+        </q-fab>
+    </q-page-sticky>
+  </q-page>
 </template>
 
 <script>
@@ -130,10 +167,10 @@ export default {
     };
   },
   methods: {
-    async goToCreateView() {
+    async goToCreateView(data) {
       const date = Utilities.unixDate();
       const formSubmission = {
-        data: {},
+        data: data || {},
         draft: true,
         sync: false,
         trigger: 'createLocalDraft',
@@ -147,7 +184,7 @@ export default {
       const route = {
         name: 'formio_submission_update',
         params: {
-          idForm: this.$route.params.path,
+          path: this.$route.params.path,
           idSubmission: submission._id
         },
         query: {

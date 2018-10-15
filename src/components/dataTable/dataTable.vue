@@ -1,56 +1,22 @@
 <template>
 <div class="tableContainer" v-if="show">
     <q-table
+      ref="table"
+      color="primary"
       :data="data"
       :config="config"
       :columns="columns"
-      @selection="handleSelectionChange"
+      :loading="loading"
+      :filter="filter"
+      selection="multiple"
+      :selected.sync="selected"
+      row-key="_id"
       @rowclick="handleRowClick"
+      class="no-shadow"
     >
-        <template :slot="'col-' + col.field" slot-scope='scope' v-for="col in columns">
-            <q-btn
-              flat
-              color="black"
-              @click="editCell(scope)"
-              v-bind:key="col.field"
-              v-if="fastMode === 'editGrid' && col.field.indexOf('val') >= 0"
-            >
-                {{scope.data ? scope.data : '-'}}
-            </q-btn>
-            <span v-bind:key="col.field" v-else>
-            {{scope.data}}
-      </span>
-        </template>
 
-        <template slot="col-status" slot-scope="scope">
-            <div v-if="scope.row.status === 'offline' && scope.row.draft">
-                <i class="material-icons tag--grey">description</i>
-                <q-tooltip>{{$t('Draft')}}</q-tooltip>
-            </div>
-            <div v-else-if="scope.row.status === 'offline'">
-                <i class="material-icons tag--offline">description</i>
-                <q-tooltip>{{$t('Offline submission')}}</q-tooltip>
-            </div>
-            <div v-else-if="isOnlineSubmission(scope.row._id, scope.row._lid)">
-                <i class="material-icons tag--green">cloud_done</i>
-                <q-tooltip>{{$t('Online Submission')}}</q-tooltip>
-            </div>
-            <div v-else>
-                <i class="material-icons tag--green">cloud_download</i>
-                <q-tooltip>{{$t('Synced Submission')}}</q-tooltip>
-            </div>
-            <i
-              class="material-icons"
-              style="color: red;font-size: x-large; cursor: pointer;"
-              v-if="scope.row.syncError && scope.row.syncError !=='Unauthorized' "
-              @click="displayError(scope.row.syncError)"
-            >block</i>
-            <i class="material-icons" style="color: red;font-size: x-large; cursor: pointer;"
-              v-if="scope.row.syncError && scope.row.syncError ==='Unauthorized' "
-              @click="displayError(scope.row.syncError)">block</i>
-        </template>
-
-        <template slot="selection">
+      <!-- Top actions when table selected -->
+        <template slot="top-selection" slot-scope="scope">
             <q-btn v-if="tableActions && tableActions.includes('review')" color="primary" flat @click='handleReview({readOnly:false})'>
                 <q-icon name="remove_red_eye" />
                 <q-tooltip>{{$t('Review')}}</q-tooltip>
@@ -73,7 +39,64 @@
                 <q-tooltip>{{$t('Delete')}}</q-tooltip>
             </q-btn>
         </template>
+      <!-- Top actions when table selected -->
 
+      <!-- Top Searchbox filter -->
+      <template slot="top-left" slot-scope="props">
+        <q-search hide-underline v-model="filter" />
+      </template>
+      <!-- Top Searchbox filter -->
+
+
+
+    <!-- ROW Click on row action -->
+
+         <q-td slot="body-cell-status" slot-scope="scope">
+           <div v-if="scope.row.status === 'offline' && scope.row.draft">
+                <q-icon name="description" color="grey" size="20px" />
+
+                <q-tooltip>{{$t('Draft')}}</q-tooltip>
+            </div>
+            <div v-if="scope.row.status === 'offline' && scope.row.draft">
+              <q-icon name="description" color="grey" size="20px"/>
+
+                <q-tooltip>{{$t('Draft')}}</q-tooltip>
+            </div>
+            <div v-else-if="scope.row.status === 'offline'">
+              <q-icon name="description" color="blue" size="20px"/>
+
+                <q-tooltip>{{$t('Offline submission')}}</q-tooltip>
+            </div>
+            <div v-else-if="isOnlineSubmission(scope.row._id, scope.row._lid)">
+              <q-icon name="cloud_done" color="green" size="20px"/>
+                <q-tooltip>{{$t('Online Submission')}}</q-tooltip>
+            </div>
+            <div v-else>
+              <q-icon name="cloud_download" color="green" size="20px"/>
+                <q-tooltip>{{$t('Synced Submission')}}</q-tooltip>
+            </div>
+            <i
+              class="material-icons"
+              style="color: red;font-size: x-large; cursor: pointer;"
+              v-if="scope.row.syncError && scope.row.syncError !=='Unauthorized' "
+              @click="displayError(scope.row.syncError)"
+            >block</i>
+            <i class="material-icons" style="color: red;font-size: x-large; cursor: pointer;"
+              v-if="scope.row.syncError && scope.row.syncError ==='Unauthorized' "
+              @click="displayError(scope.row.syncError)">block</i>
+          </q-td>
+    <!-- ROW Click on row action -->
+
+
+      <!-- CELL design for submission status Draft/Online/Submitted -->
+
+        <template slot="col-status" slot-scope="scope">
+
+        </template>
+      <!-- CELL design for submission status Draft/Online/Submitted -->
+
+
+      <!-- Cell design if the submission is deleted -->
         <template slot='col-deleted' slot-scope='scope'>
             <q-chip icon="fa-ban" small color="red" v-if="scope.row.deleted && scope.row.deleted === true">
             </q-chip>
@@ -81,6 +104,8 @@
             <q-chip icon="fa-check" small color="green" v-else>
             </q-chip>
         </template>
+        <!-- Cell design if the submission is deleted -->
+
     </q-table>
 
    <!-- <export-menu render="outside" :actions="menuActions" /> -->
@@ -191,9 +216,6 @@ export default {
           );
         }
       });
-    },
-    handleSelectionChange(number, rows) {
-      this.selectedRows = rows.map(r => r.data);
     },
     handleRowClick(row) {
       this.clickedRow = row;
@@ -462,6 +484,14 @@ export default {
   },
   data() {
     return {
+      selected: [],
+      serverData: [],
+      serverPagination: {
+        page: 1,
+        rowsNumber: 10
+      },
+      filter: '',
+      loading: false,
       show: true,
       config: {
         refresh: false,
@@ -501,3 +531,8 @@ export default {
   }
 };
 </script>
+<style scope>
+.q-table-middle.scroll {
+  height: calc(100vh - 153px);
+}
+</style>

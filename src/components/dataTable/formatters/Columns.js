@@ -26,6 +26,7 @@ const Columns = class {
     // First two Columns for the Table
     columns.push({
       label: '',
+      name: 'status',
       field: 'status',
       width: '45px'
     });
@@ -56,6 +57,7 @@ const Columns = class {
     columns.push({
       label: vm.$t('Updated at'),
       field: 'HumanUpdated',
+      name: 'HumanUpdated',
       filter: true,
       sort: true,
       width: '150px'
@@ -85,6 +87,7 @@ const Columns = class {
     visibleColumns.forEach(column => {
       const visibleColum = {
         label: vm.$t(column.label),
+        name: column.key,
         field: column.key,
         filter: true,
         sort: true,

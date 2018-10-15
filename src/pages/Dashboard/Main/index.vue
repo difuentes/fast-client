@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <q-page>
 
      <q-page-sticky
           position="top-left"
@@ -37,34 +37,46 @@
           @date-two-selected="val => { dateTwo = val }"
         />
     </div>
-        <q-page-sticky
+       <q-page-sticky
           position="bottom-right"
           :offset="[18, 18]"
-          z-index="20!important"
+          style="margin-right: 18px !important;"
         >
         <q-fab
           icon="add"
           direction="up"
-          color="primary"
+          color="black"
         >
           <q-fab-action
-            color="blue"
+            color="white"
+            textColor="faded"
             class="white"
             icon="fab fa-wpforms"
-            @click.native="startCollection('scouting')"
+            @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"
           />
           <q-fab-action
-            color="blue"
+           color="white"
+            textColor="faded"
             class="white"
             icon="fa fa-binoculars"
-            @click.native="startCollection('scoutingAndTraps')"
+            @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"
           />
+
+          <q-fab-action
+            color="white"
+            textColor="faded"
+            class="white"
+            icon="fas fa-drum-steelpan"
+            @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
+          />
+
         </q-fab>
     </q-page-sticky>
 
       <q-page-sticky
           position="bottom-left"
           :offset="[18, 18]"
+          style="margin-left: 18px !important;"
         >
 
         <q-btn
@@ -107,6 +119,7 @@
      <q-layout-footer>
       <q-toolbar
         color="white"
+        class="q-py-none"
       >
       <q-toggle
           unchecked-icon="far fa-calendar-alt"
@@ -127,28 +140,7 @@
         </q-btn>
 
 
-         <q-toolbar-title position="center">
-           <div class="row">
-           <div class="col-10">
-             <q-field
-                  helper="Refine price range filter (in USD)"
-                >
-                 <q-range
-                  v-if="!today"
-                  v-model="rangeValues"
-                  :min="1"
-                  :max="12"
-                  :step="2"
-                  label
-                  markers
-                  snap
-                  style="margin-right:30px"
-                />
-                </q-field>
-        </div>
-
-
-           </div>
+         <q-toolbar-title position="center" >
 
           <span style="color:black" v-if="today">
               Today
@@ -158,24 +150,52 @@
 
           {{currentDate}}
           </span>
+
+<!--
+           <q-tabs
+        align="center"
+        position="center"
+        v-model="tab"
+        color="white"
+        text-color="black"
+        >
+
+          <q-tab
+            icon="fas male"
+            slot="title"
+            key="key"
+            name="(index + 1).toString()"
+            label="records"
+            color="grey"
+            >
+
+          </q-tab>
+
+          <q-tab
+            icon="fas male"
+            slot="title"
+            key="key"
+            name="(index + 1).toString()"
+            label="% FAW"
+            color="grey"
+            >
+          </q-tab>
+
+      </q-tabs>
+-->
+
+
         </q-toolbar-title>
-
-
-
-
-        <q-toggle
+  <q-toggle
           v-model="checked"
           unchecked-icon="fas fa-male"
           checked-icon="fas fa-globe-africa"
-          size="30px"
-          color="secondary"
-          class="pull-right"
+          color="primary"
         />
-
       </q-toolbar>
     </q-layout-footer>
 
-  </div>
+  </q-page>
 </template>
 <style>
 body {
@@ -210,7 +230,7 @@ body,
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import format from 'date-fns/format';
-import { Form, Submission, Auth } from 'fast-fastjs';
+import { Form, Submission, Auth, Utilities } from 'fast-fastjs';
 import fullLoading from '../../../components/fullLoading';
 import moment from 'moment';
 
@@ -225,6 +245,7 @@ export default {
   },
   data() {
     return {
+      tab: null,
       zoom: 18,
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -247,10 +268,137 @@ export default {
       today: false,
       me: null,
       myRadius: null,
-      currentDate: moment().format('LLLL')
+      currentDate: moment().format('LLLL'),
+      remoteMarkers: null,
+      localMarkers: null,
+      collectionMarker: null,
+      collectNotifyAction: undefined
     };
   },
   methods: {
+    async goToCreateView(data) {
+      /* eslint-disable */
+      this.map.on('move', () => {
+        this.collectionMarker.setLatLng(this.map.getCenter());
+      });
+
+      this.map.on('dragend', ()=>{
+        if(this.collectNotifyAction && this.collectNotifyAction !== null ) {
+          this.collectNotifyAction()
+        }
+        this.collectNotifyAction  = this.$q.notify({
+            message:'Collect Data here?',
+            color: 'black',
+            textColor: 'white',
+            timeout: 0,
+            actions: [
+              {
+                label: '',
+                icon: 'far fa-thumbs-up', // optional
+                handler:async () => {
+                  /* eslint-disable */
+                  data.latitude = this.collectionMarker._latlng.lat
+                  data.longitude = this.collectionMarker._latlng.lng
+                  console.log(data.longitude)
+                  const date = Utilities.unixDate();
+                  const formSubmission = {
+                    data: data || {},
+                    draft: true,
+                    sync: false,
+                    trigger: 'createLocalDraft',
+                    user_email: Auth.email(),
+                    path: 'scoutingtraps',
+                    baseUrl: this.$FAST_CONFIG.APP_URL,
+                    created: date,
+                    modified: date
+                  };
+                  const submission = await Submission.local().insert(formSubmission);
+                  const route = {
+                    name: 'formio_submission_update',
+                    params: {
+                      path: 'scoutingtraps',
+                      idSubmission: submission._id
+                    },
+                    query: {
+                      parent: this.$route.query.parent
+                    }
+                  };
+                  this.$router.push(route);
+                }
+              }
+            ],
+            }
+      )
+      })
+
+      this.map.on('dragstart', () => {
+        if(this.collectNotifyAction && this.collectNotifyAction !== null ) {
+          this.collectNotifyAction()
+        }
+      })
+
+       this.collectNotifyAction  = this.$q.notify({
+            message:'Collect Data here?',
+            color: 'black',
+            textColor: 'white',
+            timeout: 0,
+            actions: [
+              {
+                label: '',
+                icon: 'far fa-thumbs-up', // optional
+                handler:async () => {
+                  /* eslint-disable */
+                  data.latitude = this.collectionMarker._latlng.lat
+                  data.longitude = this.collectionMarker._latlng.lng
+                  console.log(data.longitude)
+                  const date = Utilities.unixDate();
+                  const formSubmission = {
+                    data: data || {},
+                    draft: true,
+                    sync: false,
+                    trigger: 'createLocalDraft',
+                    user_email: Auth.email(),
+                    path: 'scoutingtraps',
+                    baseUrl: this.$FAST_CONFIG.APP_URL,
+                    created: date,
+                    modified: date
+                  };
+                  const submission = await Submission.local().insert(formSubmission);
+                  const route = {
+                    name: 'formio_submission_update',
+                    params: {
+                      path: 'scoutingtraps',
+                      idSubmission: submission._id
+                    },
+                    query: {
+                      parent: this.$route.query.parent
+                    }
+                  };
+                  this.$router.push(route);
+                }
+              }
+            ],
+            }
+      )
+
+      const latLng = this.me._latlng
+      this.map.removeLayer(this.remoteMarkers);
+      this.map.removeLayer(this.localMarkers);
+      this.map.removeLayer(this.me);
+      this.map.removeLayer(this.myRadius);
+
+      this.collectionMarker = new L.marker(latLng, {
+        icon: L.AwesomeMarkers.icon({
+          icon: 'fas fa-map-pin',
+          markerColor: 'black',
+          prefix: 'fa',
+          spin: false
+        })
+      });
+      this.map.addLayer(this.collectionMarker)
+
+      return;
+    },
     time() {
       this.currentDate = moment().format('LLLL');
       setTimeout(this.time, 1000);
@@ -288,7 +436,7 @@ export default {
         .limit(6000)
         .select('data.latitude as lat', 'data.longitude as lng', '_id')
         .get();
-      const cluster = L.markerClusterGroup({
+      this.remoteMarkers = L.markerClusterGroup({
         chunkedLoading: true
       });
       data.forEach(e => {
@@ -296,10 +444,10 @@ export default {
         marks.push({ latlng, _id: e._id });
         const mark = L.marker(latlng);
         mark.bindPopup(e._id);
-        cluster.addLayer(mark);
+        this.remoteMarkers.addLayer(mark);
       });
 
-      this.map.addLayer(cluster);
+      this.map.addLayer(this.remoteMarkers);
       return marks;
     },
     async getLocalMarkers() {
@@ -310,18 +458,19 @@ export default {
         .limit(4000)
         .select('data.latitude as lat', 'data.longitude as lng', '_id')
         .get();
-      console.log(data);
-      data.forEach(e => {
-        marks.push({ latlng: new L.LatLng(e.lat, e.lng), _id: e._id });
-        L.marker([e.lat, e.lng], {
-          icon: L.AwesomeMarkers.icon({
-            icon: 'fas fa-male',
-            markerColor: 'red',
-            prefix: 'fa',
-            spin: false
-          })
-        }).addTo(this.map);
+      this.localMarkers = L.markerClusterGroup({
+        chunkedLoading: true
       });
+      data.forEach(e => {
+        const latlng = new L.LatLng(e.lat, e.lng);
+        marks.push({ latlng, _id: e._id });
+        const mark = L.marker(latlng);
+        mark.bindPopup(e._id);
+        this.localMarkers.addLayer(mark);
+      });
+
+      this.map.addLayer(this.localMarkers);
+      return marks;
       return marks;
     },
     setToCurrentLocation() {

@@ -1,22 +1,21 @@
 <template>
-  <div class="container">
-    <div class="col-xl-6 col-lg-6 col-md-9 col-sm-12 col-xs-12" style="margin:auto">
+  <div class="col-xl-6 col-lg-6 col-md-9 col-sm-12 col-xs-12" style="margin:auto">
+    <div class="box">
       <div class="wrap">
-        <p class="form-title">
-          {{$t($FAST_CONFIG.APP_FANTACY_NAME)}}
-          <div class="form-subtitle"> {{$t($FAST_CONFIG.APP_PHRASE)}}</div>
-        </p>
-      <div class="form-login">
-        <Formio
-          :form="form"
-          :options="options"
-          :language="language"
-          v-on:submit="handleLogin"
-          v-if="form && options"
-          :key="error" />
+        <div class="form-title">
+          <h3>{{$t($FAST_CONFIG.APP_FANTACY_NAME)}}</h3>
+          <h5>{{$t($FAST_CONFIG.APP_PHRASE)}}</h5>
+        </div>
+        <div class="form-login">
+          <Formio
+            :form="form"
+            :language="language"
+            v-on:submit="handleLogin"
+            v-if="form "
+            :key="error" />
+        </div>
+        </div>
       </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -76,6 +75,9 @@ export default {
           this.credentials,
           this.isAdminLogin ? 'admin' : undefined
         );
+        this.$router.push({
+          name: 'dashboard'
+        });
       } catch (error) {
         this.error = Math.random();
         // eslint-disable-next-line

@@ -33,6 +33,13 @@
 
       <pagelinks :pages="PAGES"></pagelinks>
 
+
+     <q-item-separator  />
+      <q-item @click.native="handleLogout()">
+          <q-item-side icon="ion-log-out" color="red" />
+          <q-item-main :label="$t('Logout')" />
+        </q-item>
+
       </q-list>
     </q-layout-drawer>
     <q-page-container>
@@ -97,6 +104,12 @@ export default {
     },
     toggleLeftDrawer() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
+    },
+    async handleLogout() {
+      await Auth.logOut();
+      this.$router.push({
+        path: '/login'
+      });
     }
   }
 };
@@ -105,5 +118,11 @@ export default {
 <style>
 .q-page-sticky.q-layout-transition.row.flex-center.fixed-top-left.q-page-sticky-shrink {
   z-index: 2;
+}
+</style>
+<style scoped lang="scss">
+.formioWrapper /deep/ {
+  @import '~bootswatch/dist/materia/bootstrap.min.css';
+  @import '~formiojs/dist/formio.full.min.css';
 }
 </style>

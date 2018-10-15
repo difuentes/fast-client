@@ -1,0 +1,65 @@
+// All the fixes in this page are because of
+// BOOTSTRAP!!! we should find a way to import
+// it without hitting the hole app
+// Import scoped doesnt work
+// Import scoped with
+// .formioWraper /deep/ {
+//    import('bootstrap/boot')
+// }
+// Doesnt work either
+
+.bg-primary {
+  background-color: $primary !important;
+}
+
+.row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+// All of this should be wrapped in a "Formio Class"
+// Dont display the default formIO navbar
+nav {
+    display: none !important;
+}
+// The Title of the page should be white
+h4.mb-0.card-title.panel-title {
+    color: white;
+}
+
+// Make the form full screen
+
+.card-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 5px !important;
+}
+
+// Makes the line under the select components visible
+.choices.form-group.formio-choices, input.form-control {
+  border-bottom: 1px solid rgba(128,128,128,0.82);
+}
+
+.row.formio-component.formio-component-columns.formio-component-page2Columns1 div{
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+
+// On Formio Show page pagination has "col"
+.q-table-separator.col {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+// Main menu on toolbar has col
+.q-btn-inner.row.col.items-center.justify-center {
+ padding-left: 0px;
+  padding-right: 0px;
+}
+
+
+.formio-component legend {
+    color: #737373;
+}
