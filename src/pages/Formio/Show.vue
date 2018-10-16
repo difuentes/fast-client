@@ -1,7 +1,7 @@
 <template>
 <q-page>
     <q-layout-header >
-      <q-toolbar color="black">
+      <q-toolbar color="black" >
          <q-btn
           dense
           flat
@@ -9,7 +9,7 @@
           aria-label="Menu"
           color="white"
           size="lg"
-          style="margin-right:15px"
+          style="margin-right:15px;"
         >
           <q-icon name="menu" />
         </q-btn>
@@ -83,25 +83,22 @@
           color="black"
         >
           <q-fab-action
-            color="white"
-            textColor="faded"
-            class="white"
+            color="grey-1"
+            textColor="grey-7"
             icon="fab fa-wpforms"
             @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"
           />
           <q-fab-action
-            color="white"
-            textColor="faded"
-            class="white"
+            color="grey-1"
+            textColor="grey-7"
             icon="fa fa-binoculars"
             @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"
           />
 
           <q-fab-action
-            color="white"
-            textColor="faded"
-            class="white"
-            icon="fas fa-drum-steelpan"
+            color="grey-1"
+            textColor="grey-7"
+            icon="fas fa-archive"
             @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
           />
 

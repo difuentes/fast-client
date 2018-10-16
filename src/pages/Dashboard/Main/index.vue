@@ -66,7 +66,7 @@
             color="white"
             textColor="faded"
             class="white"
-            icon="fas fa-drum-steelpan"
+            icon="fas fa-archive"
             @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
           />
 
@@ -272,122 +272,77 @@ export default {
       remoteMarkers: null,
       localMarkers: null,
       collectionMarker: null,
-      collectNotifyAction: undefined
+      collectNotifyAction: undefined,
+      createPreLoadedData: undefined
     };
   },
   methods: {
-    async goToCreateView(data) {
-      /* eslint-disable */
-      this.map.on('move', () => {
-        this.collectionMarker.setLatLng(this.map.getCenter());
+    async startSurvey() {
+      const data = this.createPreLoadedData;
+      data.latitude = this.collectionMarker._latlng.lat;
+      data.longitude = this.collectionMarker._latlng.lng;
+
+      const date = Utilities.unixDate();
+      const formSubmission = {
+        data: data || {},
+        draft: true,
+        sync: false,
+        trigger: 'createLocalDraft',
+        user_email: Auth.email(),
+        path: 'scoutingtraps',
+        baseUrl: this.$FAST_CONFIG.APP_URL,
+        created: date,
+        modified: date
+      };
+      const submission = await Submission.local().insert(formSubmission);
+      const route = {
+        name: 'formio_submission_update',
+        params: {
+          path: 'scoutingtraps',
+          idSubmission: submission._id
+        },
+        query: {
+          parent: this.$route.query.parent
+        }
+      };
+      this.$router.push(route);
+    },
+    cancelCollection() {
+      this.map.off('move', this.mapMoveAction);
+
+      this.map.off('dragend', this.mapDragEndAction);
+
+      this.map.off('dragstart', this.mapDragStartAction);
+      this.map.addLayer(this.remoteMarkers);
+      this.map.addLayer(this.localMarkers);
+      this.map.addLayer(this.me);
+      this.map.addLayer(this.myRadius);
+      this.map.removeLayer(this.collectionMarker);
+      this.collectNotifyAction();
+    },
+    collectNotification() {
+      return this.$q.notify({
+        message: 'Start here?',
+        color: 'black',
+        textColor: 'white',
+        timeout: 0,
+        actions: [
+          {
+            label: '',
+            icon: 'far fa-thumbs-up', // optional
+            handler: this.startSurvey
+          },
+          {
+            icon: 'fas fa-ban',
+            handler: this.cancelCollection
+          }
+        ]
       });
-
-      this.map.on('dragend', ()=>{
-        if(this.collectNotifyAction && this.collectNotifyAction !== null ) {
-          this.collectNotifyAction()
-        }
-        this.collectNotifyAction  = this.$q.notify({
-            message:'Collect Data here?',
-            color: 'black',
-            textColor: 'white',
-            timeout: 0,
-            actions: [
-              {
-                label: '',
-                icon: 'far fa-thumbs-up', // optional
-                handler:async () => {
-                  /* eslint-disable */
-                  data.latitude = this.collectionMarker._latlng.lat
-                  data.longitude = this.collectionMarker._latlng.lng
-                  console.log(data.longitude)
-                  const date = Utilities.unixDate();
-                  const formSubmission = {
-                    data: data || {},
-                    draft: true,
-                    sync: false,
-                    trigger: 'createLocalDraft',
-                    user_email: Auth.email(),
-                    path: 'scoutingtraps',
-                    baseUrl: this.$FAST_CONFIG.APP_URL,
-                    created: date,
-                    modified: date
-                  };
-                  const submission = await Submission.local().insert(formSubmission);
-                  const route = {
-                    name: 'formio_submission_update',
-                    params: {
-                      path: 'scoutingtraps',
-                      idSubmission: submission._id
-                    },
-                    query: {
-                      parent: this.$route.query.parent
-                    }
-                  };
-                  this.$router.push(route);
-                }
-              }
-            ],
-            }
-      )
-      })
-
-      this.map.on('dragstart', () => {
-        if(this.collectNotifyAction && this.collectNotifyAction !== null ) {
-          this.collectNotifyAction()
-        }
-      })
-
-       this.collectNotifyAction  = this.$q.notify({
-            message:'Collect Data here?',
-            color: 'black',
-            textColor: 'white',
-            timeout: 0,
-            actions: [
-              {
-                label: '',
-                icon: 'far fa-thumbs-up', // optional
-                handler:async () => {
-                  /* eslint-disable */
-                  data.latitude = this.collectionMarker._latlng.lat
-                  data.longitude = this.collectionMarker._latlng.lng
-                  console.log(data.longitude)
-                  const date = Utilities.unixDate();
-                  const formSubmission = {
-                    data: data || {},
-                    draft: true,
-                    sync: false,
-                    trigger: 'createLocalDraft',
-                    user_email: Auth.email(),
-                    path: 'scoutingtraps',
-                    baseUrl: this.$FAST_CONFIG.APP_URL,
-                    created: date,
-                    modified: date
-                  };
-                  const submission = await Submission.local().insert(formSubmission);
-                  const route = {
-                    name: 'formio_submission_update',
-                    params: {
-                      path: 'scoutingtraps',
-                      idSubmission: submission._id
-                    },
-                    query: {
-                      parent: this.$route.query.parent
-                    }
-                  };
-                  this.$router.push(route);
-                }
-              }
-            ],
-            }
-      )
-
-      const latLng = this.me._latlng
-      this.map.removeLayer(this.remoteMarkers);
-      this.map.removeLayer(this.localMarkers);
-      this.map.removeLayer(this.me);
-      this.map.removeLayer(this.myRadius);
-
-      this.collectionMarker = new L.marker(latLng, {
+    },
+    createCollectionMarker() {
+      const latLng = this.me._latlng;
+      // eslint-disable-next-line
+      const collectionMarker = new L.marker(latLng, {
         icon: L.AwesomeMarkers.icon({
           icon: 'fas fa-map-pin',
           markerColor: 'black',
@@ -395,9 +350,39 @@ export default {
           spin: false
         })
       });
-      this.map.addLayer(this.collectionMarker)
+      return collectionMarker;
+    },
+    mapMoveAction() {
+      this.collectionMarker.setLatLng(this.map.getCenter());
+    },
+    mapDragEndAction() {
+      if (this.collectNotifyAction && this.collectNotifyAction !== null) {
+        this.collectNotifyAction();
+      }
+      this.collectNotifyAction = this.collectNotification();
+    },
+    mapDragStartAction() {
+      if (this.collectNotifyAction && this.collectNotifyAction !== null) {
+        this.collectNotifyAction();
+      }
+    },
+    async goToCreateView(data) {
+      this.createPreLoadedData = data;
+      this.collectionMarker = this.createCollectionMarker();
+      this.map.addLayer(this.collectionMarker);
+      this.createCollectionMarker();
+      this.map.on('move', this.mapMoveAction);
 
-      return;
+      this.map.on('dragend', this.mapDragEndAction);
+
+      this.map.on('dragstart', this.mapDragStartAction);
+
+      this.collectNotifyAction = this.collectNotification();
+
+      this.map.removeLayer(this.remoteMarkers);
+      this.map.removeLayer(this.localMarkers);
+      this.map.removeLayer(this.me);
+      this.map.removeLayer(this.myRadius);
     },
     time() {
       this.currentDate = moment().format('LLLL');
@@ -456,21 +441,47 @@ export default {
         .where(['path', '=', 'scoutingtraps'])
         .andWhere('user_email', '=', Auth.email())
         .limit(4000)
-        .select('data.latitude as lat', 'data.longitude as lng', '_id')
+        .select(
+          'data.latitude as lat',
+          'data.longitude as lng',
+          '_id',
+          'draft',
+          'data.dataCollected as dataCollected'
+        )
         .get();
       this.localMarkers = L.markerClusterGroup({
         chunkedLoading: true
       });
       data.forEach(e => {
+        let color = 'cadetblue';
+        let icon = 'description';
+        const prefix = 'fa';
+        if (e.draft === true) {
+          color = 'cadetblue';
+        }
+
+        if (e.dataCollected && e.dataCollected.scouting && e.dataCollected.straps) {
+          icon = 'wpforms';
+        } else if (e.dataCollected && e.dataCollected.scouting && !e.dataCollected.straps) {
+          icon = 'binoculars';
+        } else {
+          icon = 'archive';
+        }
+
         const latlng = new L.LatLng(e.lat, e.lng);
         marks.push({ latlng, _id: e._id });
-        const mark = L.marker(latlng);
+        const mark = L.marker(latlng, {
+          icon: L.AwesomeMarkers.icon({
+            icon,
+            markerColor: color,
+            prefix
+          })
+        });
         mark.bindPopup(e._id);
         this.localMarkers.addLayer(mark);
       });
 
       this.map.addLayer(this.localMarkers);
-      return marks;
       return marks;
     },
     setToCurrentLocation() {
@@ -479,7 +490,7 @@ export default {
         this.map.removeLayer(this.me);
         this.map.removeLayer(this.myRadius);
       }
-      this.map.locate({ setView: true, maxZoom: 16 });
+      this.map.locate({ setView: true, maxZoom: 18, timeout: 7000, enableHighAccuracy: true });
     },
     async onLocationFound(e) {
       fullLoading.hide();
@@ -488,7 +499,7 @@ export default {
       this.me = new L.marker(e.latlng, {
         icon: L.AwesomeMarkers.icon({
           icon: 'fas fa-male',
-          markerColor: 'blue',
+          markerColor: 'black',
           prefix: 'fa',
           spin: false
         }),
@@ -529,8 +540,7 @@ export default {
     this.$nextTick(() => {
       this.$refs.map.mapObject._onResize();
       this.map = this.$refs.map.mapObject;
-      this.map.locate({ setView: true, maxZoom: 18 });
-      fullLoading.show(this.$t('Getting GPS position'));
+      this.setToCurrentLocation();
       this.map.on('locationfound', this.onLocationFound);
       this.map.on('locationerror', this.onLocationError);
     });

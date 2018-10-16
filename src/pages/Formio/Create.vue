@@ -331,7 +331,7 @@ export default {
       if (label === 'scouting') {
         return 'fa fa-binoculars';
       } else if (label === 'traps') {
-        return 'fas fa-drum-steelpan';
+        return 'fas fa-archive';
       }
       return 'far fa-file';
     },

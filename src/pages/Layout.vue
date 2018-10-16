@@ -120,9 +120,7 @@ export default {
   z-index: 2;
 }
 </style>
-<style scoped lang="scss">
-.formioWrapper /deep/ {
-  @import '~bootswatch/dist/materia/bootstrap.min.css';
-  @import '~formiojs/dist/formio.full.min.css';
-}
+<style lang="scss">
+@import '~bootswatch/dist/materia/bootstrap.min.css';
+@import '~formiojs/dist/formio.full.min.css';
 </style>
