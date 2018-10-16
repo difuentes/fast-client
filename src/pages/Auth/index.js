@@ -6,7 +6,7 @@ const routes = [
 export default [
   {
     path: '',
-    component: () => import('./Layout'),
+    component: () => import('layouts/AuthLayout'),
     children: routes
   }
 ];

@@ -47,14 +47,18 @@ module.exports = function(ctx) {
         'QToolbar',
         'QToolbarTitle',
         'QBtn',
+        'QBtnDropdown',
         'QIcon',
         'QList',
         'QListHeader',
         'QItem',
         'QItemMain',
-        'QItemSide'
+        'QItemSide',
+        'QPopover',
+        'QBreadcrumbs',
+        'QBreadcrumbsEl'
       ],
-      directives: ['Ripple'],
+      directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins
       plugins: ['Notify']
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'

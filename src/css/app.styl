@@ -2,23 +2,37 @@
 @import 'themes/common.variables'
 @import 'box'
 @import 'btn'
+@import 'drawer'
+@import 'header'
+
 // Separate into component
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+
+body
+  background: linear-gradient(87deg,#f4f5f7,#f4f4f7)!important;
+
 h3
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif
+  font-family: Open Sans,sans-serif;
   font-size: 1.825em
   line-height: 1.4em
   color: #3C4858
   font-weight: 700
+  line-height: 1.7;
   text-decoration: none
 
 h5,
 p,
+a,
 .control-label
 .form-control
   font-family: "Roboto", "Helvetica", "Arial", sans-serif
   font-weight: 300
 
+.secondary-font
+  font-family: Open Sans,sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
 
 .form-title 
   text-align: center
@@ -37,11 +51,14 @@ p,
 
 .image-container
   background-image: url("https://images.unsplash.com/photo-1453695151881-55974d99da72?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=99d71239800bf62a94e6910dc7320f43&auto=format&fit=crop&w=1567&q=80")
-  height: auto;
-  min-height: 100vh;
-  background-position: center center;
-  background-size: cover;
-  position: relative;
+  height: auto
+  min-height: 100vh
+  background-position: center center
+  background-size: cover
+  position: relative
 
+.row
+  display: flex
+  margin: auto
 
 
