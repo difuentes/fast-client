@@ -40,6 +40,12 @@ module.exports = function(ctx) {
     framework: {
       components: [
         'QLayout',
+        'QCard',
+        'QCardTitle',
+        'QCardMain',
+        'QCardMedia',
+        'QCardSeparator',
+        'QCardActions',
         'QLayoutHeader',
         'QLayoutDrawer',
         'QPageContainer',

@@ -20,7 +20,7 @@ const routes = [
 export default [
   {
     path: '',
-    component: () => import('./Layout'),
+    component: () => import('layouts/MainLayout'),
     children: routes
   }
 ];

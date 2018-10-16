@@ -10,7 +10,7 @@
         flat round dense
         @click="showLeft = !showLeft"
         icon="menu"/>
-      <QToolbarTitle class="secondary-font breadcrumbs">
+      <QToolbarTitle class="secondary-text breadcrumbs">
         <q-breadcrumbs>
           <q-breadcrumbs-el label="Home" />
           <q-breadcrumbs-el label="Components" />
