@@ -1,17 +1,24 @@
 // Configuration for your app
+const Dotenv = require('dotenv-webpack');
 /* eslint-disable */
 const Dotenv = require('dotenv-webpack');
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: ['boot', 'VueI18n', 'VueAsyncProperties'],
+    plugins: ['boot', 'VueAsyncProperties', 'leaflet', 'airbnb', 'direction', 'geocoder'],
+    config: {
+      // optional (v0.17+)
+      loading: {
+        // Loading defaults
+      }
+    },
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'material-icons' // optional, you are not bound to it
-      // 'ionicons',
+      'material-icons', // optional, you are not bound to it
+      'ionicons',
       // 'mdi',
-      // 'fontawesome'
+      'fontawesome'
     ],
     supportIE: false,
     build: {
@@ -39,6 +46,30 @@ module.exports = function(ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QTabs',
+        'QTab',
+        'QTabPane',
+        'QRouteTab',
+        'QChip',
+        'QTable',
+        'QTh',
+        'QTr',
+        'QTd',
+        'QTableColumns',
+        'QCardSeparator',
+        'QSearch',
+        'QPageSticky',
+        'QFab',
+        'QFabAction',
+        'QToggle',
+        'QRange',
+        'QCard',
+        'QCardMain',
+        'QCardTitle',
+        'QPopover',
+        'QField',
+        'QOptionGroup',
+        'QBtn',
         'QLayout',
         'QCard',
         'QCardTitle',
@@ -66,7 +97,7 @@ module.exports = function(ctx) {
       ],
       directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify', 'Loading']
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
     },
