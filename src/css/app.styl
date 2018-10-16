@@ -3,11 +3,7 @@
     text-shadow: none;
 }
 
-// app global css
-@import 'themes/common.variables'
-@import 'formioImportfix'
-@import 'box'
-@import 'btn'
+$primary = #027be3
 // Separate into component
 @font-face
    font-family Geo
@@ -17,23 +13,44 @@
 * {
   font-family: 'Open Sans', sans-serif;
 }
+
+@import 'themes/common.variables'
+@import 'box'
+@import 'btn'
+@import 'card'
+@import 'drawer'
+@import 'header'
+@import 'helpers'
+
+// Separate into component
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+
+
+
+body
+  background: linear-gradient(87deg,#f4f5f7,#f4f4f7)!important;
+
 h3
-  font-family: 'Open Sans', sans-serif;
+  font-family: Open Sans,sans-serif;
   font-size: 1.825em
   line-height: 1.4em
-  color: faded
+  color: #3C4858
   font-weight: 700
+  line-height: 1.7;
   text-decoration: none
+  h6
+    font-weight: 400
 
 h5,
 p,
+a,
 .control-label
 .form-control
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif
   font-weight: 300
 
-
-.form-title
+.form-title 
   text-align: center
   margin: 20px
 
@@ -55,3 +72,19 @@ p,
   background-position: center center;
   background-size: cover;
   position: relative;
+
+.row
+  display: flex
+  margin: auto
+
+.muted-text
+  font-size: .875rem
+  color: #adb5bd
+
+.secondary-text
+  font-family: Open Sans,sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+
+.primary-text
+  color: $primary

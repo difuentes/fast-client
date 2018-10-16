@@ -1,3 +1,6 @@
+$primary = #027be3
+$success = #4caf50
+
 .btn
   border: none
   border-radius: 3px
@@ -6,10 +9,14 @@
   font-size: 12px
   text-transform: uppercase
   font-weight: 500
-
+  
 .btn-success
-  background-color: #4caf50
-  box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12)
+  background-color: $success
+  box-shadow: 0 2px 2px 0 rgba($success, 0.14), 0 3px 1px -2px rgba($success, 0.2), 0 1px 5px 0 rgba($success, 0.12)
 
 .btn.btn-success:hover
-  box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2)
+  box-shadow: 0 14px 26px -12px rgba($success, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba($success, 0.2)
+
+.btn-primary
+  background-color: $primary
+  box-shadow: 0 2px 2px 0 rgba($primary 0.14), 0 3px 1px -2px rgba($primary 0.2), 0 1px 5px 0 rgba($primary 0.12)

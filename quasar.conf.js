@@ -1,6 +1,7 @@
 // Configuration for your app
 const Dotenv = require('dotenv-webpack');
 /* eslint-disable */
+const Dotenv = require('dotenv-webpack');
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
@@ -70,25 +71,31 @@ module.exports = function(ctx) {
         'QOptionGroup',
         'QBtn',
         'QLayout',
-        'QLayoutFooter',
+        'QCard',
+        'QCardTitle',
+        'QCardMain',
+        'QCardMedia',
+        'QCardSeparator',
+        'QCardActions',
         'QLayoutHeader',
         'QLayoutDrawer',
         'QPageContainer',
         'QPage',
         'QToolbar',
         'QToolbarTitle',
+        'QBtn',
+        'QBtnDropdown',
         'QIcon',
         'QList',
         'QListHeader',
         'QItem',
         'QItemMain',
         'QItemSide',
-        'QTooltip',
-        'QItemSeparator',
-        'QItemTile',
-        'QSpinnerPuff'
+        'QPopover',
+        'QBreadcrumbs',
+        'QBreadcrumbsEl'
       ],
-      directives: ['Ripple'],
+      directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins
       plugins: ['Notify', 'Loading']
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'

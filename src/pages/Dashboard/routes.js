@@ -1,5 +1,6 @@
-export default [
+const routes = [
   {
+    name: 'dashboard',
     path: '/dashboard',
     component: () => import('./Main'),
     name: 'dashboard',
@@ -15,5 +16,13 @@ export default [
     path: '/about',
     component: () => import('./About'),
     meta: { requiresAuth: true }
+  }
+];
+
+export default [
+  {
+    path: '',
+    component: () => import('layouts/MainLayout'),
+    children: routes
   }
 ];

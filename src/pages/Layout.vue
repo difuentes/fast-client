@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <q-layout view="lHh Lpr lFf">
 
     <q-layout-drawer
@@ -112,6 +113,14 @@ export default {
       });
     }
   }
+=======
+  <router-view />
+</template>
+
+<script>
+export default {
+  name: 'Layout'
+>>>>>>> formio-new-design-integration
 };
 </script>
 
