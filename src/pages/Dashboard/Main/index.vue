@@ -1,23 +1,47 @@
 <template>
   <q-page>
+    <QPageSticky
+      position="bottom-right"
+      :offset="[18, 18]"
+      style="margin-right: 18px !important;">
+      <QFab
+        icon="add"
+        direction="up"
+        color="black">
+        <QFabAction
+          color="white"
+          textColor="faded"
+          class="white"
+          icon="fab fa-wpforms"
+          @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"/>
+        <QFabAction
+          color="white"
+          textColor="faded"
+          class="white"
+          icon="fa fa-binoculars"
+          @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"/>
+        <QFabAction
+          color="white"
+          textColor="faded"
+          class="white"
+          icon="fas fa-archive"
+          @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"/>
+      </QFab>
+    </QPageSticky>
+    <QPageSticky
+      position="bottom-left"
+      :offset="[18, 18]"
+      style="margin-left: 18px !important;">
+      <QBtn
+        round
+        color="white"
+        text-color="black"
+        icon="my_location"
+        size="md"
+        @click="setToCurrentLocation"
+      />
 
-     <q-page-sticky
-          position="top-left"
-          :offset="[18, 18]"
-        >
-
-        <q-btn
-          dense
-          flat
-          @click="$toggleLeftDrawer"
-          aria-label="Menu"
-          color="black"
-          size="lg"
-        >
-          <q-icon name="menu" />
-        </q-btn>
-    </q-page-sticky>
-
+    </QPageSticky>
     <div class="datepicker-trigger" style="z-index:3">
         <button
           style="display:none"
@@ -37,58 +61,6 @@
           @date-two-selected="val => { dateTwo = val }"
         />
     </div>
-       <q-page-sticky
-          position="bottom-right"
-          :offset="[18, 18]"
-          style="margin-right: 18px !important;"
-        >
-        <q-fab
-          icon="add"
-          direction="up"
-          color="black"
-        >
-          <q-fab-action
-            color="white"
-            textColor="faded"
-            class="white"
-            icon="fab fa-wpforms"
-            @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"
-          />
-          <q-fab-action
-           color="white"
-            textColor="faded"
-            class="white"
-            icon="fa fa-binoculars"
-            @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"
-          />
-
-          <q-fab-action
-            color="white"
-            textColor="faded"
-            class="white"
-            icon="fas fa-archive"
-            @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
-          />
-
-        </q-fab>
-    </q-page-sticky>
-
-      <q-page-sticky
-          position="bottom-left"
-          :offset="[18, 18]"
-          style="margin-left: 18px !important;"
-        >
-
-        <q-btn
-          round
-          color="white"
-          text-color="black"
-          icon="my_location"
-          size="md"
-          @click="setToCurrentLocation"
-        />
-
-    </q-page-sticky>
     <l-map
      ref="map"
       id="map"
@@ -114,8 +86,6 @@
       </l-marker>
       -->
     </l-map>
-
-
      <q-layout-footer>
       <q-toolbar
         color="white"
@@ -126,7 +96,6 @@
           checked-icon="pin_drop"
           v-model="today"
         />
-
       <q-btn
             v-if="!today"
             dense
@@ -227,12 +196,12 @@ body,
 }
 </style>
 <script>
+import moment from 'moment';
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import format from 'date-fns/format';
 import { Form, Submission, Auth, Utilities } from 'fast-fastjs';
 import fullLoading from '../../../components/fullLoading';
-import moment from 'moment';
 
 export default {
   name: 'Main',

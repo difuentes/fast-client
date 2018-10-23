@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { Auth } from 'fast-fastjs';
-import fullLoading from '../components/fullLoading';
+import fullLoading from 'components/fullLoading';
 import routes from './routes';
 
 Vue.use(VueRouter);

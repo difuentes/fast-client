@@ -1,11 +1,17 @@
 // Configuration for your app
 const Dotenv = require('dotenv-webpack');
 /* eslint-disable */
-const Dotenv = require('dotenv-webpack');
 module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: ['boot', 'VueAsyncProperties', 'leaflet', 'airbnb', 'direction', 'geocoder'],
+    plugins: [
+      'boot',
+      'VueAsyncProperties',
+      'leaflet',
+      'AirbnbStyleDatepicker',
+      'direction',
+      'geocoder'
+    ],
     config: {
       // optional (v0.17+)
       loading: {
@@ -63,9 +69,6 @@ module.exports = function(ctx) {
         'QFabAction',
         'QToggle',
         'QRange',
-        'QCard',
-        'QCardMain',
-        'QCardTitle',
         'QPopover',
         'QField',
         'QOptionGroup',
@@ -75,15 +78,14 @@ module.exports = function(ctx) {
         'QCardTitle',
         'QCardMain',
         'QCardMedia',
-        'QCardSeparator',
         'QCardActions',
         'QLayoutHeader',
         'QLayoutDrawer',
+        'QLayoutFooter',
         'QPageContainer',
         'QPage',
         'QToolbar',
         'QToolbarTitle',
-        'QBtn',
         'QBtnDropdown',
         'QIcon',
         'QList',
@@ -91,7 +93,6 @@ module.exports = function(ctx) {
         'QItem',
         'QItemMain',
         'QItemSide',
-        'QPopover',
         'QBreadcrumbs',
         'QBreadcrumbsEl'
       ],

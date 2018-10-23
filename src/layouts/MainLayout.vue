@@ -34,33 +34,7 @@
   </QLayoutHeader>
 
   <!-- Left Side Drawer -->
-  <QLayoutDrawer class="sidebar" side="left" v-model="showLeft">
-    <QList no-border link>
-      <div class="drawer-header">
-        <Logo padding="15px" width="270px"/>
-      </div>
-      <QItem class="drawer-item current" to="/docs">
-        <QItemSide icon="dashboard" />
-        <QItemMain label="Dashboard"/>
-      </QItem>
-      <QItem class="drawer-item" to="/forum">
-        <QItemSide icon="swap_vert" />
-        <QItemMain label="Sync App"/>
-      </QItem>
-      <QItem class="drawer-item" to="/chat">
-        <QItemSide icon="assignment" />
-        <QItemMain label="Start Survey" />
-      </QItem>
-      <QItem class="drawer-item" to="/twitter">
-        <QItemSide icon="all inbox" />
-        <QItemMain label="Collected Data" />
-      </QItem>
-      <QItem class="drawer-item" to="/twitter">
-        <QItemSide icon="info" />
-        <QItemMain label="About" />
-      </QItem>
-    </QList>
-  </QLayoutDrawer>
+  <Drawer :show="showLeft"/>
   <!-- sub-routes get injected here: -->
   <q-page-container>
     <router-view />
@@ -69,18 +43,18 @@
 </template>
 
 <script>
-import Logo from 'components/Logo';
+import Drawer from 'components/Drawer';
 
 export default {
   components: {
-    Logo
+    Drawer
   },
   data() {
     return {
       showLeft: this.$q.platform.is.desktop
     };
   },
-  name: 'AppLayout'
+  name: 'MainLayout'
 };
 </script>
 

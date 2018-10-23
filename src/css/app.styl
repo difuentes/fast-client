@@ -1,19 +1,4 @@
-// app global css
-.q-loading > div {
-    text-shadow: none;
-}
-
-$primary = #027be3
 // Separate into component
-@font-face
-   font-family Geo
-   font-style normal
-   src url(../assets/fonts/OpenSans-Regular.ttf)
-
-* {
-  font-family: 'Open Sans', sans-serif;
-}
-
 @import 'themes/common.variables'
 @import 'box'
 @import 'btn'
@@ -26,7 +11,14 @@ $primary = #027be3
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700')
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
 
+@font-face
+   font-family Geo
+   font-style normal
+   src url(../assets/fonts/OpenSans-Regular.ttf)
 
+* {
+  font-family: 'Open Sans', sans-serif;
+}
 
 body
   background: linear-gradient(87deg,#f4f5f7,#f4f4f7)!important;
@@ -66,7 +58,7 @@ a,
   opacity: .3;
 
 .image-container
-  background-image: url("../assets/img/login_background.jpg")
+  background-image: $background-login-img-url
   height: auto;
   min-height: 100vh;
   background-position: center center;
@@ -74,8 +66,9 @@ a,
   position: relative;
 
 .row
-  display: flex
-  margin: auto
+  display: flex !important
+  flex-wrap: wrap< !important
+  margin: auto !important
 
 .muted-text
   font-size: .875rem

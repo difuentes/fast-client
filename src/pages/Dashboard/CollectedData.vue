@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import actioncards from '../../../components/actionCards';
+import actioncards from 'components/actionCards';
 import { Form, Auth, Submission } from 'fast-fastjs';
 import moment from 'moment';
 

@@ -44,10 +44,10 @@
 </style>
 <script>
 import _chunk from 'lodash/chunk';
-import { Auth } from 'fast-fastjs';
+// import { Auth } from 'fast-fastjs';
 
 export default {
-  name: 'actioncards',
+  name: 'ActionCards',
   props: ['page'],
   data() {
     return {
@@ -70,59 +70,60 @@ export default {
   },
   methods: {
     applyAction(action) {
-      const parent = action.parent && action.parent !== '' ? action.parent : 'null';
+      return action;
+      // const parent = action.parent && action.parent !== '' ? action.parent : 'null';
 
-      if (action.internal) {
-        let formPath = 'user/profile';
-        let form = 'user';
-        if (Auth.hasRole('Administrator')) {
-          formPath = 'admin/profile';
-          form = 'admin';
-        }
-        if (action.internalUrl === 'userProfile') {
-          const path = `/forms/${formPath}/submission/own_unique_from/update?mode=online&form=${form}&parent=${btoa(
-            JSON.stringify(parent)
-          )}`;
-          this.$router.push(path);
-          return;
-        } else if (action.internalUrl === 'changePassword') {
-          const path = `/forms/resetpassword/submission/own_unique_from/update?mode=online&form=${form}&parent=${btoa(
-            JSON.stringify(parent)
-          )}`;
-          this.$router.push(path);
-          return;
-        }
+      // if (action.internal) {
+      //   let formPath = 'user/profile';
+      //   let form = 'user';
+      //   if (Auth.hasRole('Administrator')) {
+      //     formPath = 'admin/profile';
+      //     form = 'admin';
+      //   }
+      //   if (action.internalUrl === 'userProfile') {
+      //     const path = `/forms/${formPath}/submission/own_unique_from/update?mode=online&form=${form}&parent=${btoa(
+      //       JSON.stringify(parent)
+      //     )}`;
+      //     this.$router.push(path);
+      //     return;
+      //   } else if (action.internalUrl === 'changePassword') {
+      //     const path = `/forms/resetpassword/submission/own_unique_from/update?mode=online&form=${form}&parent=${btoa(
+      //       JSON.stringify(parent)
+      //     )}`;
+      //     this.$router.push(path);
+      //     return;
+      //   }
 
-        const to = {
-          name: action.internalUrl,
-          query: {
-            parent: action.parent
-              ? btoa(JSON.stringify(action.parent))
-              : btoa(JSON.stringify('null'))
-          }
-        };
-        this.$router.push(to);
-      } else if (action.formPath) {
-        const path =
-          action.view === 'list'
-            ? `/forms/${action.formPath}?parent=${btoa(JSON.stringify(parent))}`
-            : `/forms/${action.formPath}/submission?parent=${btoa(JSON.stringify(parent))}`;
-        const to = {
-          path
-        };
-        this.$router.push(to);
-      } else if (action.page) {
-        const to = {
-          name: 'pageManager',
-          params: { pageId: action.page.url },
-          query: {
-            parent: action.parent
-              ? btoa(JSON.stringify(action.parent))
-              : btoa(JSON.stringify('null'))
-          }
-        };
-        this.$router.push(to);
-      }
+      //   const to = {
+      //     name: action.internalUrl,
+      //     query: {
+      //       parent: action.parent
+      //         ? btoa(JSON.stringify(action.parent))
+      //         : btoa(JSON.stringify('null'))
+      //     }
+      //   };
+      //   this.$router.push(to);
+      // } else if (action.formPath) {
+      //   const path =
+      //     action.view === 'list'
+      //       ? `/forms/${action.formPath}?parent=${btoa(JSON.stringify(parent))}`
+      //       : `/forms/${action.formPath}/submission?parent=${btoa(JSON.stringify(parent))}`;
+      //   const to = {
+      //     path
+      //   };
+      //   this.$router.push(to);
+      // } else if (action.page) {
+      //   const to = {
+      //     name: 'pageManager',
+      //     params: { pageId: action.page.url },
+      //     query: {
+      //       parent: action.parent
+      //         ? btoa(JSON.stringify(action.parent))
+      //         : btoa(JSON.stringify('null'))
+      //     }
+      //   };
+      //   this.$router.push(to);
+      // }
     }
   }
 };
