@@ -1,15 +1,18 @@
 <template>
-  <div class="container">
-    <div class="col-xl-6 col-lg-6 col-md-9 col-sm-12 col-xs-12">
-      <div class="wrap">
-        About
-      </div>
+  <div class="col-xs-12">
+    <div class="wrap">
+      <FastMap />
     </div>
   </div>
 </template>
 
 <script>
+import FastMap from 'components/FastMap';
+
 export default {
+  components: {
+    FastMap
+  },
   name: 'About'
 };
 </script>

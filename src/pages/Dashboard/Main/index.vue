@@ -62,7 +62,7 @@
         />
     </div>
     <l-map
-     ref="map"
+      ref="map"
       id="map"
       :zoom="zoom"
       :options="mapOptions"
