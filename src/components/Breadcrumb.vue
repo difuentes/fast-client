@@ -2,8 +2,8 @@
   <QToolbarTitle class="secondary-text breadcrumbs">
     <QBreadcrumbs>
       <QBreadcrumbs-el :label="$t('Dashboard')"/>
-      <QBreadcrumbs-el :label="form.title"/>
-      <QBreadcrumbs-el label="Breadcrumbs"/>
+      <QBreadcrumbs-el :label="formTitle"/>
+      <QBreadcrumbs-el v-if="isSubmission" label="Submission"/>
     </QBreadcrumbs>
   </QToolbarTitle>
 </template>
@@ -15,16 +15,23 @@ import { Form } from 'fast-fastjs';
 export default {
   name: 'Breadcrumb',
   data() {
+    console.log(this);
     return {
-      submission: ''
+      isSubmission: this.$route.path.includes('submission'),
+      formTitle: ''
     };
   },
   asyncData: {
-    async form() {
-      const { data } = await Form.local()
-        .where('data.path', '=', this.$route.params.path)
-        .first();
-      return data;
+    formTitle: {
+      async get() {
+        const { data } = await Form.local()
+          .where('data.path', '=', this.$route.params.path)
+          .first();
+        return data.title;
+      },
+      transform(result) {
+        return result;
+      }
     }
   }
 };
