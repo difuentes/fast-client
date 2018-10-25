@@ -1,8 +1,8 @@
 <template>
   <QToolbarTitle class="secondary-text breadcrumbs">
     <QBreadcrumbs>
-      <QBreadcrumbs-el label="Home"/>
-      <QBreadcrumbs-el label="Components"/>
+      <QBreadcrumbs-el :label="$t('Dashboard')"/>
+      <QBreadcrumbs-el :label="form.title"/>
       <QBreadcrumbs-el label="Breadcrumbs"/>
     </QBreadcrumbs>
   </QToolbarTitle>
@@ -15,20 +15,16 @@ import { Form } from 'fast-fastjs';
 export default {
   name: 'Breadcrumb',
   data() {
-    console.log(this);
     return {
-      formTitle: this.getFormTitle(),
       submission: ''
     };
   },
-  methods: {
-    async getFormTitle() {
-      const {
-        data: { title }
-      } = await Form.local()
+  asyncData: {
+    async form() {
+      const { data } = await Form.local()
         .where('data.path', '=', this.$route.params.path)
         .first();
-      return title;
+      return data;
     }
   }
 };

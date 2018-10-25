@@ -5,14 +5,22 @@ const routes = [
     component: () => import('./Main/index'),
     meta: { requiresAuth: true }
   },
+  // },
+  // {
+  //   name: 'CollectedData',
+  //   path: '/collectedData',
+  //   component: () => import('./CollectedData'),
+  //   meta: { requiresAuth: true }
+  // },
+  // {
+  //   name: 'newSurvey',
+  //   path: '/survey',
+  //   component: () => import('./CollectedData'),
+  //   meta: { requiresAuth: true }
+  // },
+  //
   {
-    name: 'collectedData',
-    path: '/collectedData',
-    component: () => import('./CollectedData'),
-    meta: { requiresAuth: true }
-  },
-  {
-    name: 'about',
+    name: 'About',
     path: '/about',
     component: () => import('./About'),
     meta: { requiresAuth: true }

@@ -1,6 +1,5 @@
 const routes = [
   {
-    name: 'formio_form_submission',
     path: '/forms/:path*/submission',
     component: () => import('./Create.vue'),
     meta: { requiresAuth: true }

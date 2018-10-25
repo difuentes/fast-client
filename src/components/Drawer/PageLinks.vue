@@ -24,10 +24,12 @@ export default {
   methods: {
     to(page) {
       var to;
-      to = { name: 'pageManager', params: { pageId: page.url } };
+      to = { name: 'pageManager', params: { path: page.url } };
       if (page.internal) {
         to = { name: page.internalUrl };
       }
+
+      console.log('to', to);
       return to;
     }
   }
