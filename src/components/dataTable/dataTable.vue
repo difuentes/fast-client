@@ -115,13 +115,14 @@
 <script>
 import _get from 'lodash/get';
 import _camelCase from 'lodash/camelCase';
+import { Import, Submission, Auth, OfflinePlugin, Form } from 'fast-fastjs';
+import { Base64 } from 'js-base64';
+import Formio from 'formiojs/Formio';
+
 // import exportMenu from './export/exportMenu';
 import Export from './export/Export';
 import Columns from './formatters/Columns';
-import { Import, Submission, Auth, OfflinePlugin, Form } from 'fast-fastjs';
 import ErrorFormatter from './formatters/error';
-import { Base64 } from 'js-base64';
-import Formio from 'formiojs/Formio';
 
 export default {
   components: {},

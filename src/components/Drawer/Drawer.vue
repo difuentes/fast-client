@@ -1,39 +1,43 @@
 <template>
-<!-- Left Side Drawer -->
+  <!-- Left Side Drawer -->
   <QLayoutDrawer class="sidebar" side="left" v-model="showLeft">
-    <QList no-border link>
+    <QList no-border link="">
       <div class="drawer-header">
         <Logo padding="15px" width="270px"/>
       </div>
       <QItem class="drawer-item current" to="/dashboard">
-        <QItemSide icon="dashboard" />
+        <QItemSide icon="dashboard"/>
         <QItemMain label="Dashboard"/>
       </QItem>
-      <SyncApp />
-      <SendData />
+      <SyncApp/>
+      <SendData/>
       <QItem class="drawer-item" to="/chat">
-        <QItemSide icon="assignment" />
-        <QItemMain label="Start Survey" />
+        <QItemSide icon="assignment"/>
+        <QItemMain label="Start Survey"/>
       </QItem>
       <QItem class="drawer-item" to="/twitter">
-        <QItemSide icon="all inbox" />
-        <QItemMain label="Collected Data" />
+        <QItemSide icon="all inbox"/>
+        <QItemMain label="Collected Data"/>
       </QItem>
       <QItem class="drawer-item" to="/twitter">
-        <QItemSide icon="info" />
-        <QItemMain label="About" />
+        <QItemSide icon="info"/>
+        <QItemMain label="About"/>
       </QItem>
+      <PageLinks :pages="PAGES"/>
       <QItem @click.native="handleLogout" class="drawer-item">
-        <QItemSide color='red' icon="power_settings_new" />
-        <QItemMain label="Log Out" />
+        <QItemSide color="red" icon="power_settings_new"/>
+        <QItemMain label="Log Out"/>
       </QItem>
     </QList>
   </QLayoutDrawer>
 </template>
 
 <script>
-import { Auth } from 'fast-fastjs';
+import _sortBy from 'lodash/sortBy';
+import Promise from 'bluebird';
+import { Auth, Pages } from 'fast-fastjs';
 import Logo from 'components/Logo';
+import PageLinks from 'components/PageLinks';
 import SendData from './SendData';
 import SyncApp from './SyncApp';
 
@@ -45,7 +49,29 @@ export default {
   components: {
     Logo,
     SendData,
-    SyncApp
+    SyncApp,
+    PageLinks
+  },
+  asyncData: {
+    PAGES: {
+      async get() {
+        const result = await Pages.local().first();
+        const pages = await result.pages.map(async page => {
+          page.cards.map(async card => {
+            card.shouldDisplay = await Auth.hasRoleIdIn(card.access);
+            card.actions.map(async action => {
+              action.shouldDisplay = await Auth.hasRoleIdIn(action.access);
+            });
+          });
+          page.shouldDisplay = await Auth.hasRoleIdIn(page.access);
+          return page;
+        });
+        return Promise.all(pages);
+      },
+      transform(result) {
+        return _sortBy(result, 'index');
+      }
+    }
   },
   data() {
     return {
