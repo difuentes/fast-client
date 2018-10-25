@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import Drawer from 'components/Drawer';
+import Drawer from 'components/Drawer/Drawer';
 
 export default {
   components: {

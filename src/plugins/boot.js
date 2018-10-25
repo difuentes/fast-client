@@ -5,9 +5,9 @@ import initialConfig from '../../.fast/config';
 // leave the export, even if you don't use it
 export default async ({ app, Vue }) => {
   Moment.setLocales();
-  /* eslint-disable-next-line */
-  console.log(initialConfig);
+
   const { config, translations } = await FAST.start({ appConf: initialConfig });
+
   Vue.prototype.$FAST_CONFIG = config;
   Vue.prototype.$appConf = initialConfig;
 

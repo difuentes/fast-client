@@ -5,14 +5,12 @@
       <div class="drawer-header">
         <Logo padding="15px" width="270px"/>
       </div>
-      <QItem class="drawer-item current" to="/docs">
+      <QItem class="drawer-item current" to="/dashboard">
         <QItemSide icon="dashboard" />
         <QItemMain label="Dashboard"/>
       </QItem>
-      <QItem class="drawer-item" to="/forum">
-        <QItemSide icon="swap_vert" />
-        <QItemMain label="Sync App"/>
-      </QItem>
+      <SyncApp />
+      <SendData />
       <QItem class="drawer-item" to="/chat">
         <QItemSide icon="assignment" />
         <QItemMain label="Start Survey" />
@@ -25,12 +23,19 @@
         <QItemSide icon="info" />
         <QItemMain label="About" />
       </QItem>
+      <QItem @click.native="handleLogout" class="drawer-item">
+        <QItemSide color='red' icon="power_settings_new" />
+        <QItemMain label="Log Out" />
+      </QItem>
     </QList>
   </QLayoutDrawer>
 </template>
 
 <script>
+import { Auth } from 'fast-fastjs';
 import Logo from 'components/Logo';
+import SendData from './SendData';
+import SyncApp from './SyncApp';
 
 export default {
   name: 'Drawer',
@@ -38,12 +43,22 @@ export default {
     show: Boolean
   },
   components: {
-    Logo
+    Logo,
+    SendData,
+    SyncApp
   },
   data() {
     return {
       showLeft: this.show
     };
+  },
+  methods: {
+    async handleLogout() {
+      await Auth.logOut();
+      this.$router.push({
+        path: '/login'
+      });
+    }
   },
   watch: {
     show() {

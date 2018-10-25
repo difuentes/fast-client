@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+// This mixin contains all map default data that we dont need to touch anymore
 const FastMapMixin = {
   data() {
     return {

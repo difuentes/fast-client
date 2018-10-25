@@ -3,17 +3,16 @@
     <!-- Left Side Drawer -->
     <Drawer :show="showLeft"/>
     <QPageSticky
+      class='btn-map-corner'
       position="top-left"
       :offset="[18, 18]">  
       <QBtn
-        dense flat
-        aria-label="Menu"
-        color="black"
+        class="btn-primary"
+        flat round dense
         size="lg"
-        @click="showLeft = !showLeft">
-          <QIcon name="menu" />
-      </QBtn>
-    </QPageSticky>
+        @click="showLeft = !showLeft"
+        icon="menu"/>
+      </QPageSticky>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -21,7 +20,7 @@
 </template>
 
 <script>
-import Drawer from 'components/Drawer';
+import Drawer from 'components/Drawer/Drawer';
 
 export default {
   components: {

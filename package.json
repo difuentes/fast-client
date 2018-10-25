@@ -17,7 +17,7 @@
     "date-fns": "^1.29.0",
     "dotenv-webpack": "^1.5.7",
     "fast-downloads": "^0.1.0",
-    "fast-fastjs": "^0.4.1",
+    "fast-fastjs": "^0.4.8",
     "fast-submission2any": "^0.1.0",
     "formio-export": "^0.3.0",
     "i18next": "^11.9.1",

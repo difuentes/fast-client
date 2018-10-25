@@ -1,4 +1,5 @@
 <template>
+<div>
   <LMap
     ref="map"
     id="map"
@@ -6,11 +7,26 @@
     :options="mapOptions"
     @update:center="centerUpdate"
     @update:zoom="zoomUpdate">
-    <LControlZoom position="topright" />
+    <LControlZoom style="margin-top: 20px;" position="bottomleft" />
     <LTileLayer
       :url="url"
       :attribution="attribution"/>
-    </Lmap>
+  </Lmap>
+  <QPageSticky
+    class="btn-map-corner"
+    position="bottom-left"
+    :offset="[18, 18]">
+    <QBtn
+      round
+      class="btn-primary-inverted"
+      icon="my_location"
+      size="lg"
+      @click="setToCurrentLocation"
+    />
+  </QPageSticky>
+</div>
+
+    
 </template>
 
 <script>
@@ -106,5 +122,10 @@ export default {
 .awesome-marker i {
   font-size: 20px;
   margin-top: 10px;
+}
+
+.leaflet-control {
+  margin-left: 34px !important;
+  margin-bottom: 100px !important;
 }
 </style>
