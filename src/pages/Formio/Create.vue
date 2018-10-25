@@ -17,12 +17,7 @@
         <q-toolbar-title size="12px">
 
           <span slot="subtitle">
-            <breadcrum
-                :parent="$route.query.parent"
-                :currentPageTitle="formTitle"
-                :isSubmission="true"
-              />
-
+            <Breadcrumb />
           </span>
         </q-toolbar-title>
 
@@ -83,17 +78,17 @@ import {
   Translation,
   OfflinePlugin
 } from 'fast-fastjs';
-import breadcrum from 'components/breadcrum';
+import Breadcrumb from 'components/Breadcrumb';
+import Promise from 'bluebird';
 import { Form as vForm } from 'vue-formio';
 import Formio from 'formiojs/Formio';
 import ErrorFormatter from '../../components/dataTable/formatters/error';
-import Promise from 'bluebird';
 import fullLoading from '../../components/fullLoading';
 
 export default {
   components: {
     formiovue: vForm,
-    breadcrum
+    Breadcrumb
     // executor
   },
   async created() {
@@ -253,7 +248,7 @@ export default {
           parallelSurvey = JSON.parse(submission.data.parallelSurvey);
         } catch (e) {
           // eslint-disable-next-line
-         parallelSurvey = submission.data.parallelSurvey;
+          parallelSurvey = submission.data.parallelSurvey;
         }
         return parallelSurvey.participantName;
       }
@@ -328,11 +323,8 @@ export default {
   methods: {
     getTabIcon(page) {
       const label = this.getLabelForPage(page).toLowerCase();
-      if (label === 'scouting') {
-        return 'fa fa-binoculars';
-      } else if (label === 'traps') {
-        return 'fas fa-archive';
-      }
+      if (label === 'scouting') return 'fa fa-binoculars';
+      if (label === 'traps') return 'fas fa-archive';
       return 'far fa-file';
     },
     onNextPage(event) {

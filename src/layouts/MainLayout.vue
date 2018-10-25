@@ -10,13 +10,7 @@
         flat round dense
         @click="showLeft = !showLeft"
         icon="menu"/>
-      <QToolbarTitle class="secondary-text breadcrumbs">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el label="Home" />
-          <q-breadcrumbs-el label="Components" />
-          <q-breadcrumbs-el label="Breadcrumbs" />
-        </q-breadcrumbs>
-      </QToolbarTitle>
+      <Breadcrumb />
       <!-- <QBtn
         flat round dense
         icon="person" >
@@ -44,10 +38,12 @@
 
 <script>
 import Drawer from 'components/Drawer/Drawer';
+import Breadcrumb from 'components/Breadcrumb';
 
 export default {
   components: {
-    Drawer
+    Drawer,
+    Breadcrumb
   },
   data() {
     return {

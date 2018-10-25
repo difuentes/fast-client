@@ -1,6 +1,6 @@
 <template>
-<q-page>
-    <q-layout-header >
+<div>
+    <!-- <q-layout-header >
       <q-toolbar color="black" >
          <q-btn
           dense
@@ -15,11 +15,7 @@
         </q-btn>
 
         <q-toolbar-title>
-            <breadcrum
-                v-bind:class="'pull-left'"
-                :parent="$route.query.parent"
-                :currentPageTitle="formTitle"
-              />
+          <Breadcrumb />
           <span slot="subtitle">
 
           </span>
@@ -51,7 +47,7 @@
         </q-btn>
 
       </q-toolbar>
-    </q-layout-header>
+    </q-layout-header> -->
 
           <q-card>
               <q-card-main style="padding: 0px; min-height: 150px" class="relative-position"  >
@@ -104,12 +100,11 @@
 
         </q-fab>
     </q-page-sticky>
-  </q-page>
+  </div>
 </template>
 
 <script>
 import datatable from 'components/dataTable/dataTable';
-import breadcrum from 'components/breadcrum';
 import { Form, Event, Submission, Auth, Utilities } from 'fast-fastjs';
 import Columns from 'components/dataTable/formatters/Columns';
 
@@ -154,7 +149,6 @@ export default {
     }
   },
   components: {
-    breadcrum,
     datatable
   },
   data() {
