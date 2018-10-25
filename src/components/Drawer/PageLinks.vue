@@ -1,36 +1,35 @@
 <template>
-  <div style="color:black">
-    <q-side-link
-      multiline
-      highlight
-      item
-      v-if="page.SHOW_LD && page.shouldDisplay"
-      :to="to(page)"
-      :key="page.url"
+  <div>
+    <QItem
+      class="drawer-item"
       v-for="page in pages"
+      v-if="page.SHOW_LD && page.shouldDisplay"
+      :key="page.url"
+      :to="to(page)"
     >
-      <q-item-side :icon="page.icon"/>
-      <q-item-main :label="$t(page.title)"/>
-    </q-side-link>
+      <QItemSide :icon="icon(page.icon)"/>
+      <QItemMain :label="$t(page.title)"/>
+    </QItem>
   </div>
 </template>
+
 <script>
 export default {
   name: 'PageLinks',
   props: ['pages'],
   watch: {
-    pages: function(val) {}
+    pages: () => {}
   },
   methods: {
     to(page) {
-      var to;
-      to = { name: 'pageManager', params: { path: page.url } };
-      if (page.internal) {
-        to = { name: page.internalUrl };
-      }
-
-      console.log('to', to);
+      let to = { name: 'pageManager', params: { pageId: page.url } };
+      if (page.internal) to = { name: page.internalUrl };
       return to;
+    },
+    icon(pageIcon) {
+      const iconName = pageIcon.split('-');
+      if (iconName[0] === 'fa') return `fa ${pageIcon}`;
+      return pageIcon;
     }
   }
 };
