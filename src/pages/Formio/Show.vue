@@ -1,6 +1,6 @@
 <template>
 <div>
-    <q-layout-header >
+    <!-- <q-layout-header >
       <q-toolbar color="black" >
          <q-btn
           dense
@@ -15,7 +15,7 @@
         </q-btn>
 
         <q-toolbar-title>
-            <BreadCrumb />
+          <Breadcrumb />
           <span slot="subtitle">
 
           </span>
@@ -47,7 +47,7 @@
         </q-btn>
 
       </q-toolbar>
-    </q-layout-header>
+    </q-layout-header> -->
 
           <q-card>
               <q-card-main style="padding: 0px; min-height: 150px" class="relative-position"  >
@@ -105,7 +105,6 @@
 
 <script>
 import datatable from 'components/dataTable/dataTable';
-import Breadcrum from 'components/Breadcrum';
 import { Form, Event, Submission, Auth, Utilities } from 'fast-fastjs';
 import Columns from 'components/dataTable/formatters/Columns';
 
@@ -150,7 +149,6 @@ export default {
     }
   },
   components: {
-    Breadcrum,
     datatable
   },
   data() {

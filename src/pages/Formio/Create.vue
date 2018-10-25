@@ -78,7 +78,7 @@ import {
   Translation,
   OfflinePlugin
 } from 'fast-fastjs';
-import Breadcrum from 'components/Breadcrum';
+import Breadcrumb from 'components/Breadcrumb';
 import Promise from 'bluebird';
 import { Form as vForm } from 'vue-formio';
 import Formio from 'formiojs/Formio';
@@ -88,7 +88,7 @@ import fullLoading from '../../components/fullLoading';
 export default {
   components: {
     formiovue: vForm,
-    Breadcrum
+    Breadcrumb
     // executor
   },
   async created() {

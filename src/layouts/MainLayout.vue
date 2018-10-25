@@ -43,7 +43,7 @@ import Breadcrumb from 'components/Breadcrumb';
 export default {
   components: {
     Drawer,
-    Breadcrumbs
+    Breadcrumb
   },
   data() {
     return {
