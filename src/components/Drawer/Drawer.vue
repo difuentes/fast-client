@@ -11,18 +11,6 @@
       </QItem>
       <SyncApp/>
       <SendData/>
-      <QItem class="drawer-item" to="/chat">
-        <QItemSide icon="assignment"/>
-        <QItemMain label="Start Survey"/>
-      </QItem>
-      <QItem class="drawer-item" to="/twitter">
-        <QItemSide icon="all inbox"/>
-        <QItemMain label="Collected Data"/>
-      </QItem>
-      <QItem class="drawer-item" to="/twitter">
-        <QItemSide icon="info"/>
-        <QItemMain label="About"/>
-      </QItem>
       <PageLinks :pages="PAGES"/>
       <QItem @click.native="handleLogout" class="drawer-item">
         <QItemSide color="red" icon="power_settings_new"/>
@@ -37,7 +25,7 @@ import _sortBy from 'lodash/sortBy';
 import Promise from 'bluebird';
 import { Auth, Pages } from 'fast-fastjs';
 import Logo from 'components/Logo';
-import PageLinks from 'components/PageLinks';
+import PageLinks from './PageLinks';
 import SendData from './SendData';
 import SyncApp from './SyncApp';
 
@@ -75,7 +63,8 @@ export default {
   },
   data() {
     return {
-      showLeft: this.show
+      showLeft: this.show,
+      PAGES: ''
     };
   },
   methods: {

@@ -6,17 +6,17 @@
           <h3>{{$t($FAST_CONFIG.APP_FANTACY_NAME)}}</h3>
           <h5>{{$t($FAST_CONFIG.APP_PHRASE)}}</h5>
         </div>
-        <FastForm 
-          @onSubmit="handleLogin"
-          path='user/login' />
+        <FastForm @onSubmit="handleLogin" path="user/login"/>
         <p class="text-center" v-if="$FAST_CONFIG.ENABLE_REGISTER">
           <router-link :to="{ path: 'register' }">
-            <h5>{{$t('New user')}}?</h5></router-link>
+            <h5>{{$t('New user')}}?</h5>
+          </router-link>
           <router-link :to="{ path: 'sendreset' }">
-            <h5>{{$t('Forgot your password?')}}</h5></router-link>
+            <h5>{{$t('Forgot your password?')}}</h5>
+          </router-link>
         </p>
-        </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -46,8 +46,6 @@ export default {
         : event.data.email.trim();
       this.credentials.email = this.credentials.username;
       try {
-        /* eslint-disable */
-        console.log(this.credentials);
         await Auth.attempt(this.credentials, this.isAdminLogin ? 'admin' : undefined);
         this.$router.push({
           name: 'dashboard'

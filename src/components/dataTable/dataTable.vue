@@ -1,5 +1,5 @@
 <template>
-<div class="tableContainer" v-if="show">
+  <div class="tableContainer" v-if="show">
     <q-table
       ref="table"
       color="primary"
@@ -14,102 +14,114 @@
       @rowclick="handleRowClick"
       class="no-shadow"
     >
-
       <!-- Top actions when table selected -->
-        <template slot="top-selection" slot-scope="scope">
-            <q-btn v-if="tableActions && tableActions.includes('review')" color="primary" flat @click='handleReview({readOnly:false})'>
-                <q-icon name="remove_red_eye" />
-                <q-tooltip>{{$t('Review')}}</q-tooltip>
-            </q-btn>
-            <q-btn v-if="tableActions && tableActions.includes('read-only')" color="primary" flat @click='handleReview({readOnly:true})'>
-                <q-icon name="remove_red_eye" />
-                <q-tooltip>{{$t('Read Only')}}</q-tooltip>
-            </q-btn>
-            <q-btn v-if="tableActions && tableActions.includes('edit')" color="primary" flat @click='goToEditView()'>
-                <q-icon name="edit" />
-                <q-tooltip>{{$t('Edit')}}</q-tooltip>
-            </q-btn>
-            <q-btn v-if="tableActions && tableActions.includes('report')" color="primary" flat @click='handleReport()'>
-                <q-icon name="assignment" />
-                <q-tooltip>{{$t('Report')}}</q-tooltip>
-            </q-btn>
-
-            <q-btn flat v-if="tableActions && tableActions.includes('delete')" color="grey" @click="handleDelete()">
-                <q-icon name="delete" />
-                <q-tooltip>{{$t('Delete')}}</q-tooltip>
-            </q-btn>
-        </template>
+      <template slot="top-selection" slot-scope="scope">
+        <q-btn
+          v-if="tableActions && tableActions.includes('review')"
+          color="primary"
+          flat
+          @click="handleReview({readOnly:false})"
+        >
+          <q-icon name="remove_red_eye"/>
+          <q-tooltip>{{$t('Review')}}</q-tooltip>
+        </q-btn>
+        <q-btn
+          v-if="tableActions && tableActions.includes('read-only')"
+          color="primary"
+          flat
+          @click="handleReview({readOnly:true})"
+        >
+          <q-icon name="remove_red_eye"/>
+          <q-tooltip>{{$t('Read Only')}}</q-tooltip>
+        </q-btn>
+        <q-btn
+          v-if="tableActions && tableActions.includes('edit')"
+          color="primary"
+          flat
+          @click="goToEditView()"
+        >
+          <q-icon name="edit"/>
+          <q-tooltip>{{$t('Edit')}}</q-tooltip>
+        </q-btn>
+        <q-btn
+          v-if="tableActions && tableActions.includes('report')"
+          color="primary"
+          flat
+          @click="handleReport()"
+        >
+          <q-icon name="assignment"/>
+          <q-tooltip>{{$t('Report')}}</q-tooltip>
+        </q-btn>
+        <q-btn
+          flat
+          v-if="tableActions && tableActions.includes('delete')"
+          color="grey"
+          @click="handleDelete()"
+        >
+          <q-icon name="delete"/>
+          <q-tooltip>{{$t('Delete')}}</q-tooltip>
+        </q-btn>
+      </template>
       <!-- Top actions when table selected -->
-
       <!-- Top Searchbox filter -->
       <template slot="top-left" slot-scope="props">
-        <q-search hide-underline v-model="filter" />
+        <q-search hide-underline v-model="filter"/>
       </template>
       <!-- Top Searchbox filter -->
-
-
-
-    <!-- ROW Click on row action -->
-
-         <q-td slot="body-cell-status" slot-scope="scope">
-           <div v-if="scope.row.status === 'offline' && scope.row.draft">
-                <q-icon name="description" color="grey" size="20px" />
-
-                <q-tooltip>{{$t('Draft')}}</q-tooltip>
-            </div>
-            <div v-if="scope.row.status === 'offline' && scope.row.draft">
-              <q-icon name="description" color="grey" size="20px"/>
-
-                <q-tooltip>{{$t('Draft')}}</q-tooltip>
-            </div>
-            <div v-else-if="scope.row.status === 'offline'">
-              <q-icon name="description" color="blue" size="20px"/>
-
-                <q-tooltip>{{$t('Offline submission')}}</q-tooltip>
-            </div>
-            <div v-else-if="isOnlineSubmission(scope.row._id, scope.row._lid)">
-              <q-icon name="cloud_done" color="green" size="20px"/>
-                <q-tooltip>{{$t('Online Submission')}}</q-tooltip>
-            </div>
-            <div v-else>
-              <q-icon name="cloud_download" color="green" size="20px"/>
-                <q-tooltip>{{$t('Synced Submission')}}</q-tooltip>
-            </div>
-            <i
-              class="material-icons"
-              style="color: red;font-size: x-large; cursor: pointer;"
-              v-if="scope.row.syncError && scope.row.syncError !=='Unauthorized' "
-              @click="displayError(scope.row.syncError)"
-            >block</i>
-            <i class="material-icons" style="color: red;font-size: x-large; cursor: pointer;"
-              v-if="scope.row.syncError && scope.row.syncError ==='Unauthorized' "
-              @click="displayError(scope.row.syncError)">block</i>
-          </q-td>
-    <!-- ROW Click on row action -->
-
-
+      <!-- ROW Click on row action -->
+      <q-td slot="body-cell-status" slot-scope="scope">
+        <div v-if="scope.row.status === 'offline' && scope.row.draft">
+          <q-icon name="description" color="grey" size="20px"/>
+          <q-tooltip>{{$t('Draft')}}</q-tooltip>
+        </div>
+        <div v-if="scope.row.status === 'offline' && scope.row.draft">
+          <q-icon name="description" color="grey" size="20px"/>
+          <q-tooltip>{{$t('Draft')}}</q-tooltip>
+        </div>
+        <div v-else-if="scope.row.status === 'offline'">
+          <q-icon name="description" color="blue" size="20px"/>
+          <q-tooltip>{{$t('Offline submission')}}</q-tooltip>
+        </div>
+        <div v-else-if="isOnlineSubmission(scope.row._id, scope.row._lid)">
+          <q-icon name="cloud_done" color="green" size="20px"/>
+          <q-tooltip>{{$t('Online Submission')}}</q-tooltip>
+        </div>
+        <div v-else>
+          <q-icon name="cloud_download" color="green" size="20px"/>
+          <q-tooltip>{{$t('Synced Submission')}}</q-tooltip>
+        </div>
+        <i
+          class="material-icons"
+          style="color: red;font-size: x-large; cursor: pointer;"
+          v-if="scope.row.syncError && scope.row.syncError !=='Unauthorized' "
+          @click="displayError(scope.row.syncError)"
+        >block</i>
+        <i
+          class="material-icons"
+          style="color: red;font-size: x-large; cursor: pointer;"
+          v-if="scope.row.syncError && scope.row.syncError ==='Unauthorized' "
+          @click="displayError(scope.row.syncError)"
+        >block</i>
+      </q-td>
+      <!-- ROW Click on row action -->
       <!-- CELL design for submission status Draft/Online/Submitted -->
-
-        <template slot="col-status" slot-scope="scope">
-
-        </template>
+      <template slot="col-status" slot-scope="scope"></template>
       <!-- CELL design for submission status Draft/Online/Submitted -->
-
-
       <!-- Cell design if the submission is deleted -->
-        <template slot='col-deleted' slot-scope='scope'>
-            <q-chip icon="fa-ban" small color="red" v-if="scope.row.deleted && scope.row.deleted === true">
-            </q-chip>
 
-            <q-chip icon="fa-check" small color="green" v-else>
-            </q-chip>
-        </template>
-        <!-- Cell design if the submission is deleted -->
-
+      <template slot="col-deleted" slot-scope="scope">
+        <q-chip
+          icon="fa-ban"
+          small
+          color="red"
+          v-if="scope.row.deleted && scope.row.deleted === true"
+        ></q-chip>
+        <q-chip icon="fa-check" small color="green" v-else></q-chip>
+      </template>
+      <!-- Cell design if the submission is deleted -->
     </q-table>
-
-   <!-- <export-menu render="outside" :actions="menuActions" /> -->
-</div>
+    <!-- <export-menu render="outside" :actions="menuActions" /> -->
+  </div>
 </template>
 
 <script>
@@ -356,6 +368,7 @@ export default {
             );
           })
           .catch(error => {
+            // eslint-disable-next-line
             console.log(error);
             this.$swal(this.$t('Error!'), this.$t("Can't delete online submission."), 'error');
           });
