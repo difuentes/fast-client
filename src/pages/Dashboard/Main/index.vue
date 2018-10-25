@@ -1,37 +1,31 @@
 <template>
   <q-page>
-    <QPageSticky
-      position="bottom-right"
-      :offset="[18, 18]"
-      style="margin-right: 18px !important;">
-      <QFab
-        icon="add"
-        direction="up"
-        color="black">
+    <QPageSticky position="bottom-right" :offset="[18, 18]" style="margin-right: 18px !important;">
+      <QFab icon="add" direction="up" color="black">
         <QFabAction
           color="white"
           textColor="faded"
           class="white"
           icon="fab fa-wpforms"
-          @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"/>
+          @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"
+        />
         <QFabAction
           color="white"
           textColor="faded"
           class="white"
           icon="fa fa-binoculars"
-          @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"/>
+          @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"
+        />
         <QFabAction
           color="white"
           textColor="faded"
           class="white"
           icon="fas fa-archive"
-          @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"/>
+          @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
+        />
       </QFab>
     </QPageSticky>
-    <QPageSticky
-      position="bottom-left"
-      :offset="[18, 18]"
-      style="margin-left: 18px !important;">
+    <QPageSticky position="bottom-left" :offset="[18, 18]" style="margin-left: 18px !important;">
       <QBtn
         round
         color="white"
@@ -40,26 +34,18 @@
         size="md"
         @click="setToCurrentLocation"
       />
-
     </QPageSticky>
     <div class="datepicker-trigger" style="z-index:3">
-        <button
-          style="display:none"
-          id="datepicker-button-trigger"
-          ref="calendar"
-          > 'Select dates'
-          </button>
-
-
-        <AirbnbStyleDatepicker
-          :trigger-element-id="'datepicker-button-trigger'"
-          :mode="'range'"
-          :fullscreen-mobile="true"
-          :date-one="dateOne"
-          :date-two="dateTwo"
-          @date-one-selected="val => { dateOne = val }"
-          @date-two-selected="val => { dateTwo = val }"
-        />
+      <button style="display:none" id="datepicker-button-trigger" ref="calendar">'Select dates'</button>
+      <AirbnbStyleDatepicker
+        :trigger-element-id="'datepicker-button-trigger'"
+        :mode="'range'"
+        :fullscreen-mobile="true"
+        :date-one="dateOne"
+        :date-two="dateTwo"
+        @date-one-selected="val => { dateOne = val }"
+        @date-two-selected="val => { dateTwo = val }"
+      />
     </div>
     <l-map
       ref="map"
@@ -67,11 +53,10 @@
       :zoom="zoom"
       :options="mapOptions"
       @update:center="centerUpdate"
-      @update:zoom="zoomUpdate">
-      <l-control-zoom position="topright" />
-      <l-tile-layer
-        :url="url"
-        :attribution="attribution"/>
+      @update:zoom="zoomUpdate"
+    >
+      <l-control-zoom position="topright"/>
+      <l-tile-layer :url="url" :attribution="attribution"/>
       <!--
         <l-marker :lat-lng="marker.latlng" v-for="marker in markers" v-bind:key="marker.latlng.long">
           <l-popup>
@@ -86,41 +71,24 @@
       </l-marker>
       -->
     </l-map>
-     <q-layout-footer>
-      <q-toolbar
-        color="white"
-        class="q-py-none"
-      >
-      <q-toggle
-          unchecked-icon="far fa-calendar-alt"
-          checked-icon="pin_drop"
-          v-model="today"
-        />
-      <q-btn
-            v-if="!today"
-            dense
-            flat
-            aria-label="Menu"
-            color="faded"
-            size="lg"
-            @click.stop="triggerCalendar"
-          >
-          <q-icon name="far fa-calendar-alt" />
+    <q-layout-footer>
+      <q-toolbar color="white" class="q-py-none">
+        <q-toggle unchecked-icon="far fa-calendar-alt" checked-icon="pin_drop" v-model="today"/>
+        <q-btn
+          v-if="!today"
+          dense
+          flat
+          aria-label="Menu"
+          color="faded"
+          size="lg"
+          @click.stop="triggerCalendar"
+        >
+          <q-icon name="far fa-calendar-alt"/>
         </q-btn>
-
-
-         <q-toolbar-title position="center" >
-
-          <span style="color:black" v-if="today">
-              Today
-            </span>
-
-          <span slot="subtitle" style="color:black" v-if="today">
-
-          {{currentDate}}
-          </span>
-
-<!--
+        <q-toolbar-title position="center">
+          <span style="color:black" v-if="today">Today</span>
+          <span slot="subtitle" style="color:black" v-if="today">{{currentDate}}</span>
+          <!--
            <q-tabs
         align="center"
         position="center"
@@ -151,11 +119,9 @@
           </q-tab>
 
       </q-tabs>
--->
-
-
+          -->
         </q-toolbar-title>
-  <q-toggle
+        <q-toggle
           v-model="checked"
           unchecked-icon="fas fa-male"
           checked-icon="fas fa-globe-africa"
@@ -163,7 +129,6 @@
         />
       </q-toolbar>
     </q-layout-footer>
-
   </q-page>
 </template>
 <style>
@@ -492,15 +457,16 @@ export default {
     },
     onLocationError(e) {
       fullLoading.hide();
+      // eslint-disable-next-line
       console.log(e);
     },
     startCollection(type) {
       if (type === 'scouting') {
-        console.log('starting scouting');
+        // console.log('starting scouting');
       } else if (type === 'scoutingAndTraps') {
-        console.log('starting both');
+        // console.log('starting both');
       } else if (type === 'traps') {
-        console.log('starting traps');
+        // console.log('starting traps');
       }
     }
   },

@@ -1,10 +1,11 @@
 <template>
-    <div class="container-fluid col-lg-offset-1 col-lg-10" v-bind:key="$route.path" style="padding-bottom:50px" >
-
+  <div
+    class="container-fluid col-lg-offset-1 col-lg-10"
+    v-bind:key="$route.path"
+    style="padding-bottom:50px"
+  >
     <hr style="border-top: 1px solid lightgray;">
-
     <actioncards style="margin-top:50px" :page="forms" v-bind:key="$route.path"></actioncards>
-
   </div>
 </template>
 

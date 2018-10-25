@@ -1,8 +1,8 @@
 <template>
   <q-page>
-        <q-layout-header>
+    <q-layout-header>
       <q-toolbar color="black">
-         <q-btn
+        <q-btn
           dense
           flat
           @click="$toggleLeftDrawer"
@@ -11,16 +11,13 @@
           size="lg"
           style="margin-right:15px"
         >
-          <q-icon name="menu" />
+          <q-icon name="menu"/>
         </q-btn>
-
         <q-toolbar-title size="12px">
-
           <span slot="subtitle">
-            <Breadcrumb />
+            <Breadcrumb/>
           </span>
         </q-toolbar-title>
-
       </q-toolbar>
     </q-layout-header>
     <formiovue
@@ -35,33 +32,30 @@
       v-on:nextPage="onNextPage"
       v-if="form && submission && options"
     />
-
-
-      <q-layout-footer>
-        <q-tabs
+    <q-layout-footer>
+      <q-tabs
         color="white"
         textColor="faded"
         animated
         swipeable
         align="center"
         position="bottom"
-        v-model="tab" v-if="$FAST_CONFIG.TAB_MENU">
-
-          <q-tab
-            :icon="getTabIcon(page)"
-            slot="title"
-            v-for="(page, index) in pages"
-            :key="page.title" @click="goToPage(index)"
-            :ref="'page-'+ index + 1"
-            :name="(index + 1).toString()"
-            v-bind:class="currentPage === index ? 'activePage' : ''"
-            :label="$t(getLabelForPage(page))">
-          </q-tab>
-
+        v-model="tab"
+        v-if="$FAST_CONFIG.TAB_MENU"
+      >
+        <q-tab
+          :icon="getTabIcon(page)"
+          slot="title"
+          v-for="(page, index) in pages"
+          :key="page.title"
+          @click="goToPage(index)"
+          :ref="'page-'+ index + 1"
+          :name="(index + 1).toString()"
+          v-bind:class="currentPage === index ? 'activePage' : ''"
+          :label="$t(getLabelForPage(page))"
+        ></q-tab>
       </q-tabs>
     </q-layout-footer>
-
-
   </q-page>
 </template>
 
@@ -541,6 +535,7 @@ export default {
             );
 
             if (error) {
+              // eslint-disable-next-line
               console.log(error);
               const errorString = ErrorFormatter.format({
                 errors: error,

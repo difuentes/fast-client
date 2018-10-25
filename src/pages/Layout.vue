@@ -42,21 +42,19 @@
 
       </q-list>
     </q-layout-drawer>
-    <q-page-container> -->
-      <router-view />
-    <!-- </q-page-container>
-  </q-layout> -->
+  <q-page-container>-->
+  <router-view/>
+  <!-- </q-page-container>
+  </q-layout>-->
 </template>
 
 <script>
 import { Pages, Auth, Utilities, FAST, Event } from 'fast-fastjs';
-import pagelinks from '../components/pageLinks';
+// import pagelinks from '../components/pageLinks';
 import fullLoading from '../components/fullLoading';
 
 export default {
-  components: {
-    pagelinks
-  },
+  components: {},
   name: 'Layout',
   created() {
     Event.listen({ name: 'FAST:LEFTDRAWER:TOGGLE', callback: this.toggleLeftDrawer });

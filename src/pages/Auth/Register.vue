@@ -11,11 +11,9 @@
             <h5>{{$t('Back to login')}}?</h5>
           </router-link>
         </p>
-        <FastForm 
-          @onSubmit="handleRegister"
-          path='userregister' />
-        </div>
+        <FastForm @onSubmit="handleRegister" path="userregister"/>
       </div>
+    </div>
   </div>
 </template>
 
@@ -46,6 +44,7 @@ export default {
           this.$router.push({ path: 'login' });
         })
         .catch(error => {
+          // eslint-disable-next-line
           console.log(error);
           this.$forceUpdate();
         });

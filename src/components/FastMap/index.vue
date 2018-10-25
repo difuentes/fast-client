@@ -1,32 +1,26 @@
 <template>
-<div>
-  <LMap
-    ref="map"
-    id="map"
-    :zoom="zoom"
-    :options="mapOptions"
-    @update:center="centerUpdate"
-    @update:zoom="zoomUpdate">
-    <LControlZoom style="margin-top: 20px;" position="bottomleft" />
-    <LTileLayer
-      :url="url"
-      :attribution="attribution"/>
-  </Lmap>
-  <QPageSticky
-    class="btn-map-corner"
-    position="bottom-left"
-    :offset="[18, 18]">
-    <QBtn
-      round
-      class="btn-primary-inverted"
-      icon="my_location"
-      size="lg"
-      @click="setToCurrentLocation"
-    />
-  </QPageSticky>
-</div>
-
-    
+  <div>
+    <LMap
+      ref="map"
+      id="map"
+      :zoom="zoom"
+      :options="mapOptions"
+      @update:center="centerUpdate"
+      @update:zoom="zoomUpdate"
+    >
+      <LControlZoom style="margin-top: 20px;" position="bottomleft"/>
+      <LTileLayer :url="url" :attribution="attribution"/>
+      <QPageSticky class="btn-map-corner" position="bottom-left" :offset="[18, 18]">
+        <QBtn
+          round
+          class="btn-primary-inverted"
+          icon="my_location"
+          size="lg"
+          @click="setToCurrentLocation"
+        />
+      </QPageSticky>
+    </LMap>
+  </div>
 </template>
 
 <script>
@@ -71,7 +65,6 @@ export default {
   async mounted() {
     this.time();
     this.$nextTick(() => {
-      console.log('next tick');
       this.$refs.map.mapObject._onResize();
       this.map = this.$refs.map.mapObject;
       this.setToCurrentLocation();
@@ -106,6 +99,7 @@ export default {
     },
     onLocationError(e) {
       fullLoading.hide();
+      // eslint-disable-next-line
       console.log(e);
     }
   }
