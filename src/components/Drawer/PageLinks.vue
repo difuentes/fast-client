@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     to(page) {
-      let to = { name: 'pageManager', params: { pageId: page.url } };
+      let to = { name: 'pageManager', params: { path: page.url } };
       if (page.internal) to = { name: page.internalUrl };
       return to;
     },

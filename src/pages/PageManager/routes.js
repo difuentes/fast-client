@@ -1,7 +1,7 @@
 const routes = [
   {
     name: 'pageManager',
-    path: '/page/:pageId*',
+    path: '/page/:path*',
     component: () => import('./Main/index'),
     meta: { requiresAuth: true }
   }
