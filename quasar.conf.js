@@ -70,6 +70,7 @@ module.exports = function(ctx) {
         'QItem',
         'QItemMain',
         'QItemSide',
+        'QItemTile',
         'QLayout',
         'QLayoutDrawer',
         'QLayoutFooter',

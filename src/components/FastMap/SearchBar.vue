@@ -1,6 +1,5 @@
 <template>
-  <QLayoutDrawer side="right" v-model="showRight">
-    <QListHeader>{{$t("Search Panel")}}</QListHeader>
+  <div class="searchBar">
     <QList no-border>
       <QItem>
         <QItemSide>
@@ -52,28 +51,50 @@
         </QItemMain>
       </QItem>
     </QList>
-  </QLayoutDrawer>
+  </div>
 </template>
 <script>
 import moment from 'moment';
 
 export default {
-  name: 'MapSearch',
-  props: {
-    show: Boolean
-  },
+  name: 'SearchBar',
   data() {
     return {
-      showRight: this.show,
       today: false,
       checkByUsers: false,
       currentDate: moment().format('MMM Do YYYY')
     };
-  },
-  watch: {
-    show() {
-      this.showRight = this.show;
-    }
   }
 };
 </script>
+<style scoped>
+.searchBar {
+  background-clip: border-box;
+  background-color: #fff;
+  background: #fff;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  bottom: 0;
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  width: 300px;
+  padding: 5px;
+  word-wrap: break-word;
+  z-index: 3;
+}
+.q-item-label {
+  font-size: 13px;
+  font-weight: 400;
+  height: 15px;
+  letter-spacing: 0.1px;
+  line-height: 19.5px;
+}
+</style>

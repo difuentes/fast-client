@@ -16,10 +16,11 @@
         round
         class="btn-primary-inverted"
         icon="my_location"
-        size="lg"
+        size="md"
         @click="setToCurrentLocation"
       />
     </QPageSticky>
+    <SearchBar/>
   </div>
 </template>
 
@@ -29,6 +30,7 @@ import moment from 'moment';
 import fullLoading from 'src/helpers/fullLoading';
 import { createMarker, createCircle } from './leafletHelpers';
 import FastMapMixin from './FastMapMixin';
+import SearchBar from './SearchBar';
 import 'leaflet/dist/leaflet.css';
 
 export default {
@@ -37,7 +39,8 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    LControlZoom
+    LControlZoom,
+    SearchBar
   },
   name: 'FastMap',
   mixins: [FastMapMixin],
