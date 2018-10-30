@@ -1,25 +1,5 @@
 <template>
   <q-page>
-    <q-layout-header>
-      <q-toolbar color="black">
-        <q-btn
-          dense
-          flat
-          @click="$toggleLeftDrawer"
-          aria-label="Menu"
-          color="white"
-          size="lg"
-          style="margin-right:15px"
-        >
-          <q-icon name="menu"/>
-        </q-btn>
-        <q-toolbar-title size="12px">
-          <span slot="subtitle">
-            <Breadcrumb/>
-          </span>
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-layout-header>
     <formiovue
       :form="form"
       :submission="submission"

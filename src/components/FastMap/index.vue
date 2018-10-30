@@ -10,16 +10,16 @@
     >
       <LControlZoom style="margin-top: 20px;" position="bottomleft"/>
       <LTileLayer :url="url" :attribution="attribution"/>
-      <QPageSticky class="btn-map-corner" position="bottom-left" :offset="[18, 18]">
-        <QBtn
-          round
-          class="btn-primary-inverted"
-          icon="my_location"
-          size="lg"
-          @click="setToCurrentLocation"
-        />
-      </QPageSticky>
     </LMap>
+    <QPageSticky class="btn-map-corner" position="bottom-left" :offset="[18, 18]">
+      <QBtn
+        round
+        class="btn-primary-inverted"
+        icon="my_location"
+        size="lg"
+        @click="setToCurrentLocation"
+      />
+    </QPageSticky>
   </div>
 </template>
 
