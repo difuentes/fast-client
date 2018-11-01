@@ -1,18 +1,24 @@
 <template>
   <div class="fastform-container">
-    <button v-on:click="nextPage">next page</button>
     <div class="header">
-      <h4 v-if="form" class="title">{{form.title}}</h4>
+      <h4 v-if="form" class="title">{{$t(form.title)}}</h4>
+      <button class="btn-sm btn-primary" v-on:click="nextPage">next page</button>
     </div>
     <slot/>
+    <Footer v-if="childrenFormio" :childrenFormio="childrenFormio"/>
   </div>
 </template>
+
 <script>
+import Footer from './Footer';
+
 export default {
   name: 'FormContainer',
+  components: {
+    Footer
+  },
   props: ['form', 'formio'],
   data() {
-    console.log(this, 'formContainer');
     return {
       childrenFormio: ''
     };
