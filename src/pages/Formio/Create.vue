@@ -1,18 +1,22 @@
 <template>
-  <q-page>
-    <formiovue
-      :form="form"
-      :submission="submission"
-      :options="options"
-      :language="language"
-      v-on:change="onSubmissionChange"
-      v-on:submit="onFormSubmit"
-      v-on:error="onFormError"
-      v-on:prevPage="onPrevPage"
-      v-on:nextPage="onNextPage"
-      v-if="form && submission && options"
-    />
-    <q-layout-footer>
+  <Container>
+    <FormContainer :form="form" :formio="formRef">
+      <formiovue
+        ref="formio"
+        :form="form"
+        :submission="submission"
+        :options="options"
+        :language="language"
+        v-on:change="onSubmissionChange"
+        v-on:submit="onFormSubmit"
+        v-on:error="onFormError"
+        v-on:prevPage="onPrevPage"
+        v-on:nextPage="onNextPage"
+        v-on:render="passRef"
+        v-if="form && submission && options"
+      />
+    </FormContainer>
+    <!-- <q-layout-footer>
       <q-tabs
         color="white"
         textColor="faded"
@@ -35,8 +39,8 @@
           :label="$t(getLabelForPage(page))"
         ></q-tab>
       </q-tabs>
-    </q-layout-footer>
-  </q-page>
+    </q-layout-footer>-->
+  </Container>
 </template>
 
 <script>
@@ -53,6 +57,8 @@ import {
   OfflinePlugin
 } from 'fast-fastjs';
 import Breadcrumb from 'components/Breadcrumb';
+import Container from 'components/Container';
+import FormContainer from 'components/FastForm/FormContainer';
 import Promise from 'bluebird';
 import { Form as vForm } from 'vue-formio';
 import Formio from 'formiojs/Formio';
@@ -62,7 +68,9 @@ import fullLoading from '../../components/fullLoading';
 export default {
   components: {
     formiovue: vForm,
-    Breadcrumb
+    Breadcrumb,
+    Container,
+    FormContainer
     // executor
   },
   async created() {
@@ -260,7 +268,9 @@ export default {
     }
   },
   data() {
+    console.log(this, 'form');
     return {
+      formRef: '',
       formUrl: `${this.$FAST_CONFIG.APP_URL}/${this.$route.params.idForm}`,
       people: [
         {
@@ -295,6 +305,10 @@ export default {
     };
   },
   methods: {
+    passRef() {
+      console.log('passingRef');
+      this.formRef = this.$refs.formio;
+    },
     getTabIcon(page) {
       const label = this.getLabelForPage(page).toLowerCase();
       if (label === 'scouting') return 'fa fa-binoculars';
@@ -326,10 +340,10 @@ export default {
     showWizard(event) {
       this.isWizard = !!event.detail.data.formio.wizard;
     },
-    onSubmissionChange(event) {
+    async onSubmissionChange(event) {
       if (event.changed) {
         // TODO This is one step behind of the User actions Needs to be fixed
-        this.pages = event.changed.instance.root.pages;
+        this.pages = _get(event.changed.instance.root, 'pages');
         this.isWizard = event.changed.instance.root.wizard;
       }
       if (event.data) {
@@ -354,18 +368,19 @@ export default {
       await this.redirectIntended({ submission: formSubmission, created });
     },
     onFormError(event) {
-      this.$swal({
-        type: 'error',
-        title: this.$t('Error'),
-        html: `${this.$t('You have errors in the submission')}. <br><strong>${this.$t(
-          event[0].component.label
-        )}</strong>: <br>${this.$t(event[0].message)}`
-      }).then(() => {
-        const { id } = event[0].component.id;
-        // let element = document.querySelector("[name='data[" + key + "]']")
-        document.getElementById(id).scrollIntoView();
-        // window.scroll(0, -100);
-      });
+      console.log(event);
+      // this.$swal({
+      //   type: 'error',
+      //   title: this.$t('Error'),
+      //   html: `${this.$t('You have errors in the submission')}. <br><strong>${this.$t(
+      //     event[0].component.label
+      //   )}</strong>: <br>${this.$t(event[0].message)}`
+      // }).then(() => {
+      //   const { id } = event[0].component.id;
+      //   // let element = document.querySelector("[name='data[" + key + "]']")
+      //   document.getElementById(id).scrollIntoView();
+      //   // window.scroll(0, -100);
+      // });
     },
     cancel() {
       if (document.getElementsByClassName('formio-dialog').length > 0) {
