@@ -11,6 +11,8 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "b64-to-blob": "^1.2.19",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.1.3",
     "bootswatch": "^4.1.3",
@@ -21,6 +23,7 @@
     "fast-submission2any": "^0.1.0",
     "formio-export": "^0.3.0",
     "i18next": "^11.9.1",
+    "js-base64": "^2.4.9",
     "leaflet": "^1.3.4",
     "leaflet-offline": "^1.1.0",
     "leaflet.awesome-markers": "^2.0.4",
@@ -28,13 +31,15 @@
     "leaflet.markercluster": "^1.4.1",
     "leaflet.offline": "^1.0.4",
     "localforage": "^1.7.2",
+    "lokijs": "^1.5.5",
+    "md5": "^2.2.1",
     "sweet-modal-vue": "^2.0.0",
     "vue-airbnb-style-datepicker": "^2.1.0",
     "vue-async-data": "^1.0.2",
     "vue-async-properties": "^0.5.0",
     "vue-formio": "^3.0.1",
     "vue-i18n": "^8.1.0",
-    "vue2-leaflet": "^1.0.2"
+    "vue2-leaflet": "^1.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
