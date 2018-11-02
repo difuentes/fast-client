@@ -1,5 +1,4 @@
 import { Fluent, Model } from 'fast-fastjs';
-// import { Base64 } from 'js-base64';
 import b64toBlob from 'b64-to-blob';
 import Axios from 'axios';
 
@@ -28,18 +27,16 @@ export default {
       item = blob;
     }
 
-    console.log(item);
-
     return item;
   },
   async saveTiles(tileUrls) {
-    const promises = [];
+    const chunkedData = this._chunk(tileUrls, 30);
+    const reducer = (chain, batch) =>
+      chain.then(() => Promise.all(batch.map(d => this._getTile(d))));
 
-    for (let i = 0; i < tileUrls.length; i += 1) {
-      promises[i] = this._getTile(tileUrls[i]);
-    }
+    const promiseChain = chunkedData.reduce(reducer, Promise.resolve());
 
-    return Promise.all(promises);
+    return promiseChain;
   },
   async clear() {
     // eslint-disable-next-line
@@ -91,5 +88,14 @@ export default {
     }
 
     return false;
+  },
+  _chunk(array, batchSize = 5) {
+    const chunked = [];
+
+    for (let i = 0; i < array.length; i += batchSize) {
+      chunked.push(array.slice(i, i + batchSize));
+    }
+
+    return chunked;
   }
 };

@@ -48,6 +48,7 @@ import { SweetModal } from 'sweet-modal-vue';
 import L from 'leaflet';
 // eslint-disable-next-line
 import LOffline from 'leaflet-offline';
+import { Fluent, Model } from 'fast-fastjs';
 import moment from 'moment';
 import 'leaflet/dist/leaflet.css';
 import fullLoading from '../../components/fullLoading';
@@ -66,11 +67,11 @@ export default {
   data() {
     return {
       zoom: 18,
-      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      url: 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       currentZoom: 18,
       zoomValues: {
-        min: 8,
+        min: 10,
         max: 18
       },
       mapOptions: { zoomControl: false, attributionControl: false },
@@ -79,7 +80,9 @@ export default {
       tilesToSave: 0,
       modalMessage: '',
       modalType: '',
-      modalButtonCallback: null
+      modalButtonCallback: null,
+      myRadius: null,
+      offlineTiles: null
     };
   },
   methods: {
@@ -99,6 +102,18 @@ export default {
     time() {
       this.currentDate = moment().format('LLLL');
       setTimeout(this.time, 1000);
+    },
+    async drawOfflineTiles() {
+      const rects = await this.offlineTiles.local().get();
+
+      rects.map(rect => {
+        const bounds = [
+          [rect._bounds._northEast.lat, rect._bounds._northEast.lng],
+          [rect._bounds._southWest.lat, rect._bounds._southWest.lng]
+        ];
+        L.rectangle(bounds, rect.options).addTo(this.map);
+        return rect;
+      });
     },
     setToCurrentLocation() {
       fullLoading.show(this.$t('Getting GPS position'));
@@ -144,7 +159,14 @@ export default {
   async mounted() {
     this.time();
 
-    this.$nextTick(() => {
+    this.offlineTiles = Fluent.extend(Model, {
+      properties: {
+        name: 'offlineTiles',
+        remoteConnection: undefined
+      }
+    })();
+
+    this.$nextTick(async () => {
       this.$refs.map.mapObject._onResize();
       this.map = this.$refs.map.mapObject;
 
@@ -154,6 +176,8 @@ export default {
         maxZoom: this.zoomValues.max,
         crossOrigin: true
       });
+
+      await this.drawOfflineTiles();
 
       const offlineControl = L.control.offline(offlineLayer, tilesDB, {
         position: 'bottomleft',
@@ -183,11 +207,30 @@ export default {
       });
 
       offlineLayer.on('offline:save-start', data => {
+        fullLoading.show('Saving tiles...');
         // eslint-disable-next-line
         console.log(`Saving ${data.nTilesToSave} tiles.`);
       });
 
-      offlineLayer.on('offline:save-end', () => {
+      offlineLayer.on('offline:save-end', async () => {
+        const bounds = this.map.getBounds();
+        const rectBounds = [
+          [bounds._northEast.lat, bounds._northEast.lng],
+          [bounds._southWest.lat, bounds._southWest.lng]
+        ];
+
+        const rect = L.rectangle(rectBounds, {
+          color: '#edb04e',
+          weight: 3,
+          fillOpacity: 0.6,
+          type: 'rect'
+        });
+        await this.offlineTiles.local().insert(rect);
+        rect.addTo(this.map);
+        console.log(await this.offlineTiles.local().get());
+        this.map.fitBounds(rectBounds);
+
+        fullLoading.hide();
         // eslint-disable-next-line
         console.log('All the tiles were saved');
       });
@@ -198,14 +241,21 @@ export default {
       });
 
       offlineLayer.on('offline:remove-start', () => {
+        fullLoading.show('Removing tiles...');
         // eslint-disable-next-line
         console.log('Removing tiles.');
       });
 
-      offlineLayer.on('offline:remove-end', () => {
-        this.modalMessage = 'All the tiles were removed';
-        this.modalButtonCallback = this.closeModal;
-        this.$refs.dialogModal.open();
+      offlineLayer.on('offline:remove-end', async () => {
+        // eslint-disable-next-line
+        for (const i of Object.keys(this.map._layers)) {
+          if (this.map._layers[i].options.type === 'rect') {
+            this.map.removeLayer(this.map._layers[i]);
+          }
+        }
+
+        await this.offlineTiles.local().clear();
+        fullLoading.hide();
       });
 
       offlineLayer.on('offline:remove-error', err => {
