@@ -3,7 +3,8 @@ const routes = [
     name: 'maps',
     path: '/maps',
     component: () => import('./Map.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    props: true
   }
 ];
 

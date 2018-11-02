@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { Auth } from 'fast-fastjs';
+import { Auth, Fluent, Model } from 'fast-fastjs';
 import fullLoading from 'components/fullLoading';
 import routes from './routes';
 
@@ -22,8 +22,10 @@ export default function(/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   });
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     fullLoading.show('Loading...');
+    console.log(to, from, next);
+
     // If user is logged in and route dont require auth
     if (Auth.user() && !to.meta.requiresAuth) {
       Router.push({ name: 'dashboard' });
@@ -35,6 +37,25 @@ export default function(/* { store, ssrContext } */) {
       next(false);
       Router.push({ name: 'login' });
     }
+    // Offline map check
+    const model = Fluent.extend(Model, {
+      properties: {
+        name: 'MapTiles',
+        remoteConnection: undefined
+      }
+    })();
+
+    const tile = await model.local().first();
+
+    console.log('tile', tile);
+
+    if (Auth.user() && !tile && to.name !== 'maps') {
+      console.log('no tileee');
+      next(false);
+      Router.push({ name: 'maps', params: { noTiles: true } });
+      // next(false);
+    }
+
     window.scrollTo(0, 0);
     next();
   });

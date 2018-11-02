@@ -1,5 +1,8 @@
 <template>
   <QPage>
+    <sweet-modal ref="noTilesModal">You must select an offline area to start using the app!
+      <QBtn small slot="button" color="primary" @click="$refs.noTilesModal.close()">I understand</QBtn>
+    </sweet-modal>
     <sweet-modal ref="dialogModal">
       {{ modalMessage }}
       <QBtn small slot="button" color="primary" @click="dialogConfirmed()">Yes</QBtn>
@@ -159,6 +162,10 @@ export default {
   async mounted() {
     this.time();
 
+    if (this.$route.params.noTiles) {
+      this.$refs.noTilesModal.open();
+    }
+
     this.offlineTiles = Fluent.extend(Model, {
       properties: {
         name: 'offlineTiles',
@@ -227,7 +234,6 @@ export default {
         });
         await this.offlineTiles.local().insert(rect);
         rect.addTo(this.map);
-        console.log(await this.offlineTiles.local().get());
         this.map.fitBounds(rectBounds);
 
         fullLoading.hide();
