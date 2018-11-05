@@ -24,7 +24,6 @@ export default function(/* { store, ssrContext } */) {
 
   Router.beforeEach(async (to, from, next) => {
     fullLoading.show('Loading...');
-    console.log(to, from, next);
 
     // If user is logged in and route dont require auth
     if (Auth.user() && !to.meta.requiresAuth) {
@@ -47,10 +46,7 @@ export default function(/* { store, ssrContext } */) {
 
     const tile = await model.local().first();
 
-    console.log('tile', tile);
-
     if (Auth.user() && !tile && to.name !== 'maps') {
-      console.log('no tileee');
       next(false);
       Router.push({ name: 'maps', params: { noTiles: true } });
       // next(false);
