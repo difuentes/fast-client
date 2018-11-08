@@ -307,9 +307,9 @@ export default {
       this.createCollectionMarker();
       this.map.on('move', this.mapMoveAction);
 
-      this.map.on('dragend', this.mapDragEndAction);
+      // this.map.on('dragend', this.mapDragEndAction);
 
-      this.map.on('dragstart', this.mapDragStartAction);
+      // this.map.on('dragstart', this.mapDragStartAction);
 
       this.collectNotifyAction = this.collectNotification();
 

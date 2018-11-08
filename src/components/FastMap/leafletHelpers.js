@@ -1,6 +1,7 @@
 import L from 'leaflet';
 // This contain a set of tools of leafletLibrary
 
+// Given Fastmap event create a marker
 const createMarker = event => {
   // eslint-disable-next-line
   const marker = new L.marker(event.latlng, {
@@ -15,6 +16,20 @@ const createMarker = event => {
   return marker;
 };
 
+const createCollectionMarker = me => {
+  const latLng = me._latlng;
+  // eslint-disable-next-line
+  const collectionMarker = new L.marker(latLng, {
+    icon: L.AwesomeMarkers.icon({
+      icon: 'fas fa-map-pin',
+      markerColor: 'black',
+      prefix: 'fa',
+      spin: false
+    })
+  });
+  return collectionMarker;
+};
+
 const createCircle = event => {
   const radius = event.accuracy / 2;
   // eslint-disable-next-line
@@ -22,4 +37,4 @@ const createCircle = event => {
   return circle;
 };
 
-export { createMarker, createCircle };
+export { createMarker, createCircle, createCollectionMarker };
