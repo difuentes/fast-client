@@ -14,19 +14,33 @@
         <FastForm @onSubmit="handleRegister" path="userregister"/>
       </div>
     </div>
+    <SweetModal hide-close-button blocking ref="errorModal" icon="error">
+      <h2>{{ $t('Email already taken') }}</h2>
+      <p>{{ $t('That email is already taken. Try a different one') }}</p>
+      <QBtn slot="button" color="primary" v-on:click="closeModal('errorModal')">{{ $t('Close') }}</QBtn>
+    </SweetModal>
+    <SweetModal hide-close-button blocking ref="successModal" icon="success">
+      <h2>{{ $t('Success!') }}</h2>
+      <QBtn
+        slot="button"
+        color="primary"
+        v-on:click="$router.push({ path: 'login' })"
+      >{{ $t('Close') }}</QBtn>
+    </SweetModal>
   </div>
 </template>
 
 <script>
-// import { Form as Formio } from 'vue-formio';
 import FastForm from 'components/FastForm/FastForm';
-import Formio from 'formiojs/Formio';
-import { OfflinePlugin } from 'fast-fastjs';
+import { SweetModal } from 'sweet-modal-vue';
+import to from 'await-to-js';
+import { Hash, User } from 'fast-fastjs';
 
 export default {
   name: 'Register',
   components: {
-    FastForm
+    FastForm,
+    SweetModal
   },
   data() {
     return {
@@ -35,34 +49,31 @@ export default {
   },
   methods: {
     async handleRegister({ data }) {
-      const formSubmission = data;
-      const formio = new Formio(this.formUrl);
-      this.registerOfflinePlugin();
-      formio
-        .saveSubmission(formSubmission)
-        .then(() => {
-          this.$router.push({ path: 'login' });
+      const formData = data;
+      formData.hashedPassword = await Hash.string(data.password);
+
+      const [error, user] = await to(
+        User.storeLocally({
+          data: formData,
+          sync: false,
+          path: 'userregister'
         })
-        .catch(error => {
-          // eslint-disable-next-line
-          console.log(error);
-          this.$forceUpdate();
-        });
+      );
+
+      if (error) {
+        console.error(error);
+        this.$refs.errorModal.open();
+      }
+
+      if (user) {
+        this.$refs.successModal.open();
+      }
     },
     changeLanguage(language) {
       this.language = language.code;
     },
-    registerOfflinePlugin() {
-      // De register if there was a previous registration
-      Formio.deregisterPlugin('offline');
-      // Register the plugin for offline mode
-      Formio.registerPlugin(
-        OfflinePlugin.getPlugin({
-          formio: new Formio(this.formUrl),
-          hashField: true
-        }),
-        'offline'
-      );
+    closeModal(name) {
+      this.$refs[name].close();
     }
   }
 };

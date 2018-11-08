@@ -51,7 +51,7 @@ import { SweetModal } from 'sweet-modal-vue';
 import L from 'leaflet';
 // eslint-disable-next-line
 import LOffline from 'leaflet-offline';
-import { Fluent, Model } from 'fast-fastjs';
+import { Fluent, Model } from 'fast-fluent';
 import moment from 'moment';
 import 'leaflet/dist/leaflet.css';
 import fullLoading from '../../components/fullLoading';
