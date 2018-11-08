@@ -10,16 +10,17 @@
     >
       <LControlZoom style="margin-top: 20px;" position="bottomleft"/>
       <LTileLayer :url="url" :attribution="attribution"/>
-      <QPageSticky class="btn-map-corner" position="bottom-left" :offset="[18, 18]">
-        <QBtn
-          round
-          class="btn-primary-inverted"
-          icon="my_location"
-          size="lg"
-          @click="setToCurrentLocation"
-        />
-      </QPageSticky>
     </LMap>
+    <QPageSticky class="btn-map-corner" position="bottom-left" :offset="[18, 18]">
+      <QBtn
+        round
+        class="btn-primary-inverted"
+        icon="my_location"
+        size="md"
+        @click="setToCurrentLocation"
+      />
+    </QPageSticky>
+    <SearchBar/>
   </div>
 </template>
 
@@ -29,15 +30,20 @@ import moment from 'moment';
 import fullLoading from 'src/helpers/fullLoading';
 import { createMarker, createCircle } from './leafletHelpers';
 import FastMapMixin from './FastMapMixin';
+import SearchBar from './SearchBar';
 import 'leaflet/dist/leaflet.css';
 
+// This component contain leafleft integration
+// This component intialize map
+// Provide some methods that you can extend
 export default {
   components: {
     LMap,
     LTileLayer,
     LMarker,
     LPopup,
-    LControlZoom
+    LControlZoom,
+    SearchBar
   },
   name: 'FastMap',
   mixins: [FastMapMixin],

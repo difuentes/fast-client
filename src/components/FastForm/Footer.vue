@@ -1,0 +1,48 @@
+<template>
+  <div class="footer">
+    <ul class="nav-pills">
+      <li
+        v-for="(page, index) in childrenFormio.pages"
+        :key="page.key"
+        :class="childrenFormio.page === index ? 'nav-item current' : 'nav-item'"
+      >
+        <a class="nav-link" href="">
+          <QIcon name="thumb_up"/>
+          {{page.title}}
+        </a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="">
+          <QIcon name="thumb_up"/>{childrenFormio}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="">
+          <QIcon name="thumb_up"/>Scout
+        </a>
+      </li>
+      <li class="nav-item current">
+        <a class="nav-link" href="">
+          <QIcon name="thumb_up"/>Scout
+        </a>
+      </li>-->
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Footer',
+  props: ['childrenFormio'],
+  data() {
+    return {};
+  },
+  method: {
+    isCurrent() {}
+  },
+  watch: {
+    // eslint-disable-next-line
+    childrenFormio: function(newValue) {}
+  }
+};
+</script>

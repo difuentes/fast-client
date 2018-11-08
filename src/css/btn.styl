@@ -1,6 +1,9 @@
 $primary = #027be3
 $success = #4caf50
 
+.primary
+  color: #027be3
+
 .btn
   border: none
   border-radius: 3px
@@ -10,6 +13,20 @@ $success = #4caf50
   text-transform: uppercase
   font-weight: 500
   
+.btn-sm
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: all .15s ease;
+  border-radius: .375rem;
+  letter-spacing: .025em;
+  text-transform: none;
+  will-change: transform;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+
+.btn-sm:hover
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+
 .btn-success
   background-color: $success
   box-shadow: 0 2px 2px 0 rgba($success, 0.14), 0 3px 1px -2px rgba($success, 0.2), 0 1px 5px 0 rgba($success, 0.12)
@@ -25,6 +42,12 @@ $success = #4caf50
   color: $primary
   background-color: white
   box-shadow: 0 2px 2px 0 rgba(black 0.14), 0 3px 1px -2px rgba(black 0.2), 0 1px 5px 0 rgba(black 0.12)
+
+.btn-primary-outline
+  color: $primary;
+  border-color: $primary;
+  background-color: transparent;
+  background-image: none;
 
 .btn-map-corner
   position: fixed;

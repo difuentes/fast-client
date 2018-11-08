@@ -19,7 +19,7 @@
 
 <script>
 // import { Form as Formio } from 'vue-formio';
-import FastForm from 'components/FastForm';
+import FastForm from 'components/FastForm/FastForm';
 import Formio from 'formiojs/Formio';
 import { OfflinePlugin } from 'fast-fastjs';
 

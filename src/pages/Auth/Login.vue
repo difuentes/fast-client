@@ -22,7 +22,7 @@
 
 <script>
 // import { Form as Formio } from 'vue-formio';
-import FastForm from 'components/FastForm';
+import FastForm from 'components/FastForm/FastForm';
 import { Auth } from 'fast-fastjs';
 
 export default {
