@@ -33,6 +33,9 @@ import FastMapMixin from './FastMapMixin';
 import SearchBar from './SearchBar';
 import 'leaflet/dist/leaflet.css';
 
+// This component contain leafleft integration
+// This component intialize map
+// Provide some methods that you can extend
 export default {
   components: {
     LMap,

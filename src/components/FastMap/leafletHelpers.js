@@ -1,5 +1,5 @@
 import L from 'leaflet';
-// This contain a set of tools of leafletLibrary
+// This contains a set of tools of leafletLibrary
 
 // Given Fastmap event create a marker
 const createMarker = event => {
