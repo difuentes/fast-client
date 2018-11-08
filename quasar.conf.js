@@ -63,6 +63,7 @@ module.exports = function(ctx) {
         'QCardSeparator',
         'QCardTitle',
         'QChip',
+        'QDialog',
         'QFab',
         'QFabAction',
         'QField',
@@ -100,7 +101,7 @@ module.exports = function(ctx) {
       ],
       directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins
-      plugins: ['Notify', 'Loading']
+      plugins: ['Notify', 'Loading', 'Dialog']
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
     },

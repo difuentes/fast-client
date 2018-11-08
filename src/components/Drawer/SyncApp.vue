@@ -1,10 +1,3 @@
-<template>
-  <QItem class="drawer-item" @click.native="syncApp">
-    <QItemSide icon="swap_vert" />
-    <QItemMain :label="$t('Sync Application')"/>
-  </QItem>
-</template>
-
 <script>
 // import { FAST } from 'fast-fastjs';
 

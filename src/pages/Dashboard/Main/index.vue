@@ -181,7 +181,7 @@ export default {
     return {
       tab: null,
       zoom: 18,
-      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      url: 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       currentZoom: 18,
       showParagraph: false,

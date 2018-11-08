@@ -1,14 +1,14 @@
 import Auth from './Auth/routes';
 import Dashboard from './Dashboard/routes';
-import Formio from './Formio/routes';
 import PageManager from './PageManager/routes';
-// Pages routes
+import OfflineMaps from './OfflineMaps/routes';
+
 const routes = [
   { path: '', component: () => import('./Main') },
   ...Auth,
   ...Dashboard,
-  ...Formio,
-  ...PageManager
+  ...PageManager,
+  ...OfflineMaps
 ];
 
 // Layout
