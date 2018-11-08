@@ -169,7 +169,8 @@ export default {
           const loadedSubmission = await this.loadSubmission(submissionId);
           resultSubmission = loadedSubmission.data;
         } else if (this.$route.params.idSubmission) {
-          const s = await Submission.local()
+          const s = await Submission({ path: 'Scoutingtraps' })
+            .local()
             .where('_id', '=', this.$route.params.idSubmission)
             .first();
           resultSubmission = s.data;
@@ -185,7 +186,7 @@ export default {
     },
     participants: {
       get() {
-        return Submission.getParallelParticipants(
+        return Submission({ path: 'Scoutingtraps' }).getParallelParticipants(
           this.$route.params.idForm,
           this.$route.params.idSubmission
         );

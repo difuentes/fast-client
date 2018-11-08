@@ -228,7 +228,9 @@ export default {
         created: date,
         modified: date
       };
-      const submission = await Submission.local().insert(formSubmission);
+      const submission = await Submission({ path: 'Scoutingtraps' })
+        .local()
+        .insert(formSubmission);
       const route = {
         name: 'formio_submission_update',
         params: {
