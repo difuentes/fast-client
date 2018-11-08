@@ -1,4 +1,4 @@
-import { Fluent, Model } from 'fast-fastjs';
+import { Fluent, Model } from 'fast-fluent';
 import b64toBlob from 'b64-to-blob';
 import Axios from 'axios';
 

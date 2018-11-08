@@ -17,18 +17,25 @@
         </p>
       </div>
     </div>
+    <SweetModal hide-close-button blocking ref="errorModal" icon="error">
+      <h2>{{ $t('Login failed') }}</h2>
+      <p>{{ $t('Email and/or password are invalid. Try again.') }}</p>
+      <QBtn slot="button" color="primary" v-on:click="closeModal('errorModal')">{{ $t('Close') }}</QBtn>
+    </SweetModal>
   </div>
 </template>
 
 <script>
 // import { Form as Formio } from 'vue-formio';
 import FastForm from 'components/FastForm/FastForm';
+import { SweetModal } from 'sweet-modal-vue';
 import { Auth } from 'fast-fastjs';
 
 export default {
   name: 'Login',
   components: {
-    FastForm
+    FastForm,
+    SweetModal
   },
   data() {
     return {
@@ -45,16 +52,21 @@ export default {
         ? event.data.username.trim()
         : event.data.email.trim();
       this.credentials.email = this.credentials.username;
+      console.log(this.credentials);
       try {
         await Auth.attempt(this.credentials, this.isAdminLogin ? 'admin' : undefined);
         this.$router.push({
           name: 'dashboard'
         });
       } catch (error) {
+        this.$refs.errorModal.open();
         this.error = Math.random();
         // eslint-disable-next-line
         console.log('Could not login', error);
       }
+    },
+    closeModal(name) {
+      this.$refs[name].close();
     }
   }
 };

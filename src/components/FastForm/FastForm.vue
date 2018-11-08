@@ -4,8 +4,10 @@
       :form="form"
       :language="language"
       :key="error"
+      :options="options"
       v-on:submit="handleSubmit"
-      v-if="form"/>
+      v-if="form"
+    />
   </div>
 </template>
 <script>
@@ -24,7 +26,10 @@ export default {
     const language = localStorage.getItem('defaultLenguage') || 'en';
     return {
       error: null,
-      language
+      language,
+      options: {
+        noAlerts: true
+      }
     };
   },
   asyncData: {

@@ -1,7 +1,8 @@
 import 'babel-polyfill';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { Auth, Fluent, Model } from 'fast-fastjs';
+import { Auth } from 'fast-fastjs';
+import { Fluent, Model } from 'fast-fluent';
 import fullLoading from 'components/fullLoading';
 import routes from './routes';
 
