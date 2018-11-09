@@ -56,9 +56,11 @@ export default {
       this.fastMap.onMove(this.updateMarkerPosition);
     },
     startSurvey() {
+      // eslint-disable-next-line
       console.log('starting survey');
     },
     cancelCollection() {
+      // eslint-disable-next-line
       console.log('cancelling survey');
     }
   },

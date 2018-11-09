@@ -181,7 +181,7 @@ export default {
     return {
       tab: null,
       zoom: 18,
-      url: 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       currentZoom: 18,
       showParagraph: false,
@@ -228,7 +228,7 @@ export default {
         created: date,
         modified: date
       };
-      const submission = await Submission({ path: 'Scoutingtraps' })
+      const submission = await Submission({ path: 'scoutingtraps' })
         .local()
         .insert(formSubmission);
       const route = {
@@ -373,9 +373,10 @@ export default {
     },
     async getLocalMarkers() {
       const marks = [];
-      const data = await Submission.local()
-        .where(['path', '=', 'scoutingtraps'])
-        .andWhere('user_email', '=', Auth.email())
+      const path = 'scoutingtraps';
+      const data = await Submission({ path })
+        .local()
+        .owner(Auth.email())
         .limit(4000)
         .select(
           'data.latitude as lat',
@@ -385,6 +386,7 @@ export default {
           'data.dataCollected as dataCollected'
         )
         .get();
+
       this.localMarkers = L.markerClusterGroup({
         chunkedLoading: true
       });

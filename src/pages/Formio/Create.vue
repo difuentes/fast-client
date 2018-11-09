@@ -269,7 +269,6 @@ export default {
     }
   },
   data() {
-    console.log(this, 'form');
     return {
       formRef: '',
       formUrl: `${this.$FAST_CONFIG.APP_URL}/${this.$route.params.idForm}`,
@@ -307,7 +306,6 @@ export default {
   },
   methods: {
     passRef() {
-      console.log('passingRef');
       this.formRef = this.$refs.formio;
     },
     getTabIcon(page) {
@@ -369,6 +367,7 @@ export default {
       await this.redirectIntended({ submission: formSubmission, created });
     },
     onFormError(event) {
+      // eslint-disable-next-line
       console.log(event);
       // this.$swal({
       //   type: 'error',

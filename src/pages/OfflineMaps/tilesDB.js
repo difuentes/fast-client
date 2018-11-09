@@ -1,8 +1,8 @@
-import { Fluent, Model } from 'fast-fluent';
+import { Fluent } from 'fast-fluent';
 import b64toBlob from 'b64-to-blob';
 import Axios from 'axios';
 
-const model = Fluent.extend(Model, {
+const model = Fluent.extend({
   properties: {
     name: 'MapTiles',
     remoteConnection: undefined

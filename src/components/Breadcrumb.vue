@@ -15,7 +15,6 @@ import { Form } from 'fast-fastjs';
 export default {
   name: 'Breadcrumb',
   data() {
-    console.log(this);
     return {
       isSubmission: this.$route.path.includes('submission'),
       formTitle: ''

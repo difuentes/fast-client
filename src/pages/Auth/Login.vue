@@ -52,7 +52,6 @@ export default {
         ? event.data.username.trim()
         : event.data.email.trim();
       this.credentials.email = this.credentials.username;
-      console.log(this.credentials);
       try {
         await Auth.attempt(this.credentials, this.isAdminLogin ? 'admin' : undefined);
         this.$router.push({

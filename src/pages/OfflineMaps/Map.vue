@@ -165,14 +165,12 @@ export default {
     if (this.$route.params.noTiles) {
       this.$refs.noTilesModal.open();
     }
-
     this.offlineTiles = Fluent.extend({
       properties: {
         name: 'offlineTiles',
         remoteConnection: undefined
       }
     })();
-
     this.$nextTick(async () => {
       this.$refs.map.mapObject._onResize();
       this.map = this.$refs.map.mapObject;

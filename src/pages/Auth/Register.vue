@@ -61,6 +61,7 @@ export default {
       );
 
       if (error) {
+        // eslint-disable-next-line
         console.error(error);
         this.$refs.errorModal.open();
       }

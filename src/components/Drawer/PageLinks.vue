@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     to(page) {
-      console.log(page);
       let to = { name: 'pageManager', params: { path: page.url } };
       if (page.internal) to = { name: page.internalUrl };
       return to;
