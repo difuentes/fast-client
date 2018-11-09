@@ -6,7 +6,7 @@
         :key="page.key"
         :class="childrenFormio.page === index ? 'nav-item current' : 'nav-item'"
       >
-        <a class="nav-link" href="">
+        <a class="nav-link" @click="setPage(page.key)">
           <QIcon name="thumb_up"/>
           {{page.title}}
         </a>
@@ -37,12 +37,18 @@ export default {
   data() {
     return {};
   },
-  method: {
-    isCurrent() {}
+  methods: {
+    isCurrent() {},
+    setPage(key) {
+      this.childrenFormio.setPage(this.childrenFormio.getPageIndexByKey(key));
+    }
   },
   watch: {
     // eslint-disable-next-line
     childrenFormio: function(newValue) {}
+  },
+  async mounted() {
+    console.log(this.childrenFormio);
   }
 };
 </script>
