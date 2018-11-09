@@ -9,6 +9,10 @@
         <QItemSide icon="dashboard"/>
         <QItemMain label="Dashboard"/>
       </QItem>
+      <QItem class="drawer-item" to="/maps">
+        <QItemSide icon="map"/>
+        <QItemMain label="Offline Map"/>
+      </QItem>
       <SyncApp/>
       <SendData/>
       <PageLinks :pages="PAGES"/>

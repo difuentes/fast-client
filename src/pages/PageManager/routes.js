@@ -1,11 +1,11 @@
 const routes = [
   {
     name: 'pageManager',
-    path: '/page/:pageId*',
-    meta: { requiresAuth: true },
-    component: () => import('./Main')
-  },
-  {
+    path: '/page/:path*',
+    component: () => import('./Main/index'),
+    meta: { requiresAuth: true }
+  }
+  /*   {
     name: 'newSurvey',
     path: '/page/:pageId*',
     meta: { requiresAuth: true },
@@ -16,7 +16,7 @@ const routes = [
     path: '/page/:pageId*',
     meta: { requiresAuth: true },
     component: () => import('./Main')
-  }
+  } */
 ];
 
 export default [
