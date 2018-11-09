@@ -56,6 +56,7 @@ import moment from 'moment';
 import 'leaflet/dist/leaflet.css';
 import fullLoading from '../../components/fullLoading';
 import tilesDB from './tilesDB';
+import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
 
 export default {
   name: 'Map',

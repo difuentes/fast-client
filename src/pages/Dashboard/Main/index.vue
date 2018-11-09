@@ -164,6 +164,8 @@ body,
 import moment from 'moment';
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
+import 'leaflet.markercluster/dist/leaflet.markercluster';
 import format from 'date-fns/format';
 import { Form, Submission, Auth, Utilities } from 'fast-fastjs';
 import fullLoading from '../../../components/fullLoading';
