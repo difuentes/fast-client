@@ -2,7 +2,6 @@
   <div class="fastform-container">
     <div class="header">
       <h4 v-if="form" class="title">{{$t(form.title)}}</h4>
-      <button class="btn-sm btn-primary" v-on:click="nextPage">next page</button>
     </div>
     <slot/>
     <Footer v-if="childrenFormio" :childrenFormio="childrenFormio"/>
@@ -22,14 +21,6 @@ export default {
     return {
       childrenFormio: ''
     };
-  },
-  methods: {
-    async nextPage() {
-      await this.childrenFormio.nextPage();
-    },
-    async prevPage() {
-      await this.childrenFormio.prevPage();
-    }
   },
   watch: {
     form: () => {},

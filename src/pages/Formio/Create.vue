@@ -676,6 +676,7 @@ export default {
       }
     },
     singleNext() {
+      console.log('next');
       const button1 = document.querySelectorAll('.btn-wizard-nav-next')[0];
       button1.click();
     },
