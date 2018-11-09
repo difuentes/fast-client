@@ -1,3 +1,6 @@
+<template>
+  <div></div>
+</template>
 <script>
 // import { FAST } from 'fast-fastjs';
 

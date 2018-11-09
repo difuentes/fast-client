@@ -27,7 +27,7 @@ const Export = class {
       });
     }
 
-    return new Promise(async (resolve) => {
+    return new Promise(async resolve => {
       switch (output.toLowerCase()) {
         case 'csv':
           mimeType = 'text/csv;encoding:utf-8';
@@ -73,9 +73,8 @@ const Export = class {
   }
 
   static async getTranslations() {
-    let localTranslations = await Translation.local().find();
-    localTranslations =
-      localTranslations[0] && localTranslations[0].data ? localTranslations[0].data : {};
+    let localTranslations = await Translation.local().first();
+    localTranslations = localTranslations.data ? localTranslations.data : {};
     localTranslations = _mapValues(localTranslations, language => {
       const a = language;
       language = {};

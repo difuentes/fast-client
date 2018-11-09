@@ -6,26 +6,11 @@
         :key="page.key"
         :class="childrenFormio.page === index ? 'nav-item current' : 'nav-item'"
       >
-        <a class="nav-link" href="">
+        <a class="nav-link" @click="setPage(page.key)">
           <QIcon name="thumb_up"/>
           {{page.title}}
         </a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="">
-          <QIcon name="thumb_up"/>{childrenFormio}
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="">
-          <QIcon name="thumb_up"/>Scout
-        </a>
-      </li>
-      <li class="nav-item current">
-        <a class="nav-link" href="">
-          <QIcon name="thumb_up"/>Scout
-        </a>
-      </li>-->
     </ul>
   </div>
 </template>
@@ -37,12 +22,18 @@ export default {
   data() {
     return {};
   },
-  method: {
-    isCurrent() {}
+  methods: {
+    isCurrent() {},
+    setPage(key) {
+      this.childrenFormio.setPage(this.childrenFormio.getPageIndexByKey(key));
+    }
   },
   watch: {
     // eslint-disable-next-line
     childrenFormio: function(newValue) {}
+  },
+  async mounted() {
+    console.log(this.childrenFormio);
   }
 };
 </script>

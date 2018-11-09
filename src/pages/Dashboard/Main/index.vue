@@ -164,6 +164,8 @@ body,
 import moment from 'moment';
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
+import 'leaflet.markercluster/dist/leaflet.markercluster';
 import format from 'date-fns/format';
 import { Form, Submission, Auth, Utilities } from 'fast-fastjs';
 import fullLoading from '../../../components/fullLoading';
@@ -181,7 +183,7 @@ export default {
     return {
       tab: null,
       zoom: 18,
-      url: 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       currentZoom: 18,
       showParagraph: false,
@@ -228,7 +230,7 @@ export default {
         created: date,
         modified: date
       };
-      const submission = await Submission({ path: 'Scoutingtraps' })
+      const submission = await Submission({ path: 'scoutingtraps' })
         .local()
         .insert(formSubmission);
       const route = {
@@ -386,6 +388,7 @@ export default {
           'data.dataCollected as dataCollected'
         )
         .get();
+
       this.localMarkers = L.markerClusterGroup({
         chunkedLoading: true
       });
