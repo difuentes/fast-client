@@ -365,7 +365,7 @@ export default {
         _id: this.$route.params.idSubmission
       };
       const created = await this.save(formSubmission);
-      this.$swal('Saved!', 'Your submission has been saved!', 'success');
+      // this.$swal('Saved!', 'Your submission has been saved!', 'success');
       await this.redirectIntended({ submission: formSubmission, created });
     },
     onFormError(event) {
@@ -484,7 +484,9 @@ export default {
       }
 
       // eslint-disable-next-line
-      return Submission.local().update(formSubmission);
+      return Submission({ path: 'Scoutingtraps' })
+        .local()
+        .update(formSubmission);
     },
     async saveAsDraft() {
       const formSubmission = {
@@ -778,17 +780,23 @@ export default {
     },
     async groupConfig() {
       const groupId = _get(
-        Submission.local().getParallelSurvey(this.currentSubmission),
+        Submission({ path: 'Scoutingtraps' })
+          .local()
+          .getParallelSurvey(this.currentSubmission),
         'groupId',
         undefined
       );
 
-      const options = await Submission.local().getGroups(this.$route.params.idForm);
+      const options = await Submission({ path: 'Scoutingtraps' })
+        .local()
+        .getGroups(this.$route.params.idForm);
       const customOptions = {};
       options.forEach(option => {
         customOptions[option.groupId] = option.groupName;
       });
-      let currentGroup = await Submission.local().getParallelSurvey(this.currentSubmission);
+      let currentGroup = await Submission({ path: 'Scoutingtraps' })
+        .local()
+        .getParallelSurvey(this.currentSubmission);
       currentGroup = currentGroup.groupId ? currentGroup.groupId : undefined;
       delete customOptions[currentGroup];
 
@@ -857,7 +865,9 @@ export default {
 
       this.$swal.queue(steps).then(async result => {
         this.$swal.resetDefaults();
-        await Submission.local().assingToGroup(this.$route.params.idSubmission, result);
+        await Submission({ path: 'Scoutingtraps' })
+          .local()
+          .assingToGroup(this.$route.params.idSubmission, result);
         setTimeout(() => {
           window.location.reload(true);
         }, 1500);
@@ -886,7 +896,8 @@ export default {
 
       if (_id.indexOf('_local') >= 0) {
         [err, submission] = await to(
-          Submission.local()
+          Submission({ path: 'Scoutingtraps' })
+            .local()
             .where('_id', '=', _id)
             .first()
         );

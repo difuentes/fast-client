@@ -373,7 +373,8 @@ export default {
     },
     async getLocalMarkers() {
       const marks = [];
-      const data = await Submission.local()
+      const data = await Submission({ path: 'Scoutingtraps' })
+        .local()
         .where(['path', '=', 'scoutingtraps'])
         .andWhere('user_email', '=', Auth.email())
         .limit(4000)
