@@ -51,7 +51,7 @@ import { SweetModal } from 'sweet-modal-vue';
 import L from 'leaflet';
 // eslint-disable-next-line
 import LOffline from 'leaflet-offline';
-import { Fluent, Model } from 'fast-fluent';
+import { Fluent } from 'fast-fluent';
 import moment from 'moment';
 import 'leaflet/dist/leaflet.css';
 import fullLoading from '../../components/fullLoading';
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       zoom: 18,
-      url: 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       currentZoom: 18,
       zoomValues: {
@@ -166,7 +166,7 @@ export default {
       this.$refs.noTilesModal.open();
     }
 
-    this.offlineTiles = Fluent.extend(Model, {
+    this.offlineTiles = Fluent.extend({
       properties: {
         name: 'offlineTiles',
         remoteConnection: undefined
