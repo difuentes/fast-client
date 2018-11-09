@@ -15,48 +15,43 @@
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
     >
+      <QPageSticky
+        position="bottom-right"
+        :offset="[18, 18]"
+        style="margin-right: 18px !important;"
+      >
+        <QFab icon="add" direction="up" color="black">
+          <QFabAction
+            color="white"
+            textColor="faded"
+            class="white"
+            icon="fa fa-download"
+            @click="saveTiles()"
+          />
+          <QFabAction
+            color="white"
+            textColor="faded"
+            class="white"
+            icon="fa fa-trash"
+            @click="removeTiles()"
+          />
+        </QFab>
+      </QPageSticky>
       <!-- <l-tile-layer :url="url" :attribution="attribution"/> -->
     </LMap>
   </QPage>
 </template>
-<style>
-body {
-  padding: 0;
-  margin: 0;
-}
-
-html,
-body,
-#map {
-  height: 100vh;
-  width: 100vw;
-  z-index: 1;
-}
-
-.q-page-sticky.q-layout-transition.row.flex-center.fixed-bottom-right.q-page-sticky-shrink {
-  z-index: 2;
-}
-
-.q-page-sticky.q-layout-transition.row.flex-center.fixed-bottom-left.q-page-sticky-shrink {
-  z-index: 2;
-}
-
-.asd__inner-wrapper {
-  margin-left: 0 !important;
-}
-</style>
 <script>
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import { SweetModal } from 'sweet-modal-vue';
 import L from 'leaflet';
-// eslint-disable-next-line
-import LOffline from 'leaflet-offline';
+import 'leaflet-offline';
+import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
 import { Fluent } from 'fast-fluent';
 import moment from 'moment';
 import 'leaflet/dist/leaflet.css';
 import fullLoading from '../../components/fullLoading';
 import tilesDB from './tilesDB';
-import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
 
 export default {
   name: 'Map',
@@ -86,7 +81,8 @@ export default {
       modalType: '',
       modalButtonCallback: null,
       myRadius: null,
-      offlineTiles: null
+      offlineTiles: null,
+      offlineControl: null
     };
   },
   methods: {
@@ -123,7 +119,7 @@ export default {
       fullLoading.show(this.$t('Getting GPS position'));
       if (this.me) {
         this.map.removeLayer(this.me);
-        this.map.removeLayer(this.myRadius);
+        // this.map.removeLayer(this.myRadius);
       }
       this.map.locate({ setView: true, maxZoom: 18, timeout: 7000, enableHighAccuracy: true });
     },
@@ -143,7 +139,7 @@ export default {
       // eslint-disable-next-line
       this.myRadius = new L.circle(e.latlng, radius);
 
-      this.myRadius.addTo(this.map);
+      // this.myRadius.addTo(this.map);
 
       this.me.on('dragend', event => {
         const mark = event.target;
@@ -153,11 +149,82 @@ export default {
         this.map.panTo(new L.LatLng(position.lat, position.lng));
       });
       this.map.addLayer(this.me);
+      // this.map.addLayer(this.myRadius);
     },
     onLocationError(e) {
       fullLoading.hide();
       // eslint-disable-next-line
       console.log(e);
+    },
+    saveTiles() {
+      let bounds = null;
+      const zoomLevels = [];
+      let tileUrls = [];
+      const currentZoom = this.map.getZoom();
+      const latlngBounds = this.map.getBounds();
+
+      if (currentZoom < this.zoomValues.min) {
+        this.offlineControl._baseLayer.fire('offline:below-min-zoom-error');
+
+        return;
+      }
+
+      for (let zoom = currentZoom; zoom <= this.zoomValues.max; zoom += 1) {
+        zoomLevels.push(zoom);
+      }
+
+      for (let i = 0; i < zoomLevels.length; i += 1) {
+        bounds = L.bounds(
+          this.map.project(latlngBounds.getNorthWest(), zoomLevels[i]),
+          this.map.project(latlngBounds.getSouthEast(), zoomLevels[i])
+        );
+
+        tileUrls = tileUrls.concat(
+          this.offlineControl._baseLayer.getTileUrls(bounds, zoomLevels[i])
+        );
+      }
+
+      const continueSaveTiles = () => {
+        this.offlineControl._baseLayer.fire('offline:save-start', {
+          nTilesToSave: tileUrls.length
+        });
+
+        this.offlineControl._tilesDb
+          .saveTiles(tileUrls)
+          .then(() => {
+            this.offlineControl._baseLayer.fire('offline:save-end');
+          })
+          .catch(err => {
+            this.offlineControl._baseLayer.fire('offline:save-error', {
+              error: err
+            });
+          });
+      };
+
+      this.tilesToSave = tileUrls.length;
+      this.modalMessage = `Save ${this.tilesToSave} tiles?`;
+      this.modalButtonCallback = continueSaveTiles;
+      this.$refs.dialogModal.open();
+    },
+    removeTiles() {
+      const continueRemoveTiles = () => {
+        this.offlineControl._baseLayer.fire('offline:remove-start');
+
+        this.offlineControl._tilesDb
+          .clear()
+          .then(() => {
+            this.offlineControl._baseLayer.fire('offline:remove-end');
+          })
+          .catch(err => {
+            this.offlineControl._baseLayer.fire('offline:remove-error', {
+              error: err
+            });
+          });
+      };
+
+      this.modalMessage = 'Delete all tiles?';
+      this.modalButtonCallback = continueRemoveTiles;
+      this.$refs.dialogModal.open();
     }
   },
   async mounted() {
@@ -185,27 +252,12 @@ export default {
 
       await this.drawOfflineTiles();
 
-      const offlineControl = L.control.offline(offlineLayer, tilesDB, {
-        position: 'bottomleft',
-        saveButtonHtml: '<i class="fa fa-download" aria-hidden="true"></i>',
-        removeButtonHtml: '<i class="fa fa-trash" aria-hidden="true"></i>',
-        confirmSavingCallback: async (nTilesToSave, continueSaveTiles) => {
-          this.tilesToSave = nTilesToSave;
-          this.modalMessage = `Save ${nTilesToSave} tiles?`;
-          this.modalButtonCallback = continueSaveTiles;
-          this.$refs.dialogModal.open();
-        },
-        confirmRemovalCallback: async continueRemoveTiles => {
-          this.modalMessage = 'Delete all tiles?';
-          this.modalButtonCallback = continueRemoveTiles;
-          this.$refs.dialogModal.open();
-        },
-        minZoom: this.zoomValues.min,
-        maxZoom: this.zoomValues.max
+      this.offlineControl = L.control.offline(offlineLayer, tilesDB, {
+        position: 'bottomleft'
       });
 
       offlineLayer.addTo(this.map);
-      offlineControl.addTo(this.map);
+      this.offlineControl.addTo(this.map);
 
       offlineLayer.on('offline:below-min-zoom-error', () => {
         this.modalMessage = 'Cannot save tiles below minimum zoom level.';
@@ -226,7 +278,7 @@ export default {
         ];
 
         const rect = L.rectangle(rectBounds, {
-          color: '#edb04e',
+          color: '#d62c4e',
           weight: 3,
           fillOpacity: 0.6,
           type: 'rect'
