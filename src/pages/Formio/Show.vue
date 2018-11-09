@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <!-- <q-layout-header >
       <q-toolbar color="black" >
          <q-btn
@@ -47,58 +47,45 @@
         </q-btn>
 
       </q-toolbar>
-    </q-layout-header> -->
-
-          <q-card>
-              <q-card-main style="padding: 0px; min-height: 150px" class="relative-position"  >
-
-                <datatable
-                  :data="submissions"
-                  :form="currentForm"
-                  :menuActions="['create', 'export', 'import']"
-                  :tableActions="$FAST_CONFIG.HAS_REPORT ? ['read-only','edit', 'delete', 'report'] : ['edit', 'delete', 'read-only']"
-                  fastMode="show"
-                  v-on:refresh="refreshData"
-                  v-if="!noSubmissions"
-                />
-            </q-card-main>
-          </q-card>
-
-
-
-
-
-      <q-page-sticky
-          position="bottom-right"
-          :offset="[18, 60]"
-          style="margin-right: 18px !important;"
-        >
-        <q-fab
-          icon="add"
-          direction="up"
-          color="black"
-        >
-          <q-fab-action
-            color="grey-1"
-            textColor="grey-7"
-            icon="fab fa-wpforms"
-            @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"
-          />
-          <q-fab-action
-            color="grey-1"
-            textColor="grey-7"
-            icon="fa fa-binoculars"
-            @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"
-          />
-
-          <q-fab-action
-            color="grey-1"
-            textColor="grey-7"
-            icon="fas fa-archive"
-            @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
-          />
-
-        </q-fab>
+    </q-layout-header>-->
+    <q-card>
+      <q-card-main style="padding: 0px; min-height: 150px" class="relative-position">
+        <datatable
+          :data="submissions"
+          :form="currentForm"
+          :menuActions="['create', 'export', 'import']"
+          :tableActions="$FAST_CONFIG.HAS_REPORT ? ['read-only','edit', 'delete', 'report'] : ['edit', 'delete', 'read-only']"
+          fastMode="show"
+          v-on:refresh="refreshData"
+          v-if="!noSubmissions"
+        />
+      </q-card-main>
+    </q-card>
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[18, 60]"
+      style="margin-right: 18px !important;"
+    >
+      <q-fab icon="add" direction="up" color="black">
+        <q-fab-action
+          color="grey-1"
+          textColor="grey-7"
+          icon="fab fa-wpforms"
+          @click.native="goToCreateView({dataCollected: {scouting: true, traps: true}})"
+        />
+        <q-fab-action
+          color="grey-1"
+          textColor="grey-7"
+          icon="fa fa-binoculars"
+          @click.native="goToCreateView({dataCollected: {scouting: true, traps: false}})"
+        />
+        <q-fab-action
+          color="grey-1"
+          textColor="grey-7"
+          icon="fas fa-archive"
+          @click.native="goToCreateView({dataCollected: {scouting: false, traps: true}})"
+        />
+      </q-fab>
     </q-page-sticky>
   </div>
 </template>
@@ -106,7 +93,7 @@
 <script>
 import datatable from 'components/dataTable/dataTable';
 import { Form, Event, Submission, Auth, Utilities } from 'fast-fastjs';
-import Columns from 'components/dataTable/formatters/Columns';
+// import Columns from 'components/dataTable/formatters/Columns';
 
 export default {
   async created() {
@@ -171,7 +158,9 @@ export default {
         created: date,
         modified: date
       };
-      const submission = await Submission.local().insert(formSubmission);
+      const submission = await Submission({ path: 'Scoutingtraps' })
+        .local()
+        .insert(formSubmission);
       const route = {
         name: 'formio_submission_update',
         params: {
@@ -212,15 +201,11 @@ export default {
       // Toast.create.positive({ html: 'Your data was uploaded!' });
     },
     async refreshData() {
-      const cols = Columns.getTableView(this.currentForm.data).map(
-        o => `data.${o.path} as ${o.path}`
-      );
-      const submissions = await Submission.showView({
-        path: this.$route.params.path,
-        columns: cols,
-        vm: this
-      });
-
+      // const cols = Columns.getTableView(this.currentForm.data).map(
+      //   o => `data.${o.path} as ${o.path}`
+      // );
+      const { path } = this.$route.params;
+      const submissions = await Submission({ path }).showView({ limit: 5000, owner: Auth.email() });
       this.submissions = submissions;
     }
   }
