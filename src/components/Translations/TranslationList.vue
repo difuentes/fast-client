@@ -49,8 +49,12 @@
 
 <script>
 import TranslationItem from './TranslationItem';
+
 export default {
   name: 'TranslationsList',
+  components: {
+    TranslationItem
+  },
   data() {
     return {
       untranslated: false,
@@ -71,17 +75,21 @@ export default {
     }
   },
   watch: {
+    // eslint-disable-next-line
     labels: () => {},
+    // eslint-disable-next-line
     translations: () => {}
   },
   computed: {
     _labels() {
+      // eslint-disable-next-line
       this.currentPage = 1;
       let filteredTranslations = [];
       const search = this.translationSearch.toLowerCase();
+      // eslint-disable-next-line
       filteredTranslations = this.labels.filter(l => {
         const label = l.toLowerCase();
-        if (!label.includes(search)) return;
+        if (!label.includes(search)) return null;
         if (!this.untranslated) return l;
         if (this.translations[l] === '') return l;
       });
@@ -98,6 +106,7 @@ export default {
   methods: {
     paginate(array, pageSize, pageNumber) {
       const newArray = [...array];
+      // eslint-disable-next-line
       --pageNumber;
       return newArray.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
     }

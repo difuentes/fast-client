@@ -204,7 +204,8 @@ export default {
       // const cols = Columns.getTableView(this.currentForm.data).map(
       //   o => `data.${o.path} as ${o.path}`
       // );
-      const submissions = await Submission({ path: 'Scoutingtraps' }).showView();
+      const { path } = this.$route.params;
+      const submissions = await Submission({ path }).showView({ limit: 5000, owner: Auth.email() });
       this.submissions = submissions;
     }
   }

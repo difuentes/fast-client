@@ -9,8 +9,7 @@ import Forms from './offline/Forms.json';
 export default {
   type: 'remote',
   fluentFormioBaseUrl: process.env.FLUENT_FORMIO_BASEURL,
-  appConfigId: process.env.FAST_CONFIG_ID,
-  appConfigUrl: `${process.env.FAST_CONFIG_URL}/configuration/submission`,
+  appConfigUrl: `${process.env.FAST_CONFIG_URL}`,
   i18n: translations,
   offlineStart: true,
   offlineFiles: {

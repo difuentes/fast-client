@@ -18,6 +18,7 @@
 <script>
 import { Translation } from 'fast-fastjs';
 import to from 'await-to-js';
+
 export default {
   name: 'TranslationItem',
   data() {
@@ -55,9 +56,11 @@ export default {
     },
     async change() {
       this.loading = true;
+
+      // eslint-disable-next-line
       let translation = {};
       translation[this.language] = this.currentValue;
-      let [err] = await to(Translation.updateLabel(this.label, translation));
+      const [err] = await to(Translation.updateLabel(this.label, translation));
       this.loading = false;
       if (!err) {
         this.oldValue = this.currentValue;
