@@ -5,20 +5,13 @@ import OfflineMaps from './OfflineMaps/routes';
 import Formio from './Formio/routes';
 import Settings from './Settings/routes';
 
-const routes = [
-  { path: '', component: () => import('./Main') },
-  ...Auth,
-  ...Dashboard,
-  ...PageManager,
-  ...OfflineMaps,
-  ...Formio,
-  ...Settings
-];
+const routes = [...Dashboard, ...PageManager, ...OfflineMaps, ...Formio, ...Settings];
 
 // Layout
 export default [
+  ...Auth,
   {
-    path: '/',
+    path: '/app',
     component: () => import('./Layout'),
     children: routes
   }

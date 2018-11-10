@@ -1,18 +1,21 @@
 <template>
   <div class="form-login">
+    <span v-if="!form">
+    Loading form...
+    </span>
     <Formio
       :form="form"
       :language="language"
       :key="error"
       :options="options"
       v-on:submit="handleSubmit"
-      v-if="form"
+      v-else
     />
   </div>
 </template>
 <script>
 import { Form as Formio } from 'vue-formio';
-import { Form, Translation } from 'fast-fastjs';
+import { Form, Translation, Utilities } from 'fast-fastjs';
 
 export default {
   name: 'FastForm',
@@ -34,13 +37,13 @@ export default {
   },
   asyncData: {
     form: {
-      get() {
+      async get() {
         return Form.local()
           .where('data.path', '=', this.path)
           .first();
       },
-      transform({ data }) {
-        return data;
+      transform(form) {
+        return Utilities.get(() => form.data, undefined);
       }
     },
     options: {
