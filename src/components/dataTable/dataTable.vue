@@ -74,10 +74,6 @@
           <q-icon name="description" color="grey" size="20px"/>
           <q-tooltip>{{$t('Draft')}}</q-tooltip>
         </div>
-        <div v-if="scope.row.status === 'offline' && scope.row.draft">
-          <q-icon name="description" color="grey" size="20px"/>
-          <q-tooltip>{{$t('Draft')}}</q-tooltip>
-        </div>
         <div v-else-if="scope.row.status === 'offline'">
           <q-icon name="description" color="blue" size="20px"/>
           <q-tooltip>{{$t('Offline submission')}}</q-tooltip>
@@ -262,7 +258,7 @@ export default {
       return sub;
     },
     async handleReview({ readOnly }) {
-      const rows = this.selectedRows;
+      const rows = this.selected;
       if (rows.length > 1) {
         this.$swal({
           title: this.$t('Review for multiple rows'),
@@ -271,7 +267,7 @@ export default {
         });
         return;
       }
-      const submission = this.selectedRows[0];
+      const submission = this.selected[0];
       this.$router.push({
         name: 'formio_submission_update',
         query: {
@@ -287,7 +283,7 @@ export default {
             : this.$route.query.parent
         },
         params: {
-          idForm: this.form.data.path,
+          path: this.form.data.path,
           idSubmission: submission._id
         }
       });
@@ -306,7 +302,7 @@ export default {
       });
     },
     handleReport() {
-      const rows = this.selectedRows;
+      const rows = this.selected;
 
       if (rows.length > 1) {
         this.$swal({
@@ -330,7 +326,7 @@ export default {
       });
     },
     handleDelete() {
-      const rows = this.selectedRows;
+      const rows = this.selected;
       const self = this;
       if (rows.length === 0) {
         this.$swal({
@@ -433,7 +429,7 @@ export default {
       });
     },
     goToEditView() {
-      const rows = this.selectedRows;
+      const rows = this.selected;
       if (rows.length > 1) {
         this.$swal({
           title: this.$t('Edit Multiple Rows'),
@@ -442,7 +438,7 @@ export default {
         });
         return;
       }
-      const submission = this.selectedRows[0];
+      const submission = this.selected[0];
       const formId = _get(this.form, 'data.properties["fast-edit-view"]') || this.form.data.path;
       if (submission.status === 'online' && !submission._lid) {
         this.handleOnlineEdit(submission, formId);
@@ -452,7 +448,7 @@ export default {
       this.$router.push({
         name: 'formio_submission_update',
         params: {
-          idForm: formId,
+          path: formId,
           idSubmission: submissionId
         },
         query: {
@@ -497,6 +493,7 @@ export default {
     }
   },
   data() {
+    console.log(this);
     return {
       selected: [],
       serverData: [],
