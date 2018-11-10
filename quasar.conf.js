@@ -5,12 +5,13 @@ module.exports = function(ctx) {
   return {
     // app plugins (/src/plugins)
     plugins: [
-      'boot',
-      'VueAsyncProperties',
-      'leaflet',
       'AirbnbStyleDatepicker',
+      'VueAsyncProperties',
+      'VueSweetalert2',
+      'boot',
       'direction',
-      'geocoder'
+      'geocoder',
+      'leaflet'
     ],
     config: {
       // optional (v0.17+)
@@ -68,6 +69,7 @@ module.exports = function(ctx) {
         'QFabAction',
         'QField',
         'QIcon',
+        'QInput',
         'QItem',
         'QItemMain',
         'QItemSide',
@@ -86,6 +88,8 @@ module.exports = function(ctx) {
         'QRange',
         'QRouteTab',
         'QSearch',
+        'QStep',
+        'QStepper',
         'QTab',
         'QTabPane',
         'QTable',
