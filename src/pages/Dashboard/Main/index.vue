@@ -375,10 +375,10 @@ export default {
     },
     async getLocalMarkers() {
       const marks = [];
-      const data = await Submission({ path: 'Scoutingtraps' })
+      const path = 'scoutingtraps';
+      const data = await Submission({ path })
         .local()
-        .where(['path', '=', 'scoutingtraps'])
-        .andWhere('user_email', '=', Auth.email())
+        .owner(Auth.email())
         .limit(4000)
         .select(
           'data.latitude as lat',

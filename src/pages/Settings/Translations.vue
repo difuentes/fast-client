@@ -56,8 +56,7 @@ export default {
     await this.syncApp();
     this.formNameFilters = await Form.local().get();
     this.supportedLanguages = await Translation.supportedLanguages();
-    console.log(forms);
-    this.translations = await Form.FormLabels(forms, this.$appConf.i18n);
+    this.translations = await Form.FormLabels(this.selection, this.$appConf.i18n);
     // this.translations = await Form.FormLabels([], this.$appConf.i18n);
     // Object.keys(this.translations).forEach(label => {
     //   if (this.getCurrentTranslations(label) === -1) {
