@@ -23,10 +23,11 @@ export default {
   asyncData: {
     formTitle: {
       async get() {
-        const { data } = await Form.local()
+        const result = await Form.local()
           .where('data.path', '=', this.$route.params.path)
           .first();
-        return data.title;
+        if (!result) return 'Form Title';
+        return result.data.title;
       },
       transform(result) {
         return result;

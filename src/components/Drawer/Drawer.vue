@@ -13,7 +13,7 @@
         <QItemSide icon="map"/>
         <QItemMain label="Offline Map"/>
       </QItem>
-      <SyncApp/>
+      <!-- <SyncApp/> -->
       <SendData/>
       <PageLinks :pages="PAGES"/>
       <QItem @click.native="handleLogout" class="drawer-item">
@@ -31,7 +31,7 @@ import { Auth, Pages } from 'fast-fastjs';
 import Logo from 'components/Logo';
 import PageLinks from './PageLinks';
 import SendData from './SendData';
-import SyncApp from './SyncApp';
+// import SyncApp from './SyncApp';
 
 export default {
   name: 'Drawer',
@@ -41,7 +41,7 @@ export default {
   components: {
     Logo,
     SendData,
-    SyncApp,
+    // SyncApp,
     PageLinks
   },
   asyncData: {
