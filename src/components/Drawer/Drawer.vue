@@ -13,7 +13,7 @@
         <QItemSide icon="map"/>
         <QItemMain label="Offline Map"/>
       </QItem>
-      <!-- <SyncApp/> -->
+      <SyncApp/>
       <SendData/>
       <PageLinks :pages="PAGES"/>
       <QItem @click.native="handleLogout" class="drawer-item">
@@ -21,7 +21,7 @@
         <QItemMain label="Log Out"/>
       </QItem>
       <div class="drawer-footer">
-        <LightLogo padding="15px" width="270px"/>
+        <LightLogo padding="10px" height="55px" width="250px"/>
       </div>
     </QList>
   </QLayoutDrawer>
@@ -36,8 +36,8 @@ import LightLogo from 'components/LightLogo';
 import ProfileInfo from 'components/ProfileInfo';
 import PageLinks from './PageLinks';
 import SendData from './SendData';
-// import SyncApp from './SyncApp';
-
+import SyncApp from './SyncApp';
+// TODO: Make logout component
 export default {
   name: 'Drawer',
   props: {
@@ -47,7 +47,7 @@ export default {
     Logo,
     LightLogo,
     SendData,
-    // SyncApp,
+    SyncApp,
     PageLinks,
     ProfileInfo
   },

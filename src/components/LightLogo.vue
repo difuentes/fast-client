@@ -11,6 +11,8 @@ export default {
   data() {
     return {
       logoContainerStyle: {
+        position: 'absolute',
+        bottom: 0,
         padding: this.padding || '50px',
         textAlign: 'center'
       },

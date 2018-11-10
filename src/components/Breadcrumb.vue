@@ -15,6 +15,7 @@ import { Form } from 'fast-fastjs';
 export default {
   name: 'Breadcrumb',
   data() {
+    console.log('breadcrumb', this);
     return {
       isSubmission: this.$route.path.includes('submission'),
       formTitle: ''
@@ -26,11 +27,11 @@ export default {
         const result = await Form.local()
           .where('data.path', '=', this.$route.params.path)
           .first();
-        if (!result) return 'Form Title';
-        return result.data.title;
+        return result;
       },
       transform(result) {
-        return result;
+        if (!result) return 'Form Title';
+        return result.data.title;
       }
     }
   }

@@ -388,11 +388,11 @@ export default {
           'data.dataCollected as dataCollected'
         )
         .get();
-
       this.localMarkers = L.markerClusterGroup({
         chunkedLoading: true
       });
       data.forEach(e => {
+        if (!e.lat || !e.lng) return;
         let color = 'cadetblue';
         let icon = 'description';
         const prefix = 'fa';
