@@ -4,7 +4,7 @@
       <h4 v-if="form" class="title">{{$t(form.title)}}</h4>
     </div>
     <slot/>
-    <Footer v-if="childrenFormio" :childrenFormio="childrenFormio"/>
+    <Footer v-if="childrenFormio && footer" :childrenFormio="childrenFormio"/>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   components: {
     Footer
   },
-  props: ['form', 'formio'],
+  props: ['form', 'formio', 'footer'],
   data() {
     return {
       childrenFormio: ''

@@ -87,10 +87,8 @@ export default {
           formPath = 'admin/profile';
           form = 'admin';
         }
-
         if (action.internalUrl === 'userProfile') {
-          const path = `/forms/${formPath}
-            /submission/own_unique_from/update?mode=online&form=${form}&parent=${btoa(
+          const path = `/forms/${formPath}/submission/own_unique_from/update?mode=online&form=${form}&parent=${btoa(
             JSON.stringify(parent)
           )}`;
           this.$router.push(path);

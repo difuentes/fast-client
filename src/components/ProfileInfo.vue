@@ -13,9 +13,10 @@ import { Auth } from 'fast-fastjs';
 export default {
   name: 'ProfileInfo',
   data() {
-    console.log(this);
     return {
-      userProfile: undefined
+      userProfile: {
+        name: ''
+      }
     };
   },
   asyncData: {

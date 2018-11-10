@@ -23,11 +23,11 @@ export default {
     pages: () => {}
   },
   methods: {
-    to(page) {
-      if (page.internalUrl === 'newSurvey') this.goToFormSubmission();
-      if (page.internalUrl === 'CollectedData') this.goToCollectedData();
+    async to(page) {
       let to = { name: 'pageManager', params: { path: page.url } };
       if (page.internal) to = { name: page.internalUrl };
+      if (page.internalUrl === 'CollectedData') to = this.goToCollectedData();
+      if (page.internalUrl === 'newSurvey') to = await this.goToFormSubmission();
       this.$router.push(to);
     },
     icon(pageIcon) {
@@ -61,17 +61,16 @@ export default {
           parent: this.$route.query.parent
         }
       };
-      this.$router.push(route);
+      return route;
     },
-    async goToCollectedData() {
-      console.log(this);
-      const to = {
+    goToCollectedData() {
+      const route = {
         name: 'formio_form_show',
         params: {
           path: 'scoutingtraps'
         }
       };
-      this.$router.push(to);
+      return route;
     }
   }
 };

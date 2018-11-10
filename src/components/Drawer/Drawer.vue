@@ -13,7 +13,7 @@
         <QItemSide icon="map"/>
         <QItemMain label="Offline Map"/>
       </QItem>
-      <!-- <SyncApp/> -->
+      <SyncApp/>
       <SendData/>
       <PageLinks :pages="PAGES"/>
       <QItem @click.native="handleLogout" class="drawer-item">
@@ -36,7 +36,7 @@ import LightLogo from 'components/LightLogo';
 import ProfileInfo from 'components/ProfileInfo';
 import PageLinks from './PageLinks';
 import SendData from './SendData';
-// import SyncApp from './SyncApp';
+import SyncApp from './SyncApp';
 
 export default {
   name: 'Drawer',
@@ -47,7 +47,7 @@ export default {
     Logo,
     LightLogo,
     SendData,
-    // SyncApp,
+    SyncApp,
     PageLinks,
     ProfileInfo
   },

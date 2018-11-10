@@ -1,8 +1,8 @@
 <template>
-  <div class='image-container'>
-    <Container> 
-      <Logo />
-      <router-view />
+  <div class="image-container">
+    <Container>
+      <Logo/>
+      <router-view/>
     </Container>
   </div>
 </template>
