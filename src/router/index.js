@@ -37,15 +37,16 @@ export default function(/* { store, ssrContext } */) {
       next(false);
       Router.push({ name: 'login' });
     }
+
     // Offline map check
-    const model = Fluent.extend({
+    const Tile = Fluent.extend({
       properties: {
         name: 'MapTiles',
         remoteConnection: undefined
       }
     })();
 
-    const tile = await model.local().first();
+    const tile = await Tile.local().first();
 
     if (Auth.user() && !tile && to.name !== 'maps') {
       next(false);

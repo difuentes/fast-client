@@ -22,7 +22,7 @@
     <q-pagination
       v-model="currentPage"
       :max="totalPages"
-      :max-pages="6"
+      :max-pages="4"
       direction-links
       boundary-links
     />
@@ -40,7 +40,7 @@
       class="pull-right"
       v-model="currentPage"
       :max="totalPages"
-      :max-pages="6"
+      :max-pages="4"
       direction-links
       boundary-links
     />

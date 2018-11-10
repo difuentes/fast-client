@@ -20,8 +20,8 @@
     "date-fns": "^1.29.0",
     "dotenv-webpack": "^1.5.7",
     "fast-downloads": "^0.1.0",
-    "fast-fastjs": "^0.5.6",
-    "fast-fluent": "^0.1.10",
+    "fast-fastjs": "^0.5.9",
+    "fast-fluent": "^0.1.15",
     "fast-submission2any": "^0.1.0",
     "formio-export": "^0.3.0",
     "i18next": "^11.10.2",
@@ -40,11 +40,9 @@
     "vue-async-data": "^1.0.2",
     "vue-async-properties": "^0.5.0",
     "vue-formio": "^3.0.1",
-    "vue-i18n": "^8.1.0",
-    "vue-sweetalert2": "^1.5.7",
     "vue-i18n": "^8.3.1",
+    "vue-sweetalert2": "^1.5.7",
     "vue2-leaflet": "^1.2.1"
-
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

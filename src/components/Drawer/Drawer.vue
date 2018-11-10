@@ -3,7 +3,7 @@
   <QLayoutDrawer class="sidebar" side="left" v-model="showLeft">
     <QList no-border link="">
       <div class="drawer-header">
-        <Logo padding="15px" width="270px"/>
+        <ProfileInfo/>
       </div>
       <QItem class="drawer-item current" to="/dashboard">
         <QItemSide icon="dashboard"/>
@@ -20,6 +20,9 @@
         <QItemSide color="red" icon="power_settings_new"/>
         <QItemMain label="Log Out"/>
       </QItem>
+      <div class="drawer-footer">
+        <LightLogo padding="15px" width="270px"/>
+      </div>
     </QList>
   </QLayoutDrawer>
 </template>
@@ -29,6 +32,8 @@ import _sortBy from 'lodash/sortBy';
 import Promise from 'bluebird';
 import { Auth, Pages } from 'fast-fastjs';
 import Logo from 'components/Logo';
+import LightLogo from 'components/LightLogo';
+import ProfileInfo from 'components/ProfileInfo';
 import PageLinks from './PageLinks';
 import SendData from './SendData';
 // import SyncApp from './SyncApp';
@@ -40,9 +45,11 @@ export default {
   },
   components: {
     Logo,
+    LightLogo,
     SendData,
     // SyncApp,
-    PageLinks
+    PageLinks,
+    ProfileInfo
   },
   asyncData: {
     PAGES: {
