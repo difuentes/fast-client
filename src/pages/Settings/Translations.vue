@@ -43,8 +43,7 @@ export default {
     TranslationsList,
     LanguageSelector
   },
-  data: function() {
-    console.log(this);
+  data: () => {
     return {
       selectedLanguange: '',
       translations: null,
@@ -53,19 +52,20 @@ export default {
     };
   },
   async created() {
-    await this.syncApp();
+    // await this.syncApp();
     this.formNameFilters = await Form.local().get();
     this.supportedLanguages = await Translation.supportedLanguages();
-    this.translations = await Form.FormLabels(this.selection, this.$appConf.i18n);
-    // this.translations = await Form.FormLabels([], this.$appConf.i18n);
-    // Object.keys(this.translations).forEach(label => {
-    //   if (this.getCurrentTranslations(label) === -1) {
-    //     this.untranslatedArray.push(label);
-    //   }
-    // });
-    // if (this.untranslatedArray.length > 0) {
-    //   this.createTranslations();
-    // }
+    this.translations = await Form.FormLabels(this.$appConf.i18n);
+  
+
+    Object.keys(this.translations).forEach(label => {
+      if (this.getCurrentTranslations(label) === -1) {
+        this.untranslatedArray.push(label);
+      }
+    });
+    if (this.untranslatedArray.length > 0) {
+      this.createTranslations();
+    }
   },
   computed: {
     labelsArray() {
