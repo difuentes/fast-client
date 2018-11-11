@@ -7,7 +7,7 @@
       type="text"
       :stack-label="$t('NAME FILTER')"
       :placeholder="$t('search...')"
-      :after="[{  icon: 'fa-search'}]"
+      :after="[{  icon: 'fas fa-search'}]"
       clearable
     />
     <q-list separator no-border link="">

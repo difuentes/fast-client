@@ -11,7 +11,7 @@
         readonly
       >
         {{language.completed}}
-        <q-icon class="on-right" name="fa-percent"/>
+        <q-icon class="on-right" name="fas fa-percent"/>
       </q-knob>
     </q-item-side>
     <q-item-main :label="language.name"></q-item-main>

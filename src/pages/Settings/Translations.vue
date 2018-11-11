@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <q-card
-      flat
-      class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-lg-offset-1 col-md-offset-1 col-xl-offset-1"
-      style="position:inherit !important;"
-    >
+  <Container>
+    <q-card>
       <q-card-main>
         <div>
           <q-stepper contractable ref="stepper">
@@ -28,7 +24,7 @@
         </div>
       </q-card-main>
     </q-card>
-  </div>
+  </Container>
 </template>
 <script>
 /* eslint-disable */
@@ -37,11 +33,13 @@ import Promise from 'bluebird';
 import _forEach from 'lodash/forEach';
 import LanguageSelector from 'components/LanguageSelector/LanguageSelector';
 import TranslationsList from 'components/Translations/TranslationList';
-
+import Container from 'components/Container';
+import compact from 'lodash/compact';
 export default {
   components: {
     TranslationsList,
-    LanguageSelector
+    LanguageSelector,
+    Container
   },
   data: () => {
     return {
@@ -55,8 +53,7 @@ export default {
     // await this.syncApp();
     this.formNameFilters = await Form.local().get();
     this.supportedLanguages = await Translation.supportedLanguages();
-    this.translations = await Form.FormLabels(this.$appConf.i18n);
-  
+    this.translations = await Form.FormLabels(this.selected, compact(this.$appConf.i18n));
 
     Object.keys(this.translations).forEach(label => {
       if (this.getCurrentTranslations(label) === -1) {
