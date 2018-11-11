@@ -115,6 +115,8 @@ export default {
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'OK'
+      }).then(async () => {
+        window.location.reload(true);
       });
     }
   }

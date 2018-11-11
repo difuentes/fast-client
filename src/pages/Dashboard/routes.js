@@ -2,7 +2,7 @@ const routes = [
   {
     name: 'dashboard',
     path: '/dashboard',
-    component: () => import('./Main'),
+    component: () => import('./Main/index'),
     meta: { requiresAuth: true }
   },
   {
@@ -16,7 +16,7 @@ const routes = [
 export default [
   {
     path: '',
-    component: () => import('layouts/MainLayout'),
+    component: () => import('layouts/MapLayout'),
     children: routes
   }
 ];

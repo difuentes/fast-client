@@ -27,11 +27,11 @@ export default {
         const result = await Form.local()
           .where('data.path', '=', this.$route.params.path)
           .first();
-        return result;
+        if (!result) return this.$route.params.path;
+        return result.data.title;
       },
       transform(result) {
-        if (!result) return 'Form Title';
-        return result.data.title;
+        return result;
       }
     }
   }
