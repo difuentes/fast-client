@@ -1,14 +1,7 @@
 <template>
-  <div
-    class="container-fluid col-lg-offset-1 col-lg-10"
-    v-bind:key="$route.path"
-    style="padding-bottom:50px"
-  >
-    <div class="pageTitle">{{page && page.title ? $t(page.title) : ''}}</div>
-    <Breadcrumb :parent="$route.query.parent" :currentPageTitle="pageTitle"/>
-    <hr style="border-top: 1px solid lightgray">
-    <actionCards :page="JSON.stringify(page)" v-bind:key="$route.path"></actionCards>
-  </div>
+  <actionCards :page="JSON.stringify(page)" v-bind:key="$route.path"></actionCards>
+  <!-- <div class="pageTitle">{{page && page.title ? $t(page.title) : ''}}</div>
+  <Breadcrumb :parent="$route.query.parent" :currentPageTitle="pageTitle"/>-->
 </template>
 
 <script>

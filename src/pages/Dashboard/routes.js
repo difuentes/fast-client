@@ -5,20 +5,6 @@ const routes = [
     component: () => import('./Main/index'),
     meta: { requiresAuth: true }
   },
-  // },
-  // {
-  //   name: 'CollectedData',
-  //   path: '/collectedData',
-  //   component: () => import('./CollectedData'),
-  //   meta: { requiresAuth: true }
-  // },
-  // {
-  //   name: 'newSurvey',
-  //   path: '/survey',
-  //   component: () => import('./CollectedData'),
-  //   meta: { requiresAuth: true }
-  // },
-  //
   {
     name: 'About',
     path: '/about',

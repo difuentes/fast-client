@@ -1,12 +1,13 @@
 <template>
-  <div class='icon'>
-    <q-icon name="assignment" />
+  <div class="icon">
+    <q-icon :name="`fas ${name}`"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Icon'
+  name: 'Icon',
+  props: ['name']
 };
 </script>
 

@@ -15,6 +15,7 @@
       </QItem>
       <SyncApp/>
       <SendData/>
+      <Translate/>
       <PageLinks :pages="PAGES"/>
       <QItem @click.native="handleLogout" class="drawer-item">
         <QItemSide color="red" icon="power_settings_new"/>
@@ -33,8 +34,9 @@ import Promise from 'bluebird';
 import { Auth, Pages } from 'fast-fastjs';
 import Logo from 'components/Logo';
 import LightLogo from 'components/LightLogo';
-import ProfileInfo from 'components/ProfileInfo';
+import ProfileInfo from 'components/ProfileInfo/ProfileInfo';
 import PageLinks from './PageLinks';
+import Translate from './Translate';
 import SendData from './SendData';
 import SyncApp from './SyncApp';
 // TODO: Make logout component
@@ -48,6 +50,7 @@ export default {
     LightLogo,
     SendData,
     SyncApp,
+    Translate,
     PageLinks,
     ProfileInfo
   },

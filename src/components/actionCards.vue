@@ -1,19 +1,33 @@
 <template>
   <div>
-    <div class="col-lg-12 col-md-12 col-sm-12">
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12">
       <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8 pull-right">
         <q-search v-model="filter" :placeholder="$t('Filter results...')"/>
       </div>
-    </div>
-    <div v-for="(chunk, index) in _cards" v-bind:key="index" class="col-lg-12">
+    </div>-->
+    <div v-for="(chunk, index) in _cards" v-bind:key="index" class="row">
       <div
         class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12"
         v-for="card in chunk"
         v-bind:key="card.title"
-        style="margin:auto;"
         v-if="card.shouldDisplay || typeof(card.shouldDisplay) === 'undefined'"
       >
-        <q-card color="white" class="text-black cardRibbon">
+        <QCard>
+          <q-item>
+            <q-item-side style="margin-right: 10px;">
+              <Icon :name="!card.customIcon && card.icon ? card.icon : null"/>
+            </q-item-side>
+            <q-item-main>
+              <q-item-tile label="">
+                <h6 class="primary-text">{{$t(card.title)}}</h6>
+              </q-item-tile>
+              <q-item-tile sublabel>
+                <p class="muted-text" style="margin:auto;, line-height: 30px;">{{$t(card.subtitle)}}</p>
+              </q-item-tile>
+            </q-item-main>
+          </q-item>
+        </QCard>
+        <!-- <q-card color="white" class="text-black cardRibbon">
           <q-card-title>
             <q-item>
               <q-item-side
@@ -38,7 +52,7 @@
               >{{$t(action.text)}}</q-btn>
             </span>
           </q-card-title>
-        </q-card>
+        </q-card>-->
       </div>
     </div>
   </div>
@@ -52,9 +66,13 @@
 <script>
 import _chunk from 'lodash/chunk';
 import { Auth } from 'fast-fastjs';
+import Icon from 'components/Icon';
 
 export default {
   name: 'ActionCards',
+  components: {
+    Icon
+  },
   props: ['page'],
   data() {
     return {

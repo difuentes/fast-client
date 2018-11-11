@@ -7,7 +7,7 @@
           type="text"
           :stack-label="$t('TRANSLATION FILTER')"
           :placeholder="$t('Search...')"
-          :after="[{  icon: 'fa-search'}]"
+          :after="[{  icon: 'fas fa-search'}]"
           clearable
         />
       </div>

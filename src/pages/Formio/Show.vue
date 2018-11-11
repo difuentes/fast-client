@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Container>
     <!-- <q-layout-header >
       <q-toolbar color="black" >
          <q-btn
@@ -87,12 +87,13 @@
         />
       </q-fab>
     </q-page-sticky>
-  </div>
+  </Container>
 </template>
 
 <script>
-import datatable from 'components/dataTable/dataTable';
 import { Form, Event, Submission, Auth, Utilities } from 'fast-fastjs';
+import datatable from 'components/dataTable/dataTable';
+import Container from 'components/Container';
 // import Columns from 'components/dataTable/formatters/Columns';
 
 export default {
@@ -136,7 +137,8 @@ export default {
     }
   },
   components: {
-    datatable
+    datatable,
+    Container
   },
   data() {
     return {

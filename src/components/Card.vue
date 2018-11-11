@@ -1,20 +1,21 @@
 <template>
-  <QCard>
-    <QCardTitle>
-      <div class="row flex-vertical-align">
-        <div class="col-xs-2">
+  <div class="col-md-4 col-xs-12">
+    <QCard>
+      <q-item>
+        <q-item-side style="margin-right: 10px;">
           <Icon/>
-        </div>
-        <div style="margin-left: 20px;" class="col-xs-9">
-          <h6 class="primary-text">Start Survey</h6>
-          <p
-            class="muted-text"
-            style="margin:auto;, line-height: 30px;"
-          >Make click on this button to start survey</p>
-        </div>
-      </div>
-    </QCardTitle>
-  </QCard>
+        </q-item-side>
+        <q-item-main>
+          <q-item-tile label="">
+            <h6 class="primary-text">Start Survey</h6>
+          </q-item-tile>
+          <q-item-tile sublabel>
+            <p class="muted-text" style="margin:auto;, line-height: 30px;">Start new trap Survey</p>
+          </q-item-tile>
+        </q-item-main>
+      </q-item>
+    </QCard>
+  </div>
 </template>
 
 <script>

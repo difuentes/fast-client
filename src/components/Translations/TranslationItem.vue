@@ -8,7 +8,7 @@
         <q-spinner v-if="loading"/>
       </q-btn>
       <q-btn class="pull-right" v-if="changed" @click.native="revert" color="grey">
-        <q-icon name="fa-undo" v-if="!loading"/>
+        <q-icon name="fas fa-undo" v-if="!loading"/>
         <q-spinner v-if="loading"/>
       </q-btn>
     </q-item-main>
