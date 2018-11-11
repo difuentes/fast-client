@@ -34,7 +34,7 @@ import Promise from 'bluebird';
 import { Auth, Pages } from 'fast-fastjs';
 import Logo from 'components/Logo';
 import LightLogo from 'components/LightLogo';
-import ProfileInfo from 'components/ProfileInfo';
+import ProfileInfo from 'components/ProfileInfo/ProfileInfo';
 import PageLinks from './PageLinks';
 import Translate from './Translate';
 import SendData from './SendData';

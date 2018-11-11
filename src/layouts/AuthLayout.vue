@@ -20,5 +20,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import '~bootswatch/dist/materia/bootstrap.min.css';
+@import '~formiojs/dist/formio.full.min.css';
 </style>

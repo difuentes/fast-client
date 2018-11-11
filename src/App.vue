@@ -1,6 +1,6 @@
 <template>
-  <div id="q-app">
-    <router-view />
+  <div id="q-app" v-bind:style="appDynamicStyles">
+    <router-view/>
   </div>
 </template>
 
@@ -21,6 +21,13 @@ export default {
       },
       false
     );
+  },
+  data() {
+    return {
+      appDynamicStyles: {
+        direction: localStorage.getItem('textDirection') || 'ltr'
+      }
+    };
   }
 };
 </script>
