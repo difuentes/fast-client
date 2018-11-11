@@ -17,22 +17,19 @@ export default {
   data() {
     console.log('breadcrumb', this);
     return {
-      isSubmission: this.$route.path.includes('submission'),
-      formTitle: ''
+      isSubmission: this.currentRoute ? this.currentRoute.path.includes('submission') : false,
+      formTitle: undefined,
+      currentRoute: ''
     };
   },
-  asyncData: {
-    formTitle: {
-      async get() {
-        const result = await Form.local()
-          .where('data.path', '=', this.$route.params.path)
-          .first();
-        if (!result) return this.$route.params.path;
-        return result.data.title;
-      },
-      transform(result) {
-        return result;
-      }
+  watch: {
+    async $route(to) {
+      this.currentRoute = to;
+      const result = await Form.local()
+        .where('data.path', '=', to.params.path)
+        .first();
+
+      this.formTitle = !result ? to.params.path : result.data.title;
     }
   }
 };
