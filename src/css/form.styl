@@ -1,0 +1,111 @@
+@import 'themes/common.variables'
+
+.fastform-container
+  position: relative
+  display: flex
+  flex-direction: column
+  min-width: 0
+  word-wrap: break-word
+  border-radius: .375rem
+  background-color: #fff
+  background-clip: border-box
+  box-shadow: 0 0 2rem 0 rgba(136,152,170,.15)
+  border: 1px solid rgba(0,0,0,.05)
+  height: 84vh;
+
+.fastform-container > .header
+  border-radius: calc(.375rem - 1px) calc(.375rem - 1px) 0 0 !important
+  background-color: #f4f9fc!important 
+  border: 0!important
+  margin-bottom: 0
+  padding: 1.00rem 1.5rem 0.50rem
+  border-bottom: 1px solid #e9ecef !important
+  
+.fastform-container > .footer
+  border-radius: calc(.375rem - 1px) calc(.375rem - 1px) 0 0 !important
+  background-color: #f4f9fc!important 
+  border: 0!important
+  margin-bottom: 0
+  padding: 0.75rem 0.5rem
+  border-top: 1px solid #e9ecef !important
+  
+.fastform-container > .footer > .nav-pills
+  display: flex
+  flex-wrap: wrap
+  padding-left: 0
+  margin-bottom: 0
+  list-style: none
+  justify-content: center
+
+.fastform-container > .footer > .nav-pills > .nav-item
+  border: 0
+  transition: all .4s
+  border-radius: 3px
+  position: relative
+  margin: 0 10px 0 10px
+
+.fastform-container > .footer > .nav-pills > .nav-item:hover
+  background-color: rgba(200,200,200,.2);
+
+.fastform-container > .footer > .nav-pills > .current:hover
+  background-color: $primary !important
+
+.fastform-container > .footer > .nav-pills > .nav-item > .nav-link
+  line-height: 24px
+  text-transform: uppercase
+  font-size: 12px
+  font-weight: 600
+  min-width: 80px
+  text-align: center
+  color: #8898aa
+  transition: all 0.3s;
+
+.fastform-container > .footer > .nav-pills > .current
+  background-color: $primary
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba($primary 0.4) !important
+  a
+    color: #fff !important
+
+.fastform-container > .footer > .nav-pills > .current:hover
+  line-height: 24px !important
+
+.fastform-container > .footer > .nav-pills > .nav-item > .nav-link > i
+  display: block;
+  font-size: 20px;
+  padding: 10px 0;
+    
+
+.fastform-container > div .title
+  font-family: inherit
+  margin-bottom: .5rem
+  color: #32325d !important
+
+.fastform-container > .formio-form
+  overflow-y: auto;
+  padding: 20px;
+
+.fastform-container > div .card
+  all: initial;
+
+.fastform-container > div .bg-primary
+  color: #fff;
+  border-color: $primary !important;
+  background-color: $primary !important;
+
+.fastform-container > div .card-header
+  position: relative;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: .375rem;
+  
+.fastform-container > div .border
+  border: 0px !important
+
+.pagination
+  display: none !important
+
+.fastform-container > div > div > .alert
+  display: none !important

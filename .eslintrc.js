@@ -15,10 +15,12 @@ module.exports = {
   globals: {
     ga: true, // Google Analytics
     cordova: true,
-    __statics: true
+    __statics: true,
+    L: true
   },
   // add your custom rules here
   rules: {
+    'no-underscore-dangle': 0,
     'no-param-reassign': 0,
     'prettier/prettier': ['error'],
     'import/first': 0,
