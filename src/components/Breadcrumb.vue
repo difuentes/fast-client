@@ -19,7 +19,7 @@ export default {
     return {
       isSubmission: this.currentRoute ? this.currentRoute.path.includes('submission') : false,
       formTitle: undefined,
-      currentRoute: ''
+      currentRoute: this.$route
     };
   },
   watch: {

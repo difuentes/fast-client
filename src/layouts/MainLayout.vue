@@ -1,6 +1,14 @@
 <template>
   <QLayout view="lHh Lpr lFf">
     <!-- Header -->
+    <QBtn
+      class="btn-primary mobile-drawer"
+      flat
+      round
+      dense
+      @click.native="showLeft = !showLeft"
+      icon="menu"
+    />
     <Drawer :show="showLeft"/>
     <QLayoutHeader class="layout-header">
       <!-- First row of header is a QToolbar -->
