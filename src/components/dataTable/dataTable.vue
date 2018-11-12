@@ -53,6 +53,15 @@
           <q-tooltip>{{$t('Report')}}</q-tooltip>
         </q-btn>
         <q-btn
+          v-if="tableActions && tableActions.includes('export')"
+          color="primary"
+          flat
+          @click="openExportModal()"
+        >
+          <q-icon name="import_export"/>
+          <q-tooltip>{{$t('Import and export')}}</q-tooltip>
+        </q-btn>
+        <q-btn
           flat
           v-if="tableActions && tableActions.includes('delete')"
           color="grey"
@@ -116,24 +125,28 @@
       </template>
       <!-- Cell design if the submission is deleted -->
     </q-table>
-    <!-- <export-menu render="outside" :actions="menuActions" /> -->
+    <export-menu render="outside" :actions="menuActions"/>
   </div>
 </template>
 
 <script>
 import _get from 'lodash/get';
 import _camelCase from 'lodash/camelCase';
-import { Import, Submission, Auth, OfflinePlugin, Form } from 'fast-fastjs';
+import { Import, Submission, Event, Auth, OfflinePlugin, Form } from 'fast-fastjs';
 import { Base64 } from 'js-base64';
 import Formio from 'formiojs/Formio';
+// eslint-disable-next-line
+import ExcelExport from 'fast-component2excel';
 
-// import exportMenu from './export/exportMenu';
+import exportMenu from './export/exportMenu';
 import Export from './export/Export';
 import Columns from './formatters/Columns';
 import ErrorFormatter from './formatters/error';
 
 export default {
-  components: {},
+  components: {
+    exportMenu
+  },
   name: 'datatable',
   props: {
     data: {
@@ -159,10 +172,11 @@ export default {
     }
   },
   mounted() {
-    /*
-    this.$eventHub.on('FAST:EXPORT', params => {
-      this.exportTo(params);
+    Event.listen({
+      name: 'FAST:EXPORT',
+      callback: this.handleExport
     });
+    /*
     this.$eventHub.on('FAST:IMPORT', () => {
       this.importSubmission();
     });
@@ -172,8 +186,8 @@ export default {
     */
   },
   beforeDestroy() {
+    // this.$eventHub.off('FAST:EXPORT');
     /*
-    this.$eventHub.off('FAST:EXPORT');
     this.$eventHub.off('FAST:GO:CREATE');
     this.$eventHub.off('FAST:IMPORT');
     this.$eventHub.off('FAST-DATA_SYNCED');
@@ -190,6 +204,24 @@ export default {
   methods: {
     isOnlineSubmission(_id, _lid) {
       return !_lid && _id.indexOf('_local') < 0;
+    },
+    async exportToExcel() {
+      this.$swal({
+        title: 'Exporting...',
+        text: this.$t('Wait until the file is ready. This can take a couple minutes...'),
+        showCancelButton: false,
+        onOpen: async () => {
+          this.$swal.showLoading();
+
+          await ExcelExport.convertJsonToFile(this.form.data);
+
+          this.$swal(
+            this.$t('Exported!'),
+            `${this.$t('The file has been exported. File name:')}<br><strong></strong>`,
+            'success'
+          );
+        }
+      });
     },
     async exportTo(params) {
       this.$swal({
@@ -300,6 +332,20 @@ export default {
           idSubmission: submission._id
         }
       });
+    },
+    openExportModal() {
+      Event.emit({
+        name: 'FAST:EXPORT:OPENMENU',
+        data: {},
+        text: 'Triggering Open Export Menu'
+      });
+    },
+    async handleExport(params) {
+      // const rows = this.selected;
+
+      if (params.detail.data.format === 'xlsx-form') {
+        await this.exportToExcel(params.detail.data);
+      }
     },
     handleReport() {
       const rows = this.selected;
