@@ -1,5 +1,5 @@
 <template>
-  <QItem v-if="isAdmin" @click.native="goToTranslations()" class="drawer-item">
+  <QItem @click.native="goToTranslations()" class="drawer-item">
     <QItemSide icon="translate"/>
     <QItemMain :label="$t('Translations')"/>
   </QItem>
@@ -18,6 +18,9 @@ export default {
   methods: {
     checkRole() {
       return Auth.hasRole('Administrator');
+    },
+    goToTranslations() {
+      this.$router.push('/settings/translations');
     }
   }
 };

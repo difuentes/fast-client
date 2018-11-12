@@ -1,13 +1,24 @@
-.header
+.layout-header
   box-shadow: none !important
+  @media (min-width: 320px) and (max-width: 480px)
+    display: none
 
-.header > .q-toolbar
+.layout-header > .q-toolbar
   background: transparent !important
   border: 0 !important
 
 .breadcrumbs
   color: #525f7f
   font-size: calc(8px + 0.8vw);
-
+ 
 .breadcrumbs > .q-breadcrumbs
   height: 110px
+
+.mobile-drawer
+  display: none !important
+  z-index: 1000 !important
+  position: absolute !important
+  right: 0px !important
+  margin: 10px !important
+  @media (min-width: 320px) and (max-width: 480px)
+    display: flex !important

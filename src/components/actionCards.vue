@@ -9,10 +9,11 @@
       <div
         class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12"
         v-for="card in chunk"
+        style="margin-top: 10px; margin-bottom: 10px;"
         v-bind:key="card.title"
         v-if="card.shouldDisplay || typeof(card.shouldDisplay) === 'undefined'"
       >
-        <QCard>
+        <QCard @click.native="applyAction(card.actions[0])">
           <q-item>
             <q-item-side style="margin-right: 10px;">
               <Icon :name="!card.customIcon && card.icon ? card.icon : null"/>

@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      showLeft: this.$q.platform.is.desktop
+      showLeft: false
     };
   },
 

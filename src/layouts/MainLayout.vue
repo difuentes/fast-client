@@ -1,12 +1,27 @@
 <template>
   <QLayout view="lHh Lpr lFf">
     <!-- Header -->
+    <QBtn
+      class="btn-primary mobile-drawer"
+      flat
+      round
+      dense
+      @click.native="showLeft = !showLeft"
+      icon="menu"
+    />
     <Drawer :show="showLeft"/>
-    <QLayoutHeader class="header">
+    <QLayoutHeader class="layout-header">
       <!-- First row of header is a QToolbar -->
       <QToolbar>
         <!-- showLeft is a model attached to left side drawer below -->
-        <QBtn class="btn-primary" flat round dense @click="showLeft = !showLeft" icon="menu"/>
+        <QBtn
+          class="btn-primary"
+          flat
+          round
+          dense
+          @click.native="showLeft = !showLeft"
+          icon="menu"
+        />
         <Breadcrumb/>
         <!-- <QBtn
         flat round dense
@@ -41,7 +56,7 @@ export default {
   },
   data() {
     return {
-      showLeft: this.$q.platform.is.desktop
+      showLeft: false
     };
   },
   name: 'MainLayout'

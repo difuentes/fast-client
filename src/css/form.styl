@@ -11,7 +11,9 @@
   background-clip: border-box
   box-shadow: 0 0 2rem 0 rgba(136,152,170,.15)
   border: 1px solid rgba(0,0,0,.05)
-  height: 84vh;
+  height : -moz-available;          /* WebKit-based browsers will ignore this. */
+  height : -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  height : fill-available;
 
 .fastform-container > .header
   border-radius: calc(.375rem - 1px) calc(.375rem - 1px) 0 0 !important
@@ -87,6 +89,9 @@
 .fastform-container > div .card
   all: initial;
 
+.fastform-container > div .panel-body
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 .fastform-container > div .bg-primary
   color: #fff;
   border-color: $primary !important;
@@ -95,8 +100,6 @@
 .fastform-container > div .card-header
   position: relative;
   margin-bottom: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
   padding: 1rem 1.5rem;
   border: 1px solid transparent;
   border-radius: .375rem;
@@ -109,3 +112,8 @@
 
 .fastform-container > div > div > .alert
   display: none !important
+
+div.col
+  @media (min-width: 320px) and (max-width: 480px)
+    flex-basis: none !important;
+    max-width: 100%;
