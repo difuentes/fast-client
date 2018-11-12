@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-4 col-xs-12">
+  <div style="margin-top: 10px; margin-bottom: 10px;" class="col-md-4 col-xs-12">
     <QCard>
       <q-item>
         <q-item-side style="margin-right: 10px;">

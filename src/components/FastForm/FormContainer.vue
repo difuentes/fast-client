@@ -4,7 +4,7 @@
       <h4 v-if="form" class="title">{{$t(form.title)}}</h4>
     </div>
     <slot/>
-    <Footer v-if="childrenFormio && footer" :childrenFormio="childrenFormio"/>
+    <Footer v-if="!!this.childrenFormio.wizard" :childrenFormio="childrenFormio"/>
   </div>
 </template>
 

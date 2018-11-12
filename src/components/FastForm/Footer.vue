@@ -7,7 +7,7 @@
         :class="childrenFormio.page === index ? 'nav-item current' : 'nav-item'"
       >
         <a class="nav-link" @click="setPage(page.key)">
-          <QIcon name="thumb_up"/>
+          <QIcon name="keyboard_arrow_right"/>
           {{page.title}}
         </a>
       </li>
