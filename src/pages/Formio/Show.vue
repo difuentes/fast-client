@@ -54,7 +54,7 @@
           :data="submissions"
           :form="currentForm"
           :menuActions="['create', 'export', 'import']"
-          :tableActions="$FAST_CONFIG.HAS_REPORT ? ['read-only','edit', 'delete', 'report'] : ['edit', 'delete', 'read-only']"
+          :tableActions="$FAST_CONFIG.HAS_REPORT ? ['read-only','edit', 'delete', 'report', 'export'] : ['edit', 'delete', 'read-only', 'export']"
           fastMode="show"
           v-on:refresh="refreshData"
           v-if="!noSubmissions"

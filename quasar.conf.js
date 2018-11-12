@@ -67,6 +67,7 @@ module.exports = function(ctx) {
         'QCardSeparator',
         'QCardTitle',
         'QChip',
+        'QCollapsible',
         'QDialog',
         'QFab',
         'QFabAction',
