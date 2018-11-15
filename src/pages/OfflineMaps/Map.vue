@@ -14,6 +14,10 @@
       {{ modalMessage }}
       <QBtn small slot="button" color="primary" @click="dialogConfirmed()">Yes</QBtn>
     </sweet-modal>
+    <sweet-modal
+      icon="warning"
+      ref="belowZoomModal"
+    >{{ $t('Cannot save a map this big. Try zooming in.') }}</sweet-modal>
     <LMap
       ref="map"
       id="map"
@@ -27,26 +31,13 @@
         :offset="[18, 18]"
         style="margin-right: 18px !important;"
       >
-        <QFab icon="add" direction="up" color="black">
-          <QFabAction
-            color="white"
-            textColor="faded"
-            class="white"
-            icon="fa fa-download"
-            @click="saveTiles()"
-          />
-          <QFabAction
-            color="white"
-            textColor="faded"
-            class="white"
-            icon="fa fa-trash"
-            @click="removeTiles()"
-          />
-        </QFab>
+        <QBtn round color="black" class="fab" icon="fa fa-download" @click="saveTiles()"/>
+        <QBtn round color="black" class="fab" icon="fa fa-trash" @click="removeTiles()"/>
       </QPageSticky>
       <QPageSticky position="bottom-left" :offset="[18, 18]" style="margin-left: 18px !important;">
         <QBtn
           round
+          class="fab"
           color="white"
           text-color="black"
           icon="my_location"
@@ -61,6 +52,7 @@
 <script>
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import { SweetModal } from 'sweet-modal-vue';
+import * as turf from '@turf/turf';
 import L from 'leaflet';
 import 'leaflet-offline';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
@@ -90,20 +82,18 @@ export default {
         min: 1,
         max: 18
       },
-      offlineZoom: {
-        min: 15,
-        max: 18
-      },
+      minZoom: 15,
       mapOptions: { zoomControl: false, attributionControl: false },
       me: null,
       map: null,
-      tilesToSave: 0,
       modalMessage: '',
       modalType: '',
       modalButtonCallback: null,
       myRadius: null,
       offlineTiles: null,
-      offlineControl: null
+      offlineControl: null,
+      selection: null,
+      overlay: null
     };
   },
   methods: {
@@ -189,9 +179,9 @@ export default {
       const zoomLevels = [];
       let tileUrls = [];
       const currentZoom = this.map.getZoom();
-      const latlngBounds = this.map.getBounds();
+      const latlngBounds = this.selection.getBounds();
 
-      if (currentZoom < this.zoomValues.min) {
+      if (currentZoom < this.minZoom) {
         this.offlineControl._baseLayer.fire('offline:below-min-zoom-error');
 
         return;
@@ -229,7 +219,6 @@ export default {
           });
       };
 
-      this.tilesToSave = tileUrls.length;
       this.modalMessage = this.$t('Save selected area?');
       this.modalButtonCallback = continueSaveTiles;
       this.$refs.dialogModal.open();
@@ -287,9 +276,48 @@ export default {
       offlineLayer.addTo(this.map);
       this.offlineControl.addTo(this.map);
 
+      this.map.on('move', () => {
+        if (this.selection) {
+          this.map.removeLayer(this.selection);
+        }
+
+        if (this.overlay) {
+          this.map.removeLayer(this.overlay);
+        }
+        const screenB = this.map.getBounds();
+        const rectB = screenB.pad(-0.2);
+        const rectD = [
+          [rectB._northEast.lat, rectB._northEast.lng],
+          [rectB._southWest.lat, rectB._southWest.lng]
+        ];
+        this.selection = L.rectangle(rectD, {
+          fillOpacity: 0,
+          weight: 3,
+          color: '#41b8eb'
+        }).addTo(this.map);
+
+        const screenD = [
+          [screenB._northEast.lat, screenB._northEast.lng],
+          [screenB._southWest.lat, screenB._southWest.lng]
+        ];
+
+        const fullOverlay = L.rectangle(screenD);
+
+        const difference = turf.difference(fullOverlay.toGeoJSON(), this.selection.toGeoJSON());
+        difference.properties.style = {
+          fillColor: 'black',
+          fillOpacity: 0.4
+        };
+
+        this.overlay = new L.GeoJSON(difference, {
+          style: feature => feature.properties.style
+        });
+
+        this.overlay.addTo(this.map);
+      });
+
       offlineLayer.on('offline:below-min-zoom-error', () => {
-        this.modalMessage = 'Cannot save tiles below minimum zoom level.';
-        this.$refs.dialogModal.open();
+        this.$refs.belowZoomModal.open();
       });
 
       offlineLayer.on('offline:save-start', data => {
@@ -299,14 +327,14 @@ export default {
       });
 
       offlineLayer.on('offline:save-end', async () => {
-        const bounds = this.map.getBounds();
+        const bounds = this.selection.getBounds();
         const rectBounds = [
           [bounds._northEast.lat, bounds._northEast.lng],
           [bounds._southWest.lat, bounds._southWest.lng]
         ];
 
         const rect = L.rectangle(rectBounds, {
-          color: '#d62c4e',
+          color: '#34dbb9',
           weight: 3,
           fillOpacity: 0.6,
           type: 'rect'
