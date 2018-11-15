@@ -82,7 +82,7 @@ export default {
         min: 1,
         max: 18
       },
-      minZoom: 15,
+      minZoom: 13,
       mapOptions: { zoomControl: false, attributionControl: false },
       me: null,
       map: null,
