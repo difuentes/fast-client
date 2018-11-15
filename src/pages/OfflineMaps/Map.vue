@@ -9,6 +9,7 @@
         @click="$refs.noTilesModal.close()"
       >{{ $t('I understand') }}</QBtn>
     </sweet-modal>
+    <sweet-modal icon="warning" ref="noLocationModal">{{ $t('No location was found!') }}</sweet-modal>
     <sweet-modal ref="dialogModal">
       {{ modalMessage }}
       <QBtn small slot="button" color="primary" @click="dialogConfirmed()">Yes</QBtn>
@@ -43,6 +44,16 @@
           />
         </QFab>
       </QPageSticky>
+      <QPageSticky position="bottom-left" :offset="[18, 18]" style="margin-left: 18px !important;">
+        <QBtn
+          round
+          color="white"
+          text-color="black"
+          icon="my_location"
+          size="md"
+          @click="setToCurrentLocation"
+        />
+      </QPageSticky>
       <!-- <l-tile-layer :url="url" :attribution="attribution"/> -->
     </LMap>
   </QPage>
@@ -71,12 +82,16 @@ export default {
   },
   data() {
     return {
-      zoom: 18,
+      zoom: 1,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      currentZoom: 18,
+      currentZoom: 1,
       zoomValues: {
-        min: 10,
+        min: 1,
+        max: 18
+      },
+      offlineZoom: {
+        min: 15,
         max: 18
       },
       mapOptions: { zoomControl: false, attributionControl: false },
@@ -125,13 +140,12 @@ export default {
       fullLoading.show(this.$t('Getting GPS position'));
       if (this.me) {
         this.map.removeLayer(this.me);
-        // this.map.removeLayer(this.myRadius);
       }
-      this.map.locate({ setView: true, maxZoom: 18, timeout: 7000, enableHighAccuracy: true });
+      this.map.locate({ setView: true, maxZoom: 18, timeout: 10000, enableHighAccuracy: true });
     },
     async onLocationFound(e) {
       fullLoading.hide();
-      const radius = e.accuracy / 2;
+
       // eslint-disable-next-line
       this.me = new L.marker(e.latlng, {
         icon: L.AwesomeMarkers.icon({
@@ -140,27 +154,35 @@ export default {
           prefix: 'fa',
           spin: false
         }),
-        draggable: 'true'
-      });
-      // eslint-disable-next-line
-      this.myRadius = new L.circle(e.latlng, radius);
-
-      // this.myRadius.addTo(this.map);
-
-      this.me.on('dragend', event => {
-        const mark = event.target;
-        const position = this.me.getLatLng();
-        mark.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
-        this.myRadius.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
-        this.map.panTo(new L.LatLng(position.lat, position.lng));
-      });
-      this.map.addLayer(this.me);
-      // this.map.addLayer(this.myRadius);
+        draggable: true,
+        autoPan: true
+      }).addTo(this.map);
     },
     onLocationError(e) {
       fullLoading.hide();
+      this.$refs.noLocationModal.open();
       // eslint-disable-next-line
-      console.log(e);
+      console.log('location error', e);
+
+      let location = null;
+      if (this.me) {
+        location = this.me.getLatLng();
+        this.map.panTo(location);
+      } else {
+        location = this.map.getCenter();
+      }
+
+      // eslint-disable-next-line
+      this.me = new L.marker(location, {
+        icon: L.AwesomeMarkers.icon({
+          icon: 'fas fa-male',
+          markerColor: 'black',
+          prefix: 'fa',
+          spin: false
+        }),
+        draggable: true,
+        autoPan: true
+      }).addTo(this.map);
     },
     saveTiles() {
       let bounds = null;

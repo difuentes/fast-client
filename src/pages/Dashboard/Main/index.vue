@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <sweet-modal icon="warning" ref="noLocationModal">{{ $t('No location was found!') }}</sweet-modal>
     <QPageSticky position="bottom-right" :offset="[18, 18]" style="margin-right: 18px !important;">
       <QFab icon="add" direction="up" color="black">
         <QFabAction
@@ -163,6 +164,7 @@ body,
 <script>
 import moment from 'moment';
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
+import { SweetModal } from 'sweet-modal-vue';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-offline';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
@@ -180,15 +182,16 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    LControlZoom
+    LControlZoom,
+    SweetModal
   },
   data() {
     return {
       tab: null,
-      zoom: 18,
+      zoom: 1,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      currentZoom: 18,
+      currentZoom: 1,
       showParagraph: false,
       map: null,
       mapOptions: { zoomControl: false, attributionControl: false },
@@ -198,7 +201,7 @@ export default {
         max: 12
       },
       zoomValues: {
-        min: 10,
+        min: 1,
         max: 18
       },
       checked: false,
@@ -206,7 +209,6 @@ export default {
       dateTwo: '',
       today: false,
       me: null,
-      myRadius: null,
       currentDate: moment().format('LLLL'),
       remoteMarkers: null,
       localMarkers: null,
@@ -257,7 +259,6 @@ export default {
       this.map.addLayer(this.remoteMarkers);
       this.map.addLayer(this.localMarkers);
       this.map.addLayer(this.me);
-      this.map.addLayer(this.myRadius);
       this.map.removeLayer(this.collectionMarker);
       this.collectNotifyAction();
     },
@@ -323,7 +324,6 @@ export default {
       this.map.removeLayer(this.remoteMarkers);
       this.map.removeLayer(this.localMarkers);
       this.map.removeLayer(this.me);
-      this.map.removeLayer(this.myRadius);
     },
     time() {
       this.currentDate = moment().format('LLLL');
@@ -429,15 +429,16 @@ export default {
     },
     setToCurrentLocation() {
       fullLoading.show(this.$t('Getting GPS position'));
+
       if (this.me) {
         this.map.removeLayer(this.me);
-        this.map.removeLayer(this.myRadius);
       }
+
       this.map.locate({ setView: true, maxZoom: 18, timeout: 7000, enableHighAccuracy: true });
     },
     async onLocationFound(e) {
       fullLoading.hide();
-      const radius = e.accuracy / 2;
+
       // eslint-disable-next-line
       this.me = new L.marker(e.latlng, {
         icon: L.AwesomeMarkers.icon({
@@ -446,32 +447,38 @@ export default {
           prefix: 'fa',
           spin: false
         }),
-        draggable: 'true'
-      });
+        draggable: true,
+        autoPan: true
+      }).addTo(this.map);
 
-      // this.myRadius.addTo(this.map);
-
-      this.me.on('dragend', event => {
-        const mark = event.target;
-        const position = this.me.getLatLng();
-        mark.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
-        this.myRadius.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
-        this.map.panTo(new L.LatLng(position.lat, position.lng));
-      });
-      this.map.addLayer(this.me);
       this.markers = await this.getRemoteMarkers();
       await this.getLocalMarkers();
-
-      console.log(e.latlng, radius);
-      // eslint-disable-next-line
-      this.myRadius = L.circle(e.latlng, { radius });
-      // console.log(this.myRadius);
-      // this.map.addLayer(this.myRadius);
     },
     onLocationError(e) {
       fullLoading.hide();
+      this.$refs.noLocationModal.open();
       // eslint-disable-next-line
-      console.log(e);
+      console.log('location error', e);
+
+      let location = null;
+      if (this.me) {
+        location = this.me.getLatLng();
+        this.map.panTo(location);
+      } else {
+        location = this.map.getCenter();
+      }
+
+      // eslint-disable-next-line
+      this.me = new L.marker(location, {
+        icon: L.AwesomeMarkers.icon({
+          icon: 'fas fa-male',
+          markerColor: 'black',
+          prefix: 'fa',
+          spin: false
+        }),
+        draggable: true,
+        autoPan: true
+      }).addTo(this.map);
     },
     startCollection(type) {
       if (type === 'scouting') {
