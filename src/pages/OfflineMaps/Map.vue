@@ -1,12 +1,23 @@
 <template>
   <QPage>
-    <sweet-modal ref="noTilesModal">You must select an offline area to start using the app!
-      <QBtn small slot="button" color="primary" @click="$refs.noTilesModal.close()">I understand</QBtn>
+    <sweet-modal ref="noTilesModal">
+      {{ $t('You must select an offline area to start using the app!') }}
+      <QBtn
+        small
+        slot="button"
+        color="primary"
+        @click="$refs.noTilesModal.close()"
+      >{{ $t('I understand') }}</QBtn>
     </sweet-modal>
+    <sweet-modal icon="warning" ref="noLocationModal">{{ $t('No location was found!') }}</sweet-modal>
     <sweet-modal ref="dialogModal">
       {{ modalMessage }}
       <QBtn small slot="button" color="primary" @click="dialogConfirmed()">Yes</QBtn>
     </sweet-modal>
+    <sweet-modal
+      icon="warning"
+      ref="belowZoomModal"
+    >{{ $t('Cannot save a map this big. Try zooming in.') }}</sweet-modal>
     <LMap
       ref="map"
       id="map"
@@ -20,22 +31,19 @@
         :offset="[18, 18]"
         style="margin-right: 18px !important;"
       >
-        <QFab icon="add" direction="up" color="black">
-          <QFabAction
-            color="white"
-            textColor="faded"
-            class="white"
-            icon="fa fa-download"
-            @click="saveTiles()"
-          />
-          <QFabAction
-            color="white"
-            textColor="faded"
-            class="white"
-            icon="fa fa-trash"
-            @click="removeTiles()"
-          />
-        </QFab>
+        <QBtn round color="black" class="fab" icon="fa fa-download" @click="saveTiles()"/>
+        <QBtn round color="black" class="fab" icon="fa fa-trash" @click="removeTiles()"/>
+      </QPageSticky>
+      <QPageSticky position="bottom-left" :offset="[18, 18]" style="margin-left: 18px !important;">
+        <QBtn
+          round
+          class="fab"
+          color="white"
+          text-color="black"
+          icon="my_location"
+          size="md"
+          @click="setToCurrentLocation"
+        />
       </QPageSticky>
       <!-- <l-tile-layer :url="url" :attribution="attribution"/> -->
     </LMap>
@@ -44,6 +52,7 @@
 <script>
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import { SweetModal } from 'sweet-modal-vue';
+import * as turf from '@turf/turf';
 import L from 'leaflet';
 import 'leaflet-offline';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
@@ -65,24 +74,26 @@ export default {
   },
   data() {
     return {
-      zoom: 18,
+      zoom: 1,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      currentZoom: 18,
+      currentZoom: 1,
       zoomValues: {
-        min: 10,
+        min: 1,
         max: 18
       },
+      minZoom: 13,
       mapOptions: { zoomControl: false, attributionControl: false },
       me: null,
       map: null,
-      tilesToSave: 0,
       modalMessage: '',
       modalType: '',
       modalButtonCallback: null,
       myRadius: null,
       offlineTiles: null,
-      offlineControl: null
+      offlineControl: null,
+      selection: null,
+      overlay: null
     };
   },
   methods: {
@@ -119,13 +130,12 @@ export default {
       fullLoading.show(this.$t('Getting GPS position'));
       if (this.me) {
         this.map.removeLayer(this.me);
-        // this.map.removeLayer(this.myRadius);
       }
-      this.map.locate({ setView: true, maxZoom: 18, timeout: 7000, enableHighAccuracy: true });
+      this.map.locate({ setView: true, maxZoom: 18, timeout: 10000, enableHighAccuracy: true });
     },
     async onLocationFound(e) {
       fullLoading.hide();
-      const radius = e.accuracy / 2;
+
       // eslint-disable-next-line
       this.me = new L.marker(e.latlng, {
         icon: L.AwesomeMarkers.icon({
@@ -134,36 +144,44 @@ export default {
           prefix: 'fa',
           spin: false
         }),
-        draggable: 'true'
-      });
-      // eslint-disable-next-line
-      this.myRadius = new L.circle(e.latlng, radius);
-
-      // this.myRadius.addTo(this.map);
-
-      this.me.on('dragend', event => {
-        const mark = event.target;
-        const position = this.me.getLatLng();
-        mark.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
-        this.myRadius.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
-        this.map.panTo(new L.LatLng(position.lat, position.lng));
-      });
-      this.map.addLayer(this.me);
-      // this.map.addLayer(this.myRadius);
+        draggable: true,
+        autoPan: true
+      }).addTo(this.map);
     },
     onLocationError(e) {
       fullLoading.hide();
+      this.$refs.noLocationModal.open();
       // eslint-disable-next-line
-      console.log(e);
+      console.log('location error', e);
+
+      let location = null;
+      if (this.me) {
+        location = this.me.getLatLng();
+        this.map.panTo(location);
+      } else {
+        location = this.map.getCenter();
+      }
+
+      // eslint-disable-next-line
+      this.me = new L.marker(location, {
+        icon: L.AwesomeMarkers.icon({
+          icon: 'fas fa-male',
+          markerColor: 'black',
+          prefix: 'fa',
+          spin: false
+        }),
+        draggable: true,
+        autoPan: true
+      }).addTo(this.map);
     },
     saveTiles() {
       let bounds = null;
       const zoomLevels = [];
       let tileUrls = [];
       const currentZoom = this.map.getZoom();
-      const latlngBounds = this.map.getBounds();
+      const latlngBounds = this.selection.getBounds();
 
-      if (currentZoom < this.zoomValues.min) {
+      if (currentZoom < this.minZoom) {
         this.offlineControl._baseLayer.fire('offline:below-min-zoom-error');
 
         return;
@@ -201,8 +219,7 @@ export default {
           });
       };
 
-      this.tilesToSave = tileUrls.length;
-      this.modalMessage = `Save ${this.tilesToSave} tiles?`;
+      this.modalMessage = this.$t('Save selected area?');
       this.modalButtonCallback = continueSaveTiles;
       this.$refs.dialogModal.open();
     },
@@ -259,9 +276,48 @@ export default {
       offlineLayer.addTo(this.map);
       this.offlineControl.addTo(this.map);
 
+      this.map.on('move', () => {
+        if (this.selection) {
+          this.map.removeLayer(this.selection);
+        }
+
+        if (this.overlay) {
+          this.map.removeLayer(this.overlay);
+        }
+        const screenB = this.map.getBounds();
+        const rectB = screenB.pad(-0.2);
+        const rectD = [
+          [rectB._northEast.lat, rectB._northEast.lng],
+          [rectB._southWest.lat, rectB._southWest.lng]
+        ];
+        this.selection = L.rectangle(rectD, {
+          fillOpacity: 0,
+          weight: 3,
+          color: '#41b8eb'
+        }).addTo(this.map);
+
+        const screenD = [
+          [screenB._northEast.lat, screenB._northEast.lng],
+          [screenB._southWest.lat, screenB._southWest.lng]
+        ];
+
+        const fullOverlay = L.rectangle(screenD);
+
+        const difference = turf.difference(fullOverlay.toGeoJSON(), this.selection.toGeoJSON());
+        difference.properties.style = {
+          fillColor: 'black',
+          fillOpacity: 0.4
+        };
+
+        this.overlay = new L.GeoJSON(difference, {
+          style: feature => feature.properties.style
+        });
+
+        this.overlay.addTo(this.map);
+      });
+
       offlineLayer.on('offline:below-min-zoom-error', () => {
-        this.modalMessage = 'Cannot save tiles below minimum zoom level.';
-        this.$refs.dialogModal.open();
+        this.$refs.belowZoomModal.open();
       });
 
       offlineLayer.on('offline:save-start', data => {
@@ -271,14 +327,14 @@ export default {
       });
 
       offlineLayer.on('offline:save-end', async () => {
-        const bounds = this.map.getBounds();
+        const bounds = this.selection.getBounds();
         const rectBounds = [
           [bounds._northEast.lat, bounds._northEast.lng],
           [bounds._southWest.lat, bounds._southWest.lng]
         ];
 
         const rect = L.rectangle(rectBounds, {
-          color: '#d62c4e',
+          color: '#34dbb9',
           weight: 3,
           fillOpacity: 0.6,
           type: 'rect'
@@ -298,7 +354,7 @@ export default {
       });
 
       offlineLayer.on('offline:remove-start', () => {
-        fullLoading.show('Removing tiles...');
+        fullLoading.show('Removing areas...');
         // eslint-disable-next-line
         console.log('Removing tiles.');
       });
