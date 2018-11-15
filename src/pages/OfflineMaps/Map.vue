@@ -1,7 +1,13 @@
 <template>
   <QPage>
-    <sweet-modal ref="noTilesModal">You must select an offline area to start using the app!
-      <QBtn small slot="button" color="primary" @click="$refs.noTilesModal.close()">I understand</QBtn>
+    <sweet-modal ref="noTilesModal">
+      {{ $t('You must select an offline area to start using the app!') }}
+      <QBtn
+        small
+        slot="button"
+        color="primary"
+        @click="$refs.noTilesModal.close()"
+      >{{ $t('I understand') }}</QBtn>
     </sweet-modal>
     <sweet-modal ref="dialogModal">
       {{ modalMessage }}
@@ -202,7 +208,7 @@ export default {
       };
 
       this.tilesToSave = tileUrls.length;
-      this.modalMessage = `Save ${this.tilesToSave} tiles?`;
+      this.modalMessage = this.$t('Save selected area?');
       this.modalButtonCallback = continueSaveTiles;
       this.$refs.dialogModal.open();
     },
@@ -298,7 +304,7 @@ export default {
       });
 
       offlineLayer.on('offline:remove-start', () => {
-        fullLoading.show('Removing tiles...');
+        fullLoading.show('Removing areas...');
         // eslint-disable-next-line
         console.log('Removing tiles.');
       });

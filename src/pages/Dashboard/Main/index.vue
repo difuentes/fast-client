@@ -56,7 +56,7 @@
       @update:zoom="zoomUpdate"
     >
       <l-control-zoom position="topright"/>
-      <l-tile-layer :url="url" :attribution="attribution"/>
+      <!-- <l-tile-layer :url="url" :attribution="attribution"/> -->
       <!--
         <l-marker :lat-lng="marker.latlng" v-for="marker in markers" v-bind:key="marker.latlng.long">
           <l-popup>
@@ -164,11 +164,14 @@ body,
 import moment from 'moment';
 import { LMap, LTileLayer, LMarker, LPopup, LControlZoom } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-offline';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import format from 'date-fns/format';
 import { Form, Submission, Auth, Utilities } from 'fast-fastjs';
+import L from 'leaflet';
 import fullLoading from '../../../components/fullLoading';
+import tilesDB from '../../OfflineMaps/tilesDB';
 
 export default {
   name: 'Main',
@@ -195,8 +198,8 @@ export default {
         max: 12
       },
       zoomValues: {
-        min: 5,
-        max: 50
+        min: 10,
+        max: 18
       },
       checked: false,
       dateOne: '',
@@ -445,10 +448,8 @@ export default {
         }),
         draggable: 'true'
       });
-      // eslint-disable-next-line
-      this.myRadius = new L.circle(e.latlng, radius);
 
-      this.myRadius.addTo(this.map);
+      // this.myRadius.addTo(this.map);
 
       this.me.on('dragend', event => {
         const mark = event.target;
@@ -460,6 +461,12 @@ export default {
       this.map.addLayer(this.me);
       this.markers = await this.getRemoteMarkers();
       await this.getLocalMarkers();
+
+      console.log(e.latlng, radius);
+      // eslint-disable-next-line
+      this.myRadius = L.circle(e.latlng, { radius });
+      // console.log(this.myRadius);
+      // this.map.addLayer(this.myRadius);
     },
     onLocationError(e) {
       fullLoading.hide();
@@ -479,8 +486,16 @@ export default {
   async mounted() {
     this.time();
     this.$nextTick(() => {
+      const offlineLayer = L.tileLayer.offline(this.url, tilesDB, {
+        attribution: this.attribution,
+        minZoom: this.zoomValues.min,
+        maxZoom: this.zoomValues.max,
+        crossOrigin: true
+      });
+
       this.$refs.map.mapObject._onResize();
       this.map = this.$refs.map.mapObject;
+      offlineLayer.addTo(this.map);
       this.setToCurrentLocation();
       this.map.on('locationfound', this.onLocationFound);
       this.map.on('locationerror', this.onLocationError);
