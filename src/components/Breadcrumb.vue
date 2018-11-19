@@ -15,7 +15,6 @@ import { Form } from 'fast-fastjs';
 export default {
   name: 'Breadcrumb',
   data() {
-    console.log('breadcrumb', this);
     return {
       isSubmission: this.currentRoute ? this.currentRoute.path.includes('submission') : false,
       formTitle: undefined,

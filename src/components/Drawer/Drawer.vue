@@ -13,6 +13,10 @@
         <QItemSide icon="map"/>
         <QItemMain label="Offline Map"/>
       </QItem>
+      <QItem class="drawer-item" to="/page-builder">
+        <QItemSide icon="create"/>
+        <QItemMain label="Static Page Builder"/>
+      </QItem>
       <SyncApp/>
       <SendData/>
       <Translate/>

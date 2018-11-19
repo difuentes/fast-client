@@ -33,7 +33,7 @@ export default {
     childrenFormio: function(newValue) {}
   },
   async mounted() {
-    console.log(this.childrenFormio);
+    // console.log(this.childrenFormio);
   }
 };
 </script>

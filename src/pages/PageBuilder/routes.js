@@ -1,7 +1,13 @@
 const routes = [
   {
-    name: 'pageBuilder',
+    name: 'showPages',
     path: '/page-builder',
+    component: () => import('./Show.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    name: 'pageBuilder',
+    path: '/page-builder/:id',
     component: () => import('./PageBuilder.vue'),
     meta: { requiresAuth: true }
   }
