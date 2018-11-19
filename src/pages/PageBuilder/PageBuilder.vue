@@ -22,9 +22,10 @@ export default {
           blocks: ['column1', 'column2', 'column3', 'column3-7', 'text', 'link', 'image', 'map']
         },
         [FluentGrapes]: {
-          pageId: 1
+          pageId: this.$route.params.id
         }
-      }
+      },
+      storageManager: { type: 'fluent-grapesjs' }
     });
 
     editor.Panels.getButton('views', 'open-blocks').set('active', true);

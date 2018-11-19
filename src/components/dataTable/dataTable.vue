@@ -539,7 +539,6 @@ export default {
     }
   },
   data() {
-    console.log(this);
     return {
       selected: [],
       serverData: [],
